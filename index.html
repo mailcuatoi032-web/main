@@ -1416,264 +1416,12 @@
         
         <div class="main-content">
             <div class="tabs">
-                <div class="tab active" data-tab="link-generator" id="module-tab">Vĩnh Hy PDF Generator</div>
-                <div class="tab" data-tab="module-misa" id="module-misa-tab">Module MISA</div>
-                <div class="tab" data-tab="module-bkav" id="module-bkav-tab">Module BKAV</div>
+                <div class="tab active" data-tab="invoice-gtgt">Hóa đơn GTGT</div>
                 <div class="tab" data-tab="invoice-lookup" id="lookup-tab">🔍 Tra cứu hóa đơn</div>
-                <div class="tab" data-tab="invoice-gtgt">Hóa đơn GTGT</div>
             </div>
             
-            <!-- Tab 1: Tạo Link PDF từ XML -->
-            <div class="tab-content active" id="link-generator">
-                <div class="upload-section">
-                    <h3>Upload File XML Hóa Đơn</h3>
-                    <p>Click để chọn file hoặc kéo thả file XML vào đây</p>
-                    <div class="file-input-wrapper">
-                        <input type="file" id="xmlFileLink" accept=".xml" style="display: none;">
-                        <label for="xmlFileLink" class="file-input-label">
-                            <span>📁 Chọn File XML</span>
-                        </label>
-                    </div>
-                    <p id="fileNameLink" style="margin: 15px 0; color: #666;"></p>
-                    <button id="generateLinkBtn" class="btn btn-primary">🔗 Tạo Link PDF</button>
-                    <div class="file-info" id="fileInfo"></div>
-                </div>
-                
-                <div class="loading" id="loadingLink">
-                    <div class="spinner"></div>
-                    <p>Đang xử lý file XML...</p>
-                </div>
-                
-                <div class="status-message" id="statusMessage"></div>
-                
-                <div class="link-area" id="linkArea">
-                    <h3>✅ Link PDF Đã Sẵn Sàng!</h3>
-                    <p>Copy link dưới đây và dán vào trình duyệt để tải PDF:</p>
-                    
-                    <div class="link-box" id="pdfLink" onclick="selectLinkText()" tabindex="0">
-                        https://ehoadondientu.com/Account/GenerateFile.aspx?r=...
-                    </div>
-
-                    <div class="action-buttons">
-                        <button class="copy-btn" onclick="copyLink()" id="copyButton">
-                            📋 Copy Link
-                        </button>
-                        <a href="#" class="open-btn" id="downloadLink" target="_blank">
-                            🌐 Mở Link
-                        </a>
-                    </div>
-
-                    <div class="info-box">
-                        <h4>📋 Thông Tin Hóa Đơn</h4>
-                        <div class="info-grid" id="invoiceInfo">
-                            <!-- Thông tin sẽ được thêm bằng JavaScript -->
-                        </div>
-                    </div>
-
-                    <button class="btn btn-info" onclick="toggleDebug()" style="margin-top: 10px;">
-                        🔧 Debug Info
-                    </button>
-
-                    <div class="debug-info" id="debugInfo">
-                        <!-- Thông tin debug sẽ được thêm ở đây -->
-                    </div>
-
-                    <div class="instructions">
-                        <h4>📝 Hướng Dẫn Sử Dụng</h4>
-                        <ol>
-                            <li>Click "Copy Link" để sao chép đường dẫn</li>
-                            <li>Dán link vào thanh địa chỉ trình duyệt</li>
-                            <li>Nhấn Enter để tải file PDF hóa đơn</li>
-                            <li>Hoặc click "Mở Link" để mở trực tiếp</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab 2: Module MISA -->
-            <div class="tab-content" id="module-misa">
-                <div class="module-misa">
-                    <h3>📁 Tool Tạo Link PDF từ File XML</h3>
-                    <p>Module MISA - Phiên bản chính thức</p>
-                    <div class="module-info">
-                        <strong>Mã nhận dạng module:</strong> 0101243150
-                    </div>
-                </div>
-                
-                <div class="file-upload-area" id="file-upload-area" onclick="document.getElementById('file-input-misa').click()">
-                    <div class="upload-icon">📁</div>
-                    <h3>Kéo thả file XML vào đây</h3>
-                    <p>hoặc click để chọn file từ máy tính</p>
-                    <p class="file-types">Hỗ trợ định dạng: .xml, .txt</p>
-                </div>
-                
-                <input type="file" id="file-input-misa" class="file-input" accept=".xml,.txt" style="display: none;">
-                
-                <div id="file-info-misa" class="file-info">
-                    <div class="file-name" id="file-name-misa">Tên file</div>
-                    <div class="file-size" id="file-size-misa">Kích thước</div>
-                </div>
-
-                <div id="processing-misa" class="processing-misa">
-                    <div class="spinner-misa"></div>
-                    <p>Đang phân tích file XML...</p>
-                </div>
-                
-                <button class="btn btn-primary" id="process-btn-misa" style="width: 100%; margin-bottom: 20px;" disabled>
-                    <span>🔍 Phân Tích XML & Tạo Link PDF</span>
-                </button>
-
-                <!-- Invoice Details -->
-                <div id="invoice-details-misa" class="invoice-details-misa">
-                    <h5>📋 Thông tin hóa đơn đã nhận dạng</h5>
-                    <div class="detail-item">
-                        <span class="detail-label">MST Người bán:</span>
-                        <span class="detail-value" id="detail-sellerTaxCode">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Transaction ID:</span>
-                        <span class="detail-value" id="detail-transactionId">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Số hóa đơn:</span>
-                        <span class="detail-value" id="detail-invoiceNumber">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Ký hiệu:</span>
-                        <span class="detail-value" id="detail-invoiceSymbol">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Ngày lập:</span>
-                        <span class="detail-value" id="detail-issueDate">-</span>
-                    </div>
-                </div>
-
-                <!-- Link Result Section -->
-                <div id="link-section-misa" class="link-area">
-                    <h3>📎 Link PDF Hóa Đơn Đã Được Tạo</h3>
-                    
-                    <div class="action-buttons">
-                        <input type="text" id="pdf-link-misa" class="link-box" readonly>
-                        <button class="copy-btn" onclick="copyLinkMisa()">
-                            <span>📋 Copy Link</span>
-                        </button>
-                    </div>
-
-                    <a href="#" id="open-link-misa" class="open-btn" target="_blank">
-                        <span>🌐 Mở Link Trong Tab Mới</span>
-                    </a>
-                </div>
-
-                <div class="instructions">
-                    <h4>📝 Hướng Dẫn Sử Dụng Module MISA</h4>
-                    <ol>
-                        <li><strong>Upload file XML</strong> hóa đơn bằng cách kéo thả hoặc click để chọn file</li>
-                        <li>Click <strong>"Phân Tích XML & Tạo Link PDF"</strong> để xử lý file</li>
-                        <li>Xem <strong>thông tin hóa đơn</strong> đã được nhận dạng</li>
-                        <li><strong>Copy link PDF</strong> được tạo ra và paste vào trình duyệt</li>
-                        <li>Hoặc click <strong>"Mở Link Trong Tab Mới"</strong> để tải PDF trực tiếp</li>
-                    </ol>
-                </div>
-            </div>
-            
-            <!-- Tab 3: Module BKAV -->
-            <div class="tab-content" id="module-bkav">
-                <div class="module-bkav">
-                    <h3>MODULE TẠO LINK TẢI PDF</h3>
-                    <p>Module BKAV - Phiên bản chính thức</p>
-                    <div class="module-info">
-                        <strong>Mã nhận dạng module:</strong> 0101360697
-                    </div>
-                </div>
-
-                <!-- Phần upload file -->
-                <div class="file-upload-bkav">
-                    <div class="file-upload-bkav-input" onclick="document.getElementById('fileInputBkav').click()">
-                        📁 TẢI LÊN FILE XML (Click hoặc kéo thả file vào đây)
-                    </div>
-                    <input type="file" id="fileInputBkav" accept=".xml" onchange="handleFileUploadBkav(this.files)">
-                </div>
-
-                <div class="xml-input-container">
-                    <label class="input-label">
-                        <span class="status-indicator status-ready"></span>
-                        NỘI DUNG FILE XML:
-                    </label>
-                    <textarea class="xml-input" id="xmlInputBkav" placeholder="Dán nội dung file XML vào đây hoặc tải lên file..." oninput="validateXMLBkav()"></textarea>
-                </div>
-
-                <!-- Thông báo xác thực -->
-                <div id="validationMessageBkav" class="validation-message" style="display: none;"></div>
-
-                <div class="button-group">
-                    <button class="btn btn-primary" id="generateBtnBkav" onclick="generatePDFLinkBkav()" disabled>
-                        🚀 Tạo Link Tải PDF
-                    </button>
-                    <button class="btn btn-secondary" onclick="loadSampleXMLBkav()">
-                        📋 Load XML Mẫu
-                    </button>
-                    <button class="btn btn-danger" onclick="clearInputBkav()">
-                        🗑️ Xóa Dữ Liệu
-                    </button>
-                </div>
-
-                <div class="bkav-result-container" id="resultContainerBkav">
-                    <h3 class="result-title">
-                        <span>📎 LINK TẢI FILE PDF</span>
-                    </h3>
-                    <a href="#" class="bkav-download-link" id="downloadLinkBkav" target="_blank"></a>
-                    
-                    <div class="button-group">
-                        <button class="btn btn-success" onclick="copyToClipboardBkav()">
-                            📋 Sao Chép Link
-                        </button>
-                        <button class="btn btn-primary" onclick="testDownloadLinkBkav()">
-                            🔗 Kiểm Tra Link
-                        </button>
-                    </div>
-
-                    <div class="bkav-link-info" id="linkInfoBkav">
-                        <!-- Thông tin link sẽ được hiển thị here -->
-                    </div>
-                </div>
-
-                <div class="instructions">
-                    <h4>📝 Hướng Dẫn Sử Dụng Module BKAV</h4>
-                    <ol>
-                        <li><strong>Upload file XML</strong> hóa đơn hoặc dán nội dung XML vào ô trên</li>
-                        <li>Hệ thống sẽ <strong>tự động xác thực MSTTCGP</strong> trong XML</li>
-                        <li>Chỉ khi MSTTCGP trùng với module (0101360697) mới có thể tạo link</li>
-                        <li>Click <strong>"Tạo Link Tải PDF"</strong> để tạo link tải PDF từ BKAV</li>
-                        <li><strong>Copy link</strong> và dán vào trình duyệt để tải PDF</li>
-                    </ol>
-                </div>
-            </div>
-            
-            <!-- Tab 4: Tra cứu hóa đơn -->
-            <div class="tab-content" id="invoice-lookup">
-                <div class="upload-section">
-                    <h3>🔍 Tra Cứu Hóa Đơn</h3>
-                    <p>Tìm kiếm và tải hóa đơn PDF từ các nhà cung cấp dịch vụ</p>
-                    
-                    <div class="instructions">
-                        <h4>📝 Hướng Dẫn Tra Cứu Hóa Đơn</h4>
-                        <ol>
-                            <li><strong>Chọn nhà cung cấp</strong> dịch vụ hóa đơn điện tử</li>
-                            <li>Nhập <strong>mã tra cứu</strong> nếu có (tìm trong file XML)</li>
-                            <li>Click <strong>"Tra cứu"</strong> để tìm hóa đơn</li>
-                            <li>Hệ thống sẽ hiển thị các phương án tải PDF phù hợp</li>
-                            <li>Chọn phương án tải PDF phù hợp với nhà cung cấp</li>
-                        </ol>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 30px;">
-                        <button class="btn btn-primary" id="openLookupModalBtn">🔍 Mở Công Cụ Tra Cứu</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab 5: Hóa đơn GTGT -->
-            <div class="tab-content" id="invoice-gtgt">
+            <!-- Tab 1: Hóa đơn GTGT -->
+            <div class="tab-content active" id="invoice-gtgt">
                 <div class="upload-section">
                     <h3>Tải lên file XML hóa đơn</h3>
                     <p>Sử dụng mẫu hóa đơn GTGT chuyên nghiệp với font Times New Roman và lề 1.5cm</p>
@@ -1715,6 +1463,29 @@
                         <div class="progress-bar" id="pdfProgressBar">0%</div>
                     </div>
                     <p id="pdfStatusMessage">Đang xử lý...</p>
+                </div>
+            </div>
+            
+            <!-- Tab 2: Tra cứu hóa đơn -->
+            <div class="tab-content" id="invoice-lookup">
+                <div class="upload-section">
+                    <h3>🔍 Tra Cứu Hóa Đơn</h3>
+                    <p>Tìm kiếm và tải hóa đơn PDF từ các nhà cung cấp dịch vụ</p>
+                    
+                    <div class="instructions">
+                        <h4>📝 Hướng Dẫn Tra Cứu Hóa Đơn</h4>
+                        <ol>
+                            <li><strong>Chọn nhà cung cấp</strong> dịch vụ hóa đơn điện tử</li>
+                            <li>Nhập <strong>mã tra cứu</strong> nếu có (tìm trong file XML)</li>
+                            <li>Click <strong>"Tra cứu"</strong> để tìm hóa đơn</li>
+                            <li>Hệ thống sẽ hiển thị các phương án tải PDF phù hợp</li>
+                            <li>Chọn phương án tải PDF phù hợp với nhà cung cấp</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-primary" id="openLookupModalBtn">🔍 Mở Công Cụ Tra Cứu</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1842,35 +1613,172 @@
         // Biến lưu trữ link tra cứu hiện tại
         let currentLookupLink = '';
         
-        // Module Vĩnh Hy - MSTTCGP 0314743623
-        const VIENH_HY_MODULE = {
+        // Function Vĩnh Hy - MSTTCGP 0314743623
+        const VIENH_HY_FUNCTION = {
             mst: "0314743623",
             name: "Công ty TNHH Công nghệ Vĩnh Hy",
             shortName: "Vĩnh Hy",
             apiBaseUrl: "https://ehoadondientu.com",
             pdfGeneratorUrl: "https://ehoadondientu.com/Account/GenerateFile.aspx",
             lookupUrl: "https://ehoadondientu.com/Tra-cuu",
-            moduleName: "Vĩnh Hy PDF Generator"
+            functionName: "Vĩnh Hy PDF Function",
+            
+            // Hàm xử lý XML cho Vĩnh Hy
+            processXml: function(xmlContent) {
+                try {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
+                    
+                    // Check for XML parsing errors
+                    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+                        return {
+                            success: false,
+                            error: "XML không hợp lệ"
+                        };
+                    }
+                    
+                    // Extract required data
+                    const sellerTaxCode = xmlDoc.querySelector('NBan > MST')?.textContent;
+                    const transactionId = xmlDoc.querySelector('DLHDon')?.getAttribute('Id');
+                    
+                    if (!sellerTaxCode || !transactionId) {
+                        return {
+                            success: false,
+                            error: "Không tìm thấy thông tin cần thiết trong XML"
+                        };
+                    }
+                    
+                    // Định dạng ID theo chuẩn Vĩnh Hy
+                    const formattedId = this.formatInvoiceIdForLink(transactionId, sellerTaxCode);
+                    const pdfUrl = `${this.pdfGeneratorUrl}?r=${formattedId}&type=pdf`;
+                    
+                    return {
+                        success: true,
+                        data: {
+                            sellerTaxCode: sellerTaxCode,
+                            transactionId: transactionId,
+                            pdfUrl: pdfUrl,
+                            formattedId: formattedId
+                        }
+                    };
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: "Lỗi xử lý XML: " + error.message
+                    };
+                }
+            },
+            
+            // Hàm định dạng ID hóa đơn
+            formatInvoiceIdForLink: function(rawId, sellerMST) {
+                if (!rawId) return '';
+                
+                console.log('Raw ID:', rawId);
+                console.log('ID Length:', rawId.length);
+                console.log('Seller MST:', sellerMST);
+                
+                // Phân tích ID theo cấu trúc thực tế
+                // MST (10 ký tự) + Năm (4 ký tự) + Số hóa đơn (12 ký tự)
+                let mst, year, invoiceNumber;
+                
+                if (rawId.length === 24) {
+                    // Định dạng chuẩn: 031623981320200300000018
+                    mst = rawId.substring(0, 10); // 0316239813
+                    year = rawId.substring(10, 14); // 2020
+                    invoiceNumber = rawId.substring(14); // 0300000018
+                } else if (rawId.length === 26) {
+                    // Định dạng khác: 03162398132020030000001800
+                    mst = rawId.substring(0, 10); // 0316239813
+                    year = rawId.substring(10, 14); // 2020
+                    invoiceNumber = rawId.substring(14, 24); // 0300000018
+                } else {
+                    // Định dạng không xác định, sử dụng sellerMST nếu có
+                    mst = sellerMST || '0000000000';
+                    year = '2020';
+                    invoiceNumber = rawId;
+                }
+                
+                // Đảm bảo MST có 10 ký tự
+                if (mst.length < 10) {
+                    mst = mst.padStart(10, '0');
+                }
+                
+                // Đảm bảo invoiceNumber có 10 ký tự
+                if (invoiceNumber.length < 10) {
+                    invoiceNumber = invoiceNumber.padStart(10, '0');
+                }
+                
+                const formatted = `ct_${mst}${year}_${invoiceNumber}`;
+                console.log('Formatted ID:', formatted);
+                
+                return formatted;
+            }
         };
 
-        // Module MISA - MSTTCGP 0101243150
-        const MISA_MODULE = {
+        // Hàm xử lý MISA - MSTTCGP 0101243150
+        const MISA_FUNCTION = {
             mst: "0101243150",
             name: "Công ty Cổ phần MISA (meInvoice)",
             shortName: "MISA",
             apiBaseUrl: "https://meinvoice.vn",
             pdfGeneratorUrl: "https://meinvoice.vn/tra-cuu/DownloadHandler.ashx",
             lookupUrl: "https://meinvoice.vn/tra-cuu/",
-            moduleName: "MISA PDF Generator"
+            functionName: "MISA PDF Function",
+            
+            // Hàm tạo URL cho MISA
+            generateUrl: function(sellerTaxCode, transactionId) {
+                return `${this.pdfGeneratorUrl}?Type=pdf&MST=${sellerTaxCode}&Code=${transactionId}&Module=${this.mst}`;
+            },
+            
+            // Hàm xử lý XML cho MISA
+            processXml: function(xmlContent) {
+                try {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
+                    
+                    // Check for XML parsing errors
+                    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+                        return {
+                            success: false,
+                            error: "XML không hợp lệ"
+                        };
+                    }
+                    
+                    // Extract required data
+                    const sellerTaxCode = xmlDoc.querySelector('NBan > MST')?.textContent;
+                    const transactionId = xmlDoc.querySelector('DLHDon')?.getAttribute('Id');
+                    
+                    if (!sellerTaxCode || !transactionId) {
+                        return {
+                            success: false,
+                            error: "Không tìm thấy thông tin cần thiết trong XML"
+                        };
+                    }
+                    
+                    return {
+                        success: true,
+                        data: {
+                            sellerTaxCode: sellerTaxCode,
+                            transactionId: transactionId,
+                            pdfUrl: this.generateUrl(sellerTaxCode, transactionId)
+                        }
+                    };
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: "Lỗi xử lý XML: " + error.message
+                    };
+                }
+            }
         };
 
-        // Module BKAV - MSTTCGP 0101360697
-        const BKAV_MODULE = {
+        // Hàm xử lý BKAV - MSTTCGP 0101360697
+        const BKAV_FUNCTION = {
             id: "0101360697",
             name: "Công ty Cổ phần BKAV (Bkav eHoadon)",
             shortName: "BKAV",
             baseURL: "https://van.ehoadon.vn/DownloadFile?FilePath=",
-            isAuthenticated: false,
+            functionName: "BKAV PDF Function",
             
             // Xác thực MSTTCGP trong XML
             authenticate: function(xmlContent) {
@@ -1906,19 +1814,17 @@
                         };
                     }
                     
-                    // Kiểm tra trùng khớp với module
+                    // Kiểm tra trùng khớp với function
                     if (foundMSTTCGP === this.id) {
-                        this.isAuthenticated = true;
                         return {
                             success: true,
-                            message: "✅ Xác thực thành công! MSTTCGP trùng khớp với module.",
+                            message: "✅ Xác thực thành công! MSTTCGP trùng khớp với function.",
                             msttcgp: foundMSTTCGP
                         };
                     } else {
-                        this.isAuthenticated = false;
                         return {
                             success: false,
-                            error: `❌ MSTTCGP không trùng khớp! Module: ${this.id}, XML: ${foundMSTTCGP}`
+                            error: `❌ MSTTCGP không trùng khớp! Function: ${this.id}, XML: ${foundMSTTCGP}`
                         };
                     }
                     
@@ -1932,13 +1838,6 @@
             
             // Phân tích XML và trích xuất thông tin
             parseXML: function(xmlContent) {
-                if (!this.isAuthenticated) {
-                    return {
-                        success: false,
-                        error: "Chưa được xác thực MSTTCGP"
-                    };
-                }
-                
                 try {
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
@@ -1946,6 +1845,7 @@
                     // Trích xuất thông tin từ XML
                     const khhDon = xmlDoc.getElementsByTagName("KHHDon")[0]?.textContent || "";
                     const shDon = xmlDoc.getElementsByTagName("SHDon")[0]?.textContent || "";
+                    // SỬA ĐỔI: Lấy textContent thay vì thuộc tính Id của MCCQT
                     const mcCQT = xmlDoc.getElementsByTagName("MCCQT")[0]?.textContent || "";
                     const msttcgp = xmlDoc.getElementsByTagName("MSTTCGP")[0]?.textContent || "";
                     const nBan = xmlDoc.getElementsByTagName("NBan")[0];
@@ -2105,11 +2005,6 @@
             }
         }
 
-        // Cập nhật tên tab với tên module
-        document.getElementById('module-tab').textContent = VIENH_HY_MODULE.moduleName;
-        document.getElementById('module-misa-tab').textContent = MISA_MODULE.moduleName;
-        document.getElementById('module-bkav-tab').textContent = "Module BKAV";
-        
         // Danh sách nhà cung cấp dịch vụ hóa đơn điện tử
         const serviceProviders = [
             { mst: "0101243150", name: "Công ty Cổ phần MISA (meInvoice)", url: "https://www.meinvoice.vn/tra-cuu/" },
@@ -2466,81 +2361,6 @@
             return null;
         }
 
-        // Hiển thị phần tải PDF thông minh
-        function showSmartDownloadSection() {
-            const smartSection = document.getElementById('smartDownloadSection');
-            const pdfDownloadInfo = checkDirectPdfDownloadSupport(
-                invoiceData.serviceProviderTaxCode, 
-                invoiceData.verificationCode
-            );
-            
-            let sectionContent = '<h4>📥 Tải hóa đơn PDF</h4>';
-            
-            // Phương án 1: Tải trực tiếp từ nhà cung cấp (nếu được hỗ trợ)
-            if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
-                sectionContent += `
-                    <div class="download-option">
-                        <h5>Tải trực tiếp từ nhà cung cấp <span class="option-badge">Khuyến nghị</span></h5>
-                        <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải PDF trực tiếp.</p>
-                        <p>${pdfDownloadInfo.provider.description}</p>
-                        <div style="margin-top: 15px;">
-                            <a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="pdf-download-btn">
-                                📥 Tải PDF trực tiếp
-                            </a>
-                            <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                                <em>Liên kết này sẽ mở trong tab mới</em>
-                            </p>
-                        </div>
-                    </div>
-                `;
-            } else if (pdfDownloadInfo && pdfDownloadInfo.requiresCode && !invoiceData.verificationCode) {
-                // Nhà cung cấp hỗ trợ nhưng cần mã tra cứu mà không có
-                sectionContent += `
-                    <div class="download-option">
-                        <h5>Tải từ nhà cung cấp <span class="option-badge option-warning">Cần mã tra cứu</span></h5>
-                        <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải PDF trực tiếp nhưng yêu cầu mã tra cứu.</p>
-                        <p><strong>Khuyến nghị:</strong> Sử dụng chức năng "Tra cứu hóa đơn" để lấy mã tra cứu hoặc tải PDF từ XML bên dưới.</p>
-                    </div>
-                `;
-            }
-            
-            // Phương án 2: Tạo PDF từ XML (luôn khả dụng)
-            sectionContent += `
-                <div class="download-option">
-                    <h5>Tạo PDF từ XML <span class="option-badge">Luôn khả dụng</span></h5>
-                    <p>Tạo file PDF từ dữ liệu XML của hóa đơn. Phương pháp này luôn hoạt động nhưng có thể không giống 100% với bản gốc.</p>
-                    <div style="margin-top: 15px;">
-                        <button id="generatePdfFromXml" class="pdf-download-btn" style="border: none; cursor: pointer;">
-                            🖨️ Tạo PDF từ XML
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // Phương án 3: Khuyến nghị tra cứu (nếu không có mã)
-            if (!invoiceData.verificationCode) {
-                sectionContent += `
-                    <div class="pdf-recommendation">
-                        <h5>💡 Khuyến nghị</h5>
-                        <p>Không tìm thấy mã tra cứu trong file XML. Bạn có thể:</p>
-                        <ul style="margin: 10px 0; padding-left: 20px;">
-                            <li>Sử dụng chức năng "Tra cứu hóa đơn" để tìm mã tra cứu</li>
-                            <li>Liên hệ nhà cung cấp dịch vụ để được hỗ trợ</li>
-                            <li>Tạo PDF từ XML (phương pháp thay thế)</li>
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            smartSection.innerHTML = sectionContent;
-            smartSection.style.display = 'block';
-            
-            // Thêm sự kiện cho nút tạo PDF từ XML
-            document.getElementById('generatePdfFromXml').addEventListener('click', function() {
-                captureAndDownloadPdf();
-            });
-        }
-
         // Cập nhật danh sách nhà cung cấp với thông tin từ API
         async function updateProvidersWithApiInfo(serviceTaxCode) {
             if (!serviceTaxCode) return;
@@ -2698,8 +2518,58 @@
                     msttcgp = msttcgpElements[0].textContent.trim();
                 }
 
-                // 1. ƯU TIÊN CAO: Tìm theo MSTTCGP cụ thể
-                if (msttcgp === "0101243150") {
+                // 1. XỬ LÝ ĐẶC BIỆT CHO MSTTCGP 0312303803 - YÊU CẦU 1
+                if (msttcgp === "0312303803") {
+                    // Tìm trong TTKhac với Id="privateCode"
+                    const ttinElements = xmlDoc.getElementsByTagName("TTin");
+                    for (let element of ttinElements) {
+                        const elementId = element.getAttribute("Id");
+                        if (elementId === "privateCode") {
+                            const dlieu = element.getElementsByTagName("DLieu")[0];
+                            if (dlieu && dlieu.textContent && !processedCodes.has(dlieu.textContent)) {
+                                foundCodes.push({
+                                    code: dlieu.textContent.trim(),
+                                    field: "privateCode",
+                                    type: "private_code",
+                                    source: "TTKhac",
+                                    priority: 1
+                                });
+                                processedCodes.add(dlieu.textContent);
+                                break;
+                            }
+                        }
+                    }
+                }
+                // 2. XỬ LÝ ĐẶC BIỆT CHO MSTTCGP 0100109106 (Viettel) - YÊU CẦU MỚI
+                else if (msttcgp === "0100109106") {
+                    // Viettel: Tìm trong TTKhac với TTruong là "Mã số bí mật"
+                    const ttinElements = xmlDoc.getElementsByTagName("TTin");
+                    for (let element of ttinElements) {
+                        const children = element.children;
+                        let fieldName = '';
+                        let dataValue = '';
+                        
+                        for (let child of children) {
+                            if (child.tagName === 'TTruong') fieldName = child.textContent || '';
+                            if (child.tagName === 'DLieu') dataValue = child.textContent || '';
+                        }
+                        
+                        if (fieldName && fieldName.toLowerCase().includes('mã số bí mật') && 
+                            dataValue && !processedCodes.has(dataValue)) {
+                            foundCodes.push({
+                                code: dataValue,
+                                field: fieldName,
+                                type: "secret_code",
+                                source: "TTKhac",
+                                priority: 1
+                            });
+                            processedCodes.add(dataValue);
+                            break;
+                        }
+                    }
+                }
+                // 3. ƯU TIÊN CAO: Tìm theo MSTTCGP cụ thể
+                else if (msttcgp === "0101243150") {
                     // MISA: Ưu tiên thuộc tính ID của thẻ DLHDon
                     const dlhdonElements = xmlDoc.getElementsByTagName("DLHDon");
                     if (dlhdonElements.length > 0) {
@@ -2785,7 +2655,7 @@
                     }
                 }
 
-                // 2. Tìm trong các trường TTKhac khác (ưu tiên thấp hơn)
+                // 4. Tìm trong các trường TTKhac khác (ưu tiên thấp hơn)
                 const ttinElements = xmlDoc.getElementsByTagName('TTin');
                 for (let element of ttinElements) {
                     const children = element.children;
@@ -2809,7 +2679,7 @@
                     }
                 }
 
-                // 3. Tìm trong toàn bộ XML (dự phòng)
+                // 5. Tìm trong toàn bộ XML (dự phòng)
                 const allText = xmlDoc.documentElement.textContent || '';
                 const words = allText.split(/[\s<>]+/).filter(word => word.trim().length > 0);
                 
@@ -2838,7 +2708,7 @@
             }
         }
 
-        // Kiểm tra pattern mã tra cứu portal
+        // Kiểm tra pattern mã tra cứu portal - CẬP NHẬT THEO YÊU CẦU 1
         function isPortalCode(text) {
             if (!text || typeof text !== 'string') return false;
             if (text.length < 6 || text.length > 25) return false;
@@ -2846,12 +2716,11 @@
             // Loại bỏ các mã hex dài (MCCQT)
             if (/^[0-9A-F]{32,}$/i.test(text)) return false;
             
-            // Pattern cho mã tra cứu portal
+            // Pattern cho mã tra cứu portal - CẬP NHẬT THEO YÊU CẦU 1
             const patterns = [
-                /^[A-Za-z0-9*\-_]{6,25}$/,           // Chữ + số + ký tự đặc biệt
-                /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/, // Có cả chữ hoa, thường và số
-                /^[A-Z0-9]{6,20}[*]?$/,              // Toàn chữ hoa + số, có thể có *
-                /^[a-z0-9]{6,20}$/,                  // Toàn chữ thường + số
+                /^[A-Z0-9*]+$/,           // Chỉ chữ hoa, số và ký tự "*"
+                /^[A-Z0-9]{6,25}$/,       // Chỉ chữ hoa và số
+                /^[A-Z0-9*]{6,25}$/       // Chữ hoa, số và có thể có "*"
             ];
             
             return patterns.some(pattern => pattern.test(text));
@@ -3022,1334 +2891,7 @@
         }
 
         // ==============================================
-        // PHẦN XỬ LÝ CHO TAB 1: VĨNH HY PDF GENERATOR
-        // ==============================================
-
-        // DOM Elements cho tab 1
-        const xmlFileLink = document.getElementById('xmlFileLink');
-        const fileNameLink = document.getElementById('fileNameLink');
-        const generateLinkBtn = document.getElementById('generateLinkBtn');
-        const loadingLink = document.getElementById('loadingLink');
-        const linkArea = document.getElementById('linkArea');
-        const pdfLink = document.getElementById('pdfLink');
-        const copyButton = document.getElementById('copyButton');
-        const downloadLink = document.getElementById('downloadLink');
-        const invoiceInfo = document.getElementById('invoiceInfo');
-        const debugInfo = document.getElementById('debugInfo');
-        const statusMessage = document.getElementById('statusMessage');
-
-        // Event Listeners cho tab 1
-        xmlFileLink.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const fileName = file.name;
-            fileNameLink.textContent = `File đã chọn: ${fileName}`;
-            statusMessage.style.display = 'none';
-            
-            // Đọc và xử lý XML - YÊU CẦU 1
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const xmlContent = e.target.result;
-                processXmlData(xmlContent); // Xử lý và lưu vào JSON
-            };
-            reader.readAsText(file);
-        });
-
-        generateLinkBtn.addEventListener('click', function() {
-            const file = xmlFileLink.files[0];
-            
-            if (!file) {
-                showStatus('Vui lòng chọn file XML trước khi tạo link!', 'error');
-                return;
-            }
-            
-            loadingLink.style.display = 'block';
-            linkArea.style.display = 'none';
-            statusMessage.style.display = 'none';
-            
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                setTimeout(() => {
-                    const xmlContent = e.target.result;
-                    const invoiceData = extractInvoiceDataForLink(xmlContent);
-                    
-                    if (invoiceData.invoiceId) {
-                        showPDFLinkForTab1(invoiceData);
-                        showStatus('Đã tạo link PDF thành công!', 'success');
-                    } else {
-                        showStatus('Không tìm thấy thông tin hóa đơn trong XML', 'error');
-                    }
-                    
-                    loadingLink.style.display = 'none';
-                }, 500);
-            };
-            
-            reader.onerror = function() {
-                loadingLink.style.display = 'none';
-                showStatus('Lỗi đọc file. Vui lòng thử lại.', 'error');
-            };
-            
-            reader.readAsText(file);
-        });
-
-        // Hàm trích xuất dữ liệu hóa đơn cho tab 1
-        function extractInvoiceDataForLink(xmlContent) {
-            try {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
-                
-                // Kiểm tra lỗi XML
-                const parseError = xmlDoc.getElementsByTagName("parsererror")[0];
-                if (parseError) {
-                    throw new Error('File XML không hợp lệ');
-                }
-                
-                // Lấy ID đầy đủ
-                const dlhdon = xmlDoc.querySelector('DLHDon');
-                const invoiceId = dlhdon ? dlhdon.getAttribute('Id') : null;
-                
-                // Lấy thông tin bổ sung
-                const sellerName = getXmlText(xmlDoc, 'NBan Ten');
-                const buyerName = getXmlText(xmlDoc, 'NMua Ten');
-                const invoiceNumber = getXmlText(xmlDoc, 'SHDon');
-                const issueDate = getXmlText(xmlDoc, 'NLap');
-                const totalAmount = getXmlText(xmlDoc, 'TgTTTBSo');
-                const totalAmountText = getXmlText(xmlDoc, 'TgTTTBChu');
-                const sellerMST = getXmlText(xmlDoc, 'NBan MST');
-                const buyerMST = getXmlText(xmlDoc, 'NMua MST');
-                const pattern = getXmlText(xmlDoc, 'KHHDon');
-                const symbol = getXmlText(xmlDoc, 'KHMSHDon');
-                const serviceProviderTaxCode = getXmlText(xmlDoc, 'MSTTCGP');
-                
-                return {
-                    invoiceId: invoiceId,
-                    sellerName: sellerName,
-                    buyerName: buyerName,
-                    invoiceNumber: invoiceNumber,
-                    issueDate: issueDate,
-                    totalAmount: totalAmount,
-                    totalAmountText: totalAmountText,
-                    sellerMST: sellerMST,
-                    buyerMST: buyerMST,
-                    pattern: pattern,
-                    symbol: symbol,
-                    rawId: invoiceId,
-                    serviceProviderTaxCode: serviceProviderTaxCode
-                };
-            } catch (error) {
-                console.error('Lỗi phân tích XML:', error);
-                return { invoiceId: null };
-            }
-        }
-
-        // Hàm lấy text từ XML
-        function getXmlText(xmlDoc, tagName) {
-            const element = xmlDoc.querySelector(tagName);
-            return element ? element.textContent : '';
-        }
-
-        // Hàm hiển thị link PDF cho tab 1
-        function showPDFLinkForTab1(invoiceData) {
-            // Định dạng ID theo chuẩn chính xác - LINH HOẠT CHO MỌI MST VÀ NĂM
-            const formattedId = formatInvoiceIdForLink(invoiceData.rawId, invoiceData.sellerMST);
-            const pdfUrl = `${VIENH_HY_MODULE.pdfGeneratorUrl}?r=${formattedId}&type=pdf`;
-            
-            // Hiển thị link
-            pdfLink.textContent = pdfUrl;
-            downloadLink.href = pdfUrl;
-            
-            // Hiển thị thông tin hóa đơn
-            displayInvoiceInfoForTab1(invoiceData, formattedId);
-            
-            // Hiển thị thông tin debug
-            displayDebugInfoForTab1(invoiceData, formattedId);
-            
-            // Hiển thị khu vực link
-            linkArea.style.display = 'block';
-            linkArea.scrollIntoView({ behavior: 'smooth' });
-            
-            // Cập nhật link tra cứu ở footer
-            updateFooterLookupLink(pdfUrl, 'Vĩnh Hy PDF Generator');
-        }
-
-        // Hàm định dạng ID hóa đơn cho tab 1
-        function formatInvoiceIdForLink(rawId, sellerMST) {
-            if (!rawId) return '';
-            
-            console.log('Raw ID:', rawId);
-            console.log('ID Length:', rawId.length);
-            console.log('Seller MST:', sellerMST);
-            
-            // Phân tích ID theo cấu trúc thực tế
-            // MST (10 ký tự) + Năm (4 ký tự) + Số hóa đơn (12 ký tự)
-            let mst, year, invoiceNumber;
-            
-            if (rawId.length === 24) {
-                // Định dạng chuẩn: 031623981320200300000018
-                mst = rawId.substring(0, 10); // 0316239813
-                year = rawId.substring(10, 14); // 2020
-                invoiceNumber = rawId.substring(14); // 0300000018
-            } else if (rawId.length === 26) {
-                // Định dạng khác: 03162398132020030000001800
-                mst = rawId.substring(0, 10); // 0316239813
-                year = rawId.substring(10, 14); // 2020
-                invoiceNumber = rawId.substring(14, 24); // 0300000018
-            } else {
-                // Định dạng không xác định, sử dụng sellerMST nếu có
-                mst = sellerMST || '0000000000';
-                year = '2020';
-                invoiceNumber = rawId;
-            }
-            
-            // Đảm bảo MST có 10 ký tự
-            if (mst.length < 10) {
-                mst = mst.padStart(10, '0');
-            }
-            
-            // Đảm bảo invoiceNumber có 10 ký tự
-            if (invoiceNumber.length < 10) {
-                invoiceNumber = invoiceNumber.padStart(10, '0');
-            }
-            
-            const formatted = `ct_${mst}${year}_${invoiceNumber}`;
-            console.log('Formatted ID:', formatted);
-            
-            return formatted;
-        }
-
-        // Hàm hiển thị thông tin hóa đơn cho tab 1
-        function displayInvoiceInfoForTab1(invoiceData, formattedId) {
-            const infoHtml = `
-                <div class="info-item">
-                    <span class="info-label">Người bán:</span>
-                    <span class="info-value">${invoiceData.sellerName}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">MST người bán:</span>
-                    <span class="info-value">${invoiceData.sellerMST || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Người mua:</span>
-                    <span class="info-value">${invoiceData.buyerName}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">MST người mua:</span>
-                    <span class="info-value">${invoiceData.buyerMST || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Số hóa đơn:</span>
-                    <span class="info-value">${invoiceData.invoiceNumber}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Ký hiệu:</span>
-                    <span class="info-value">${invoiceData.pattern || 'N/A'}/${invoiceData.symbol || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Ngày lập:</span>
-                    <span class="info-value">${formatDateForTab1(invoiceData.issueDate)}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Tổng tiền:</span>
-                    <span class="info-value">${formatCurrencyForTab1(invoiceData.totalAmount)}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">MSTTCGP:</span>
-                    <span class="info-value">${invoiceData.serviceProviderTaxCode || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">ID định dạng:</span>
-                    <span class="info-value">${formattedId}</span>
-                </div>
-            `;
-            invoiceInfo.innerHTML = infoHtml;
-        }
-
-        // Hàm hiển thị thông tin debug cho tab 1
-        function displayDebugInfoForTab1(invoiceData, formattedId) {
-            const debugHtml = `
-                <strong>Thông tin Debug:</strong><br>
-                <strong>Raw ID:</strong> ${invoiceData.rawId}<br>
-                <strong>Độ dài ID:</strong> ${invoiceData.rawId ? invoiceData.rawId.length : 0}<br>
-                <strong>Formatted ID:</strong> ${formattedId}<br>
-                <strong>MST:</strong> ${invoiceData.rawId ? invoiceData.rawId.substring(0, 10) : ''}<br>
-                <strong>Năm:</strong> ${invoiceData.rawId ? invoiceData.rawId.substring(10, 14) : ''}<br>
-                <strong>Số HĐ:</strong> ${invoiceData.rawId ? invoiceData.rawId.substring(14) : ''}<br>
-                <strong>MSTTCGP:</strong> ${invoiceData.serviceProviderTaxCode || 'N/A'}<br>
-                <strong>URL đầy đủ:</strong> ${VIENH_HY_MODULE.pdfGeneratorUrl}?r=${formattedId}&type=pdf
-            `;
-            debugInfo.innerHTML = debugHtml;
-        }
-
-        // Hàm hiển thị trạng thái cho tab 1
-        function showStatus(message, type) {
-            statusMessage.textContent = message;
-            statusMessage.className = 'status-message';
-            statusMessage.classList.add(type === 'success' ? 'status-success' : 'status-error');
-            statusMessage.style.display = 'block';
-            
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        // Hàm copy link cho tab 1
-        function copyLink() {
-            const linkText = pdfLink.textContent;
-            
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(linkText).then(function() {
-                    showCopySuccessForTab1();
-                }).catch(function() {
-                    fallbackCopyTextForTab1(linkText);
-                });
-            } else {
-                fallbackCopyTextForTab1(linkText);
-            }
-        }
-
-        // Hàm fallback copy cho tab 1
-        function fallbackCopyTextForTab1(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-999999px";
-            textArea.style.top = "-999999px";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showCopySuccessForTab1();
-                } else {
-                    showStatus('Không thể copy link. Vui lòng copy thủ công bằng Ctrl+C', 'error');
-                }
-            } catch (err) {
-                showStatus('Lỗi copy link. Vui lòng copy thủ công bằng Ctrl+C', 'error');
-            }
-            
-            document.body.removeChild(textArea);
-        }
-
-        // Hàm hiển thị thành công copy cho tab 1
-        function showCopySuccessForTab1() {
-            const originalText = copyButton.innerHTML;
-            copyButton.innerHTML = '✅ Đã Copy!';
-            copyButton.classList.add('copied');
-            copyButton.classList.add('pulse');
-            
-            showStatus('✅ Đã copy link thành công! Hãy dán vào trình duyệt để tải PDF.', 'success');
-            
-            setTimeout(() => {
-                copyButton.innerHTML = originalText;
-                copyButton.classList.remove('copied');
-                copyButton.classList.remove('pulse');
-            }, 2000);
-        }
-
-        // Hàm chọn text link cho tab 1
-        function selectLinkText() {
-            const selection = window.getSelection();
-            const range = document.createRange();
-            range.selectNodeContents(pdfLink);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-
-        // Hàm toggle debug info cho tab 1
-        function toggleDebug() {
-            debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
-        }
-
-        // Hàm utility cho tab 1
-        function formatDateForTab1(dateString) {
-            if (!dateString) return 'N/A';
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('vi-VN');
-            } catch {
-                return dateString;
-            }
-        }
-
-        function formatCurrencyForTab1(amount) {
-            if (!amount) return '0';
-            return parseInt(amount).toLocaleString('vi-VN');
-        }
-
-        // Hỗ trợ kéo thả cho tab 1
-        const uploadAreaLink = document.querySelector('#link-generator .upload-section');
-        
-        uploadAreaLink.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadAreaLink.style.background = '#e3f2fd';
-        });
-
-        uploadAreaLink.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            uploadAreaLink.style.background = '#f8f9fa';
-        });
-
-        uploadAreaLink.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadAreaLink.style.background = '#f8f9fa';
-            const file = e.dataTransfer.files[0];
-            if (file && file.name.endsWith('.xml')) {
-                xmlFileLink.files = e.dataTransfer.files;
-                const fileName = file.name;
-                fileNameLink.textContent = `File đã chọn: ${fileName}`;
-                statusMessage.style.display = 'none';
-                
-                // Đọc và xử lý XML - YÊU CẦU 1
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const xmlContent = e.target.result;
-                    processXmlData(xmlContent); // Xử lý và lưu vào JSON
-                };
-                reader.readAsText(file);
-            } else {
-                showStatus('Vui lòng chọn file XML', 'error');
-            }
-        });
-
-        // ==============================================
-        // PHẦN XỬ LÝ CHO TAB 2: MODULE MISA
-        // ==============================================
-
-        // DOM Elements cho tab 2
-        const fileInputMisa = document.getElementById('file-input-misa');
-        const fileUploadAreaMisa = document.getElementById('file-upload-area');
-        const fileInfoMisa = document.getElementById('file-info-misa');
-        const fileNameMisa = document.getElementById('file-name-misa');
-        const fileSizeMisa = document.getElementById('file-size-misa');
-        const processingMisa = document.getElementById('processing-misa');
-        const processBtnMisa = document.getElementById('process-btn-misa');
-        const invoiceDetailsMisa = document.getElementById('invoice-details-misa');
-        const linkSectionMisa = document.getElementById('link-section-misa');
-        const pdfLinkMisa = document.getElementById('pdf-link-misa');
-        const openLinkMisa = document.getElementById('open-link-misa');
-
-        // Biến lưu trữ file hiện tại cho tab MISA
-        let currentFileMisa = null;
-
-        // Event Listeners cho tab 2
-        fileUploadAreaMisa.addEventListener('click', function() {
-            fileInputMisa.click();
-        });
-
-        fileInputMisa.addEventListener('change', function(e) {
-            handleFileSelectMisa(e.target.files[0]);
-        });
-
-        processBtnMisa.addEventListener('click', function() {
-            processUploadedFileMisa();
-        });
-
-        // Hàm xử lý chọn file cho tab MISA
-        function handleFileSelectMisa(file) {
-            if (!file) return;
-            
-            // Validate file type
-            if (!file.name.toLowerCase().endsWith('.xml') && !file.name.toLowerCase().endsWith('.txt')) {
-                showMessageMisa('Chỉ chấp nhận file XML (.xml) hoặc text (.txt)', 'error');
-                return;
-            }
-            
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showMessageMisa('File quá lớn. Tối đa 5MB', 'error');
-                return;
-            }
-            
-            currentFileMisa = file;
-            
-            // Display file info
-            fileNameMisa.textContent = file.name;
-            fileSizeMisa.textContent = formatFileSizeMisa(file.size);
-            fileInfoMisa.style.display = 'block';
-            processBtnMisa.disabled = false;
-            
-            showMessageMisa('✅ Đã chọn file: ' + file.name, 'success');
-            
-            // Đọc và xử lý XML - YÊU CẦU 1
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const xmlContent = e.target.result;
-                processXmlData(xmlContent); // Xử lý và lưu vào JSON
-            };
-            reader.readAsText(file);
-        }
-
-        // Hàm xử lý file đã tải lên cho tab MISA
-        async function processUploadedFileMisa() {
-            if (!currentFileMisa) {
-                showMessageMisa('Vui lòng chọn file XML trước', 'error');
-                return;
-            }
-            
-            // Show processing
-            processingMisa.style.display = 'block';
-            processBtnMisa.disabled = true;
-            
-            try {
-                const fileContent = await readFileContentMisa(currentFileMisa);
-                const invoiceData = parseXMLDataMisa(fileContent);
-                displayInvoiceDetailsMisa(invoiceData);
-                generateAndDisplayLinkMisa(invoiceData.sellerTaxCode, invoiceData.transactionId);
-            } catch (error) {
-                showMessageMisa('Lỗi xử lý file: ' + error.message, 'error');
-            } finally {
-                processingMisa.style.display = 'none';
-                processBtnMisa.disabled = false;
-            }
-        }
-
-        // Hàm đọc nội dung file cho tab MISA
-        function readFileContentMisa(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = e => resolve(e.target.result);
-                reader.onerror = () => reject(new Error('Không thể đọc file'));
-                reader.readAsText(file);
-            });
-        }
-
-        // Hàm phân tích XML cho tab MISA
-        function parseXMLDataMisa(xmlString) {
-            try {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-                
-                // Check for XML errors
-                const parseError = xmlDoc.getElementsByTagName('parsererror')[0];
-                if (parseError) {
-                    throw new Error('Cấu trúc XML không hợp lệ');
-                }
-                
-                // Extract required data
-                const sellerTaxCode = xmlDoc.querySelector('NBan > MST')?.textContent;
-                const transactionId = xmlDoc.querySelector('DLHDon')?.getAttribute('Id');
-                const invoiceNumber = xmlDoc.querySelector('SHDon')?.textContent;
-                const invoiceSymbol = xmlDoc.querySelector('KHHDon')?.textContent;
-                const issueDate = xmlDoc.querySelector('NLap')?.textContent;
-                const sellerName = xmlDoc.querySelector('NBan > Ten')?.textContent;
-                const buyerName = xmlDoc.querySelector('NMua > Ten')?.textContent;
-                const serviceProviderTaxCode = xmlDoc.querySelector('MSTTCGP')?.textContent;
-                
-                if (!sellerTaxCode) {
-                    throw new Error('Không tìm thấy MST người bán trong XML');
-                }
-                
-                if (!transactionId) {
-                    throw new Error('Không tìm thấy Transaction ID trong XML');
-                }
-                
-                return {
-                    sellerTaxCode,
-                    transactionId,
-                    invoiceNumber,
-                    invoiceSymbol,
-                    issueDate,
-                    sellerName,
-                    buyerName,
-                    serviceProviderTaxCode
-                };
-            } catch (error) {
-                throw new Error('Lỗi phân tích XML: ' + error.message);
-            }
-        }
-
-        // Hàm hiển thị chi tiết hóa đơn cho tab MISA
-        function displayInvoiceDetailsMisa(invoiceData) {
-            document.getElementById('detail-sellerTaxCode').textContent = invoiceData.sellerTaxCode || '-';
-            document.getElementById('detail-transactionId').textContent = invoiceData.transactionId || '-';
-            document.getElementById('detail-invoiceNumber').textContent = invoiceData.invoiceNumber || '-';
-            document.getElementById('detail-invoiceSymbol').textContent = invoiceData.invoiceSymbol || '-';
-            document.getElementById('detail-issueDate').textContent = invoiceData.issueDate || '-';
-            
-            invoiceDetailsMisa.style.display = 'block';
-        }
-
-        // Hàm tạo và hiển thị link PDF cho tab MISA
-        function generateAndDisplayLinkMisa(sellerTaxCode, transactionId) {
-            // Generate PDF link với module code
-            const pdfLink = `${MISA_MODULE.pdfGeneratorUrl}?Type=pdf&MST=${sellerTaxCode}&Code=${transactionId}&Module=${MISA_MODULE.mst}`;
-            
-            // Display link section
-            pdfLinkMisa.value = pdfLink;
-            openLinkMisa.href = pdfLink;
-            linkSectionMisa.style.display = 'block';
-            
-            showMessageMisa('✅ Đã tạo link PDF thành công! Module: ' + MISA_MODULE.mst, 'success');
-            
-            // Cập nhật link tra cứu ở footer
-            updateFooterLookupLink(pdfLink, 'MISA PDF Generator');
-        }
-
-        // Hàm copy link cho tab MISA
-        function copyLinkMisa() {
-            const linkInput = pdfLinkMisa;
-            linkInput.select();
-            linkInput.setSelectionRange(0, 99999);
-            
-            try {
-                navigator.clipboard.writeText(linkInput.value).then(() => {
-                    showMessageMisa('📋 Đã copy link vào clipboard!', 'success');
-                }).catch(err => {
-                    fallbackCopyTextMisa(linkInput.value);
-                });
-            } catch (err) {
-                fallbackCopyTextMisa(linkInput.value);
-            }
-        }
-
-        // Hàm fallback copy cho tab MISA
-        function fallbackCopyTextMisa(text) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            showMessageMisa('📋 Đã copy link vào clipboard!', 'success');
-        }
-
-        // Hàm hiển thị thông báo cho tab MISA
-        function showMessageMisa(text, type) {
-            const message = document.createElement('div');
-            message.className = `message ${type}`;
-            message.textContent = text;
-            message.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 16px 20px;
-                border-radius: 10px;
-                color: white;
-                font-weight: 700;
-                z-index: 1000;
-                animation: slideIn 0.3s ease;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                font-size: 14px;
-            `;
-            
-            if (type === 'success') {
-                message.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-            } else {
-                message.style.background = 'linear-gradient(135deg, #dc3545 0%, #fd7e14 100%)';
-            }
-            
-            document.body.appendChild(message);
-            
-            setTimeout(() => {
-                message.style.display = 'none';
-                document.body.removeChild(message);
-            }, 4000);
-        }
-
-        // Hàm định dạng kích thước file cho tab MISA
-        function formatFileSizeMisa(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        // Hỗ trợ kéo thả cho tab MISA
-        fileUploadAreaMisa.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUploadAreaMisa.classList.add('dragover');
-        });
-
-        fileUploadAreaMisa.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            fileUploadAreaMisa.classList.remove('dragover');
-        });
-
-        fileUploadAreaMisa.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUploadAreaMisa.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length > 0) {
-                handleFileSelectMisa(e.dataTransfer.files[0]);
-            }
-        });
-
-        // ==============================================
-        // PHẦN XỬ LÝ CHO TAB 3: MODULE BKAV
-        // ==============================================
-
-        // Xác thực XML khi nhập liệu cho tab BKAV
-        function validateXMLBkav() {
-            const xmlContent = document.getElementById('xmlInputBkav').value.trim();
-            const generateBtn = document.getElementById('generateBtnBkav');
-            const validationMessage = document.getElementById('validationMessageBkav');
-            
-            if (!xmlContent) {
-                validationMessage.style.display = 'none';
-                generateBtn.disabled = true;
-                return;
-            }
-            
-            const authResult = BKAV_MODULE.authenticate(xmlContent);
-            
-            if (authResult.success) {
-                validationMessage.style.display = 'block';
-                validationMessage.className = 'validation-message validation-success';
-                validationMessage.innerHTML = authResult.message;
-                generateBtn.disabled = false;
-                
-                // Xử lý và lưu XML vào JSON - YÊU CẦU 1
-                processXmlData(xmlContent);
-            } else {
-                validationMessage.style.display = 'block';
-                validationMessage.className = 'validation-message validation-error';
-                validationMessage.innerHTML = authResult.error;
-                generateBtn.disabled = true;
-            }
-        }
-
-        // Hàm chính tạo link PDF cho tab BKAV
-        function generatePDFLinkBkav() {
-            const xmlContent = document.getElementById('xmlInputBkav').value.trim();
-            
-            if (!xmlContent) {
-                alert('Vui lòng nhập nội dung XML!');
-                return;
-            }
-            
-            // Hiển thị trạng thái xử lý
-            const resultContainer = document.getElementById('resultContainerBkav');
-            resultContainer.style.display = 'block';
-            document.getElementById('downloadLinkBkav').textContent = '🔄 Đang xử lý...';
-            document.getElementById('downloadLinkBkav').href = '#';
-            
-            // Xử lý bất đồng bộ để hiển thị trạng thái
-            setTimeout(() => {
-                const result = BKAV_MODULE.generateFromXML(xmlContent);
-                
-                if (result.success) {
-                    const link = result.data.downloadLink;
-                    document.getElementById('downloadLinkBkav').textContent = link;
-                    document.getElementById('downloadLinkBkav').href = link;
-                    
-                    // Hiển thị thông tin chi tiết
-                    displayLinkInfoBkav(result.data);
-                    
-                    // Cập nhật link tra cứu ở footer
-                    updateFooterLookupLink(link, 'BKAV PDF Generator');
-                } else {
-                    document.getElementById('downloadLinkBkav').textContent = '❌ Lỗi: ' + result.error;
-                    document.getElementById('downloadLinkBkav').href = '#';
-                    document.getElementById('linkInfoBkav').innerHTML = 
-                        '<div style="color: #e74c3c; text-align: center;">' + result.error + '</div>';
-                }
-            }, 500);
-        }
-        
-        // Hiển thị thông tin link cho tab BKAV
-        function displayLinkInfoBkav(data) {
-            const linkInfo = document.getElementById('linkInfoBkav');
-            linkInfo.innerHTML = `
-                <div class="bkav-info-item">
-                    <span class="bkav-info-label">MSTTCGP:</span>
-                    <span class="bkav-info-value">${data.msttcgp}</span>
-                </div>
-                <div class="bkav-info-item">
-                    <span class="bkav-info-label">Ký hiệu hóa đơn:</span>
-                    <span class="bkav-info-value">${data.kyyHieu}</span>
-                </div>
-                <div class="bkav-info-item">
-                    <span class="bkav-info-label">Số hóa đơn:</span>
-                    <span class="bkav-info-value">${data.soHoaDon}</span>
-                </div>
-                <div class="bkav-info-item">
-                    <span class="bkav-info-label">Mã tra cứu (MTC):</span>
-                    <span class="bkav-info-value">${data.maTraCuu}</span>
-                </div>
-                <div class="bkav-info-item">
-                    <span class="bkav-info-label">Đường dẫn file:</span>
-                    <span class="bkav-info-value">${data.filePath}</span>
-                </div>
-                <div class="bkav-info-item">
-                    <span class="bkav-info-label">Trạng thái:</span>
-                    <span class="bkav-info-value" style="color: #27ae60;">✅ Đã xác thực</span>
-                </div>
-            `;
-        }
-        
-        // Xử lý upload file cho tab BKAV
-        function handleFileUploadBkav(files) {
-            if (files.length === 0) return;
-            
-            const file = files[0];
-            if (file.type !== 'text/xml' && !file.name.endsWith('.xml')) {
-                alert('Vui lòng chọn file XML!');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('xmlInputBkav').value = e.target.result;
-                validateXMLBkav();
-            };
-            reader.readAsText(file);
-        }
-        
-        // Sao chép link vào clipboard cho tab BKAV
-        function copyToClipboardBkav() {
-            const link = document.getElementById('downloadLinkBkav').href;
-            if (link && link !== '#') {
-                navigator.clipboard.writeText(link).then(() => {
-                    alert('✅ Đã sao chép link vào clipboard!');
-                }).catch(() => {
-                    // Fallback cho các trình duyệt cũ
-                    const tempInput = document.createElement('input');
-                    tempInput.value = link;
-                    document.body.appendChild(tempInput);
-                    tempInput.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempInput);
-                    alert('✅ Đã sao chép link vào clipboard!');
-                });
-            }
-        }
-        
-        // Kiểm tra link cho tab BKAV
-        function testDownloadLinkBkav() {
-            const link = document.getElementById('downloadLinkBkav').href;
-            if (link && link !== '#') {
-                window.open(link, '_blank');
-            } else {
-                alert('Link không hợp lệ!');
-            }
-        }
-        
-        // Load XML mẫu cho tab BKAV
-        function loadSampleXMLBkav() {
-            const sampleXML = `<HDon>
-    <DLHDon Id="72dca111-b41c-459f-8330-593753e19861">
-        <TTChung>
-            <PBan>2.1.0</PBan>
-            <THDon>Hóa đơn giá trị gia tăng</THDon>
-            <KHMSHDon>1</KHMSHDon>
-            <KHHDon>C25TAA</KHHDon>
-            <SHDon>00003656</SHDon>
-            <NLap>2025-09-15</NLap>
-            <DVTTe>VND</DVTTe>
-            <TGia>1</TGia>
-            <HTTToan>Tiền mặt/Chuyển khoản</HTTToan>
-            <MSTTCGP>0101360697</MSTTCGP>
-        </TTChung>
-        <MCCQT Id="Id-23fd9318f1a04c3a9a106c5cea19ec31">PL536N267XA</MCCQT>
-    </DLHDon>
-</HDon>`;
-            document.getElementById('xmlInputBkav').value = sampleXML;
-            validateXMLBkav();
-        }
-        
-        // Xóa dữ liệu cho tab BKAV
-        function clearInputBkav() {
-            document.getElementById('xmlInputBkav').value = '';
-            document.getElementById('fileInputBkav').value = '';
-            document.getElementById('resultContainerBkav').style.display = 'none';
-            document.getElementById('validationMessageBkav').style.display = 'none';
-            document.getElementById('generateBtnBkav').disabled = true;
-            BKAV_MODULE.isAuthenticated = false;
-        }
-
-        // Cho phép kéo thả file cho tab BKAV
-        document.addEventListener('DOMContentLoaded', function() {
-            const fileUpload = document.querySelector('.file-upload-bkav-input');
-            
-            fileUpload.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.style.background = '#e3f2fd';
-            });
-            
-            fileUpload.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                this.style.background = '';
-            });
-            
-            fileUpload.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.style.background = '';
-                const files = e.dataTransfer.files;
-                handleFileUploadBkav(files);
-            });
-        });
-
-        // Tự động load XML mẫu khi tab BKAV được tải
-        document.getElementById('module-bkav-tab').addEventListener('click', function() {
-            if (document.getElementById('xmlInputBkav').value === '') {
-                loadSampleXMLBkav();
-            }
-        });
-
-        // ==============================================
-        // PHẦN XỬ LÝ CHO TAB 4: TRA CỨU HÓA ĐƠN - FIX LỖI
-        // ==============================================
-
-        // Mở modal tra cứu - ĐÃ ĐƯỢC SỬA
-        document.getElementById('openLookupModalBtn').addEventListener('click', function() {
-            // Kiểm tra xem có dữ liệu hóa đơn từ XML không
-            const jsonData = loadJsonFromStorage();
-            if (!jsonData || !jsonData.processedData) {
-                alert('Vui lòng tải lên file XML hóa đơn trước khi sử dụng chức năng tra cứu!');
-                return;
-            }
-            
-            // Cập nhật dữ liệu từ JSON - YÊU CẦU 1 & 2
-            invoiceData = jsonData.processedData;
-            matchedProviders = findMatchingProviders(invoiceData.serviceProviderTaxCode);
-            
-            // Khởi tạo danh sách nhà cung cấp dựa trên MSTTCGP - YÊU CẦU 2
-            initializeProviders();
-            
-            // HIỂN THỊ THÔNG TIN HÓA ĐƠN TỪ XML - ĐÃ ĐƯỢC THÊM - YÊU CẦU 6
-            displayInvoiceInfoInModal();
-            
-            // Hiển thị mã tra cứu nếu có
-            if (invoiceData.verificationCode) {
-                document.getElementById('lookupCode').value = invoiceData.verificationCode;
-            }
-            
-            // Hiển thị danh sách nhà cung cấp
-            displayProviderList();
-            
-            // Reset trạng thái
-            document.getElementById('directPdfInfo').style.display = 'none';
-            document.getElementById('lookupCodeGroup').style.display = 'block';
-            document.getElementById('lookupResult').style.display = 'none';
-            document.getElementById('directLookupSection').style.display = 'none';
-            
-            document.getElementById('lookupModal').style.display = 'block';
-        });
-
-        // HÀM HIỂN THỊ THÔNG TIN HÓA ĐƠN TRONG MODAL - ĐÃ ĐƯỢC THÊM - YÊU CẦU 6
-        function displayInvoiceInfoInModal() {
-            const invoiceInfoContainer = document.getElementById('invoiceInfoFromXml');
-            const invoiceInfoDetails = document.getElementById('invoiceInfoDetails');
-            
-            if (!invoiceData.sellerTaxCode) {
-                invoiceInfoContainer.style.display = 'none';
-                return;
-            }
-            
-            const infoHtml = `
-                <div class="info-item">
-                    <span class="info-label">Đơn vị bán hàng:</span>
-                    <span class="info-value">${invoiceData.sellerName || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">MST người bán:</span>
-                    <span class="info-value">${invoiceData.sellerTaxCode || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Mã tra cứu:</span>
-                    <span class="info-value">${invoiceData.verificationCode || 'N/A'}</span>
-                </div>
-                ${invoiceData.portalCodes && invoiceData.portalCodes.length > 0 ? `
-                <div class="info-item">
-                    <span class="info-label">Các mã tìm thấy:</span>
-                    <span class="info-value">
-                        ${invoiceData.portalCodes.map(code => `${code.code} (${code.type})`).join(', ')}
-                    </span>
-                </div>
-                ` : ''}
-            `;
-            
-            invoiceInfoDetails.innerHTML = infoHtml;
-            invoiceInfoContainer.style.display = 'block';
-        }
-
-        // Xử lý sự kiện cho tab trong modal tra cứu
-        document.querySelectorAll('#lookupModal .tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                // Xóa active class từ tất cả các tab và nội dung
-                document.querySelectorAll('#lookupModal .tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('#lookupModal .tab-content').forEach(c => c.classList.remove('active'));
-                
-                // Thêm active class cho tab được chọn
-                this.classList.add('active');
-                
-                // Hiển thị nội dung tương ứng
-                const tabId = this.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-
-        // Tìm kiếm nhà cung cấp
-        document.getElementById('providerSearch').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('.provider-table tbody tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        // Xử lý khi chọn nhà cung cấp trong dropdown - ĐÃ ĐƯỢC SỬA
-        document.getElementById('providerSelect').addEventListener('change', function() {
-            const selectedValue = this.value;
-            const selectedOption = this.options[this.selectedIndex];
-            const providerMST = selectedValue;
-            const lookupCode = document.getElementById('lookupCode').value.trim() || invoiceData.verificationCode;
-            const transactionID = invoiceData.transactionID;
-            const sellerTaxCode = invoiceData.sellerTaxCode;
-            
-            // YÊU CẦU 3: Nếu MSTTCGP trùng với module thì lấy link từ module
-            let pdfDownloadInfo = null;
-            
-            if (providerMST === MISA_MODULE.mst) {
-                // Module MISA
-                pdfDownloadInfo = {
-                    provider: MISA_MODULE,
-                    pdfUrl: `${MISA_MODULE.pdfGeneratorUrl}?Type=pdf&MST=${sellerTaxCode}&Code=${transactionID}&Module=${MISA_MODULE.mst}`,
-                    requiresCode: false,
-                    autoFillSupported: true
-                };
-            } else if (providerMST === BKAV_MODULE.id) {
-                // Module BKAV
-                const bkavResult = BKAV_MODULE.generateFromXML(invoiceData.xmlContent);
-                if (bkavResult.success) {
-                    pdfDownloadInfo = {
-                        provider: BKAV_MODULE,
-                        pdfUrl: bkavResult.data.downloadLink,
-                        requiresCode: false,
-                        autoFillSupported: true
-                    };
-                }
-            } else if (providerMST === VIENH_HY_MODULE.mst) {
-                // Module Vĩnh Hy
-                const formattedId = formatInvoiceIdForLink(transactionID, sellerTaxCode);
-                pdfDownloadInfo = {
-                    provider: VIENH_HY_MODULE,
-                    pdfUrl: `${VIENH_HY_MODULE.pdfGeneratorUrl}?r=${formattedId}&type=pdf`,
-                    requiresCode: false,
-                    autoFillSupported: true
-                };
-            } else if (providerMST === EASYINVOICE_MODULE.mst) {
-                // Module EasyInvoice
-                const jsonData = loadJsonFromStorage();
-                if (jsonData) {
-                    const easyInvoiceResult = createEasyInvoiceLookupURL(jsonData);
-                    if (easyInvoiceResult.success) {
-                        pdfDownloadInfo = {
-                            provider: EASYINVOICE_MODULE,
-                            pdfUrl: easyInvoiceResult.lookupUrl,
-                            requiresCode: false,
-                            autoFillSupported: true
-                        };
-                    }
-                }
-            } else {
-                // Các nhà cung cấp khác - YÊU CẦU 4
-                pdfDownloadInfo = checkDirectPdfDownloadSupport(providerMST, lookupCode);
-            }
-            
-            // Kiểm tra URL tra cứu đặc biệt
-            const specialLookupUrl = createSpecialLookupUrl(providerMST, transactionID, sellerTaxCode, lookupCode);
-            
-            // Tạo URL tự động điền
-            const autoFillUrl = createAutoFillUrl(providerMST, sellerTaxCode, lookupCode, transactionID);
-            
-            const directPdfInfo = document.getElementById('directPdfInfo');
-            
-            if (pdfDownloadInfo || specialLookupUrl || autoFillUrl) {
-                let infoContent = '';
-                
-                if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
-                    // Có thể tải trực tiếp
-                    infoContent += `
-                        <h4>🎉 Có thể tải PDF trực tiếp!</h4>
-                        <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải hóa đơn PDF trực tiếp.</p>
-                        <p>${pdfDownloadInfo.provider.description || 'Hỗ trợ tải PDF từ nhà cung cấp'}</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-pdf-link">
-                                📥 Tải hóa đơn PDF từ ${pdfDownloadInfo.provider.name}
-                            </a>
-                        </div>
-                    `;
-                }
-                
-                if (specialLookupUrl) {
-                    infoContent += `
-                        <h4>🔗 Liên kết tra cứu đặc biệt</h4>
-                        <p>Nhà cung cấp <strong>${selectedOption.getAttribute('data-provider-name')}</strong> có liên kết tra cứu đặc biệt.</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${specialLookupUrl}" target="_blank" class="direct-pdf-link">
-                                🔍 Truy cập trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
-                            </a>
-                        </div>
-                    `;
-                }
-                
-                if (autoFillUrl && pdfDownloadInfo && pdfDownloadInfo.autoFillSupported) {
-                    infoContent += `
-                        <h4>🤖 Liên kết tự động điền</h4>
-                        <p>Đã tự động điền thông tin MST người bán và mã tra cứu (nếu có).</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
-                                🚀 Mở trang với thông tin đã điền
-                            </a>
-                        </div>
-                        <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                            <em>MST người bán: ${sellerTaxCode || 'Không có'} | Mã tra cứu: ${lookupCode || 'Không có'}</em>
-                        </p>
-                    `;
-                } else if (autoFillUrl) {
-                    infoContent += `
-                        <h4>🔗 Liên kết tra cứu</h4>
-                        <p>Truy cập trang tra cứu của nhà cung cấp.</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
-                                🔍 Mở trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
-                            </a>
-                        </div>
-                    `;
-                }
-                
-                if (pdfDownloadInfo && pdfDownloadInfo.requiresCode && !lookupCode) {
-                    infoContent += `
-                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                            <h4>ℹ️ Cần mã tra cứu</h4>
-                            <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải PDF trực tiếp nhưng yêu cầu mã tra cứu.</p>
-                        </div>
-                    `;
-                }
-                
-                infoContent += `<p style="margin-top: 10px; font-size: 12px; color: #666;">
-                    <em>Liên kết này sẽ mở trong tab mới</em>
-                </p>`;
-                
-                directPdfInfo.innerHTML = infoContent;
-                directPdfInfo.style.display = 'block';
-                
-                // Ẩn ô nhập mã tra cứu nếu đã có đủ thông tin
-                if ((pdfDownloadInfo && pdfDownloadInfo.pdfUrl) || specialLookupUrl || autoFillUrl) {
-                    document.getElementById('lookupCodeGroup').style.display = 'none';
-                } else {
-                    document.getElementById('lookupCodeGroup').style.display = 'block';
-                }
-            } else {
-                // Không hỗ trợ tải trực tiếp
-                directPdfInfo.style.display = 'none';
-                document.getElementById('lookupCodeGroup').style.display = 'block';
-            }
-            
-            // Lưu thông tin nhà cung cấp hiện tại
-            if (selectedOption) {
-                currentSelectedProvider = {
-                    mst: providerMST,
-                    name: selectedOption.getAttribute('data-provider-name'),
-                    url: selectedOption.getAttribute('data-url')
-                };
-            }
-        });
-
-        // Thực hiện tra cứu - ĐÃ ĐƯỢC SỬA
-        document.getElementById('performLookupBtn').addEventListener('click', function() {
-            const providerSelect = document.getElementById('providerSelect');
-            const selectedOption = providerSelect.options[providerSelect.selectedIndex];
-            const providerMST = providerSelect.value;
-            const providerName = selectedOption.getAttribute('data-provider-name');
-            const providerUrl = selectedOption.getAttribute('data-url');
-            const lookupCode = document.getElementById('lookupCode').value.trim();
-            const transactionID = invoiceData.transactionID;
-            const sellerTaxCode = invoiceData.sellerTaxCode;
-            const lookupResult = document.getElementById('lookupResult');
-            const providerDetails = document.getElementById('providerDetails');
-            const directLookupSection = document.getElementById('directLookupSection');
-            
-            if (!providerMST) {
-                lookupResult.textContent = "Vui lòng chọn nhà cung cấp!";
-                lookupResult.className = 'lookup-result lookup-error';
-                lookupResult.style.display = 'block';
-                return;
-            }
-            
-            // YÊU CẦU 3: Nếu MSTTCGP trùng với module thì lấy link từ module
-            let pdfDownloadInfo = null;
-            
-            if (providerMST === MISA_MODULE.mst) {
-                // Module MISA
-                pdfDownloadInfo = {
-                    provider: MISA_MODULE,
-                    pdfUrl: `${MISA_MODULE.pdfGeneratorUrl}?Type=pdf&MST=${sellerTaxCode}&Code=${transactionID}&Module=${MISA_MODULE.mst}`,
-                    requiresCode: false,
-                    autoFillSupported: true
-                };
-            } else if (providerMST === BKAV_MODULE.id) {
-                // Module BKAV
-                const bkavResult = BKAV_MODULE.generateFromXML(invoiceData.xmlContent);
-                if (bkavResult.success) {
-                    pdfDownloadInfo = {
-                        provider: BKAV_MODULE,
-                        pdfUrl: bkavResult.data.downloadLink,
-                        requiresCode: false,
-                        autoFillSupported: true
-                    };
-                }
-            } else if (providerMST === VIENH_HY_MODULE.mst) {
-                // Module Vĩnh Hy
-                const formattedId = formatInvoiceIdForLink(transactionID, sellerTaxCode);
-                pdfDownloadInfo = {
-                    provider: VIENH_HY_MODULE,
-                    pdfUrl: `${VIENH_HY_MODULE.pdfGeneratorUrl}?r=${formattedId}&type=pdf`,
-                    requiresCode: false,
-                    autoFillSupported: true
-                };
-            } else if (providerMST === EASYINVOICE_MODULE.mst) {
-                // Module EasyInvoice
-                const jsonData = loadJsonFromStorage();
-                if (jsonData) {
-                    const easyInvoiceResult = createEasyInvoiceLookupURL(jsonData);
-                    if (easyInvoiceResult.success) {
-                        pdfDownloadInfo = {
-                            provider: EASYINVOICE_MODULE,
-                            pdfUrl: easyInvoiceResult.lookupUrl,
-                            requiresCode: false,
-                            autoFillSupported: true
-                        };
-                    }
-                }
-            } else {
-                // Các nhà cung cấp khác - YÊU CẦU 4
-                pdfDownloadInfo = checkDirectPdfDownloadSupport(providerMST, lookupCode);
-            }
-            
-            // Kiểm tra URL tra cứu đặc biệt
-            const specialLookupUrl = createSpecialLookupUrl(providerMST, transactionID, sellerTaxCode, lookupCode);
-            
-            // Tạo URL tự động điền
-            const autoFillUrl = createAutoFillUrl(providerMST, sellerTaxCode, lookupCode, transactionID);
-            
-            // Hiển thị thông tin nhà cung cấp
-            providerDetails.innerHTML = `
-                <h4>Thông tin nhà cung cấp giải pháp:</h4>
-                <p><strong>Tên đơn vị:</strong> ${providerName}</p>
-                <p><strong>Mã số thuế:</strong> ${providerMST}</p>
-                <p><strong>URL tra cứu:</strong> <a href="${providerUrl}" target="_blank">${providerUrl}</a></p>
-            `;
-            providerDetails.style.display = 'block';
-            
-            // Tạo các liên kết tra cứu trực tiếp
-            let directLookupLinks = '';
-            
-            if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
-                directLookupLinks += `<a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-lookup-btn">📥 Tải PDF trực tiếp</a>`;
-            }
-            
-            if (specialLookupUrl) {
-                directLookupLinks += `<a href="${specialLookupUrl}" target="_blank" class="direct-lookup-btn">🔗 Tra cứu đặc biệt</a>`;
-            }
-            
-            if (autoFillUrl) {
-                if (pdfDownloadInfo && pdfDownloadInfo.autoFillSupported) {
-                    directLookupLinks += `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🚀 Tự động điền thông tin</a>`;
-                } else {
-                    directLookupLinks += `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
-                }
-            }
-            
-            // Thêm liên kết đến trang tra cứu của nhà cung cấp
-            if (!autoFillUrl) {
-                directLookupLinks += `<a href="${providerUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
-            }
-            
-            // Hiển thị phần tra cứu trực tiếp
-            directLookupSection.innerHTML = `
-                <h4>Tra cứu trực tiếp:</h4>
-                <p>Nhấn vào liên kết dưới đây để mở trang tra cứu hoặc tải PDF trực tiếp:</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">${directLookupLinks}</div>
-            `;
-            directLookupSection.style.display = 'block';
-            
-            // Hiển thị kết quả tra cứu
-            let resultMessage = '';
-            
-            if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
-                resultMessage = `
-                    <h4>✅ Có thể tải PDF trực tiếp!</h4>
-                    <p>Mã tra cứu của bạn: <strong>${lookupCode || 'Không cần mã'}</strong></p>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Bạn có thể tải PDF trực tiếp bằng liên kết bên trên.</p>
-                `;
-                
-                // Cập nhật link tra cứu ở footer
-                updateFooterLookupLink(pdfDownloadInfo.pdfUrl, providerName);
-            } else if (specialLookupUrl) {
-                resultMessage = `
-                    <h4>🔗 Liên kết tra cứu đặc biệt</h4>
-                    <p>Transaction ID: <strong>${transactionID || 'Không có'}</strong></p>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Đã tạo liên kết tra cứu đặc biệt cho nhà cung cấp này.</p>
-                `;
-                
-                // Cập nhật link tra cứu ở footer
-                updateFooterLookupLink(specialLookupUrl, providerName);
-            } else if (autoFillUrl) {
-                resultMessage = `
-                    <h4>🤖 Đã tạo liên kết tự động điền</h4>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Mã tra cứu: <strong>${lookupCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Liên kết đã tự động điền thông tin vào trang tra cứu.</p>
-                `;
-                
-                // Cập nhật link tra cứu ở footer
-                updateFooterLookupLink(autoFillUrl, providerName);
-            } else if (lookupCode) {
-                resultMessage = `
-                    <h4>Thông tin tra cứu:</h4>
-                    <p>Mã tra cứu của bạn: <strong>${lookupCode}</strong></p>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Vui lòng nhập mã này vào trang tra cứu của nhà cung cấp để tải hóa đơn PDF.</p>
-                `;
-            } else {
-                resultMessage = `
-                    <h4>Thông tin nhà cung cấp:</h4>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Một số nhà cung cấp không yêu cầu mã tra cứu. Vui lòng thử truy cập trang tra cứu trực tiếp.</p>
-                `;
-            }
-            
-            lookupResult.innerHTML = resultMessage;
-            lookupResult.className = 'lookup-result lookup-success';
-            lookupResult.style.display = 'block';
-        });
-
-        // Đóng modal tra cứu
-        document.getElementById('closeLookupModalBtn').addEventListener('click', closeLookupModal);
-        document.getElementById('closeLookupModalBtn2').addEventListener('click', closeLookupModal);
-        
-        function closeLookupModal() {
-            document.getElementById('lookupModal').style.display = 'none';
-            document.getElementById('lookupResult').style.display = 'none';
-            document.getElementById('lookupResult').className = 'lookup-result';
-            document.getElementById('providerDetails').style.display = 'none';
-            document.getElementById('directLookupSection').style.display = 'none';
-            document.getElementById('directPdfInfo').style.display = 'none';
-            document.getElementById('lookupCodeGroup').style.display = 'block';
-        }
-
-        // ==============================================
-        // PHẦN XỬ LÝ CHO TAB 5: HÓA ĐƠN GTGT - CẢI THIỆN
+        // PHẦN XỬ LÝ CHO TAB 1: HÓA ĐƠN GTGT - CẢI THIỆN
         // ==============================================
 
         // Biến lưu trữ dữ liệu hóa đơn GTGT
@@ -4508,10 +3050,12 @@
                 }
                 
                 // Lấy thông tin mã tra cứu và mã cơ quan thuế
+                // SỬA ĐỔI: Lấy textContent thay vì thuộc tính Id của MCCQT
                 const mccqt = xmlDoc.getElementsByTagName('MCCQT')[0];
                 if (mccqt) {
                     invoiceDataGtgt.verificationCode = mccqt.textContent || '';
-                    invoiceDataGtgt.taxAuthorityCode = mccqt.getAttribute('Id') || '';
+                    // SỬA ĐỔI: Lấy textContent thay vì thuộc tính Id
+                    invoiceDataGtgt.taxAuthorityCode = mccqt.textContent || '';
                 }
                 
                 // Lấy thông tin transaction ID từ DLHDon
@@ -4672,7 +3216,7 @@
             return taxRate + '%';
         }
 
-        // Tạo nội dung hóa đơn GTGT cho một trang cụ thể - CẢI THIỆN
+        // Tạo nội dung hóa đơn GTGT cho một trang cụ thể - CẢI THIỆN VỚI YÊU CẦU 3
         function generateGtgtInvoicePage(pageData) {
             const isLastPage = pageData.isLastPage;
             const pageNumber = pageData.pageNumber;
@@ -4874,16 +3418,16 @@
                                     </tr>
                                     ${productsHtml}
                                     ${isLastPage ? `
-                                        <!-- Tổng tiền hàng -->
+                                        <!-- Tổng tiền hàng - CẬP NHẬT THEO YÊU CẦU 3 -->
                                         <tr>
                                             <td class="text-right box-small" colspan="5">
                                                 <span class="label-bold">Cộng tiền hàng</span>
                                                 <span class="label-italic">(Total amount):</span>
                                             </td>
-                                            <td class="text-right box-small item-normal">${formatNumberGtgt(invoiceDataGtgt.totalAmount)}</td>
+                                            <td class="text-right box-small item-bold">${formatNumberGtgt(invoiceDataGtgt.totalAmount)}</td>
                                         </tr>
 
-                                        <!-- Thuế GTGT -->
+                                        <!-- Thuế GTGT - CẬP NHẬT THEO YÊU CẦU 3 -->
                                         <tr>
                                             <td class="text-left box-small label-normal" colspan="2">
                                                 <span class="label-bold">Thuế suất GTGT</span>
@@ -4897,13 +3441,13 @@
                                             <td class="text-right box-small item-normal">${formatNumberGtgt(invoiceDataGtgt.vatAmount)}</td>
                                         </tr>
 
-                                        <!-- Tổng thanh toán -->
+                                        <!-- Tổng thanh toán - CẬP NHẬT THEO YÊU CẦU 3 -->
                                         <tr>
                                             <td class="text-right box-small" colspan="5">
                                                 <span class="label-bold">Tổng cộng tiền thanh toán</span>
                                                 <span class="label-italic">(Total payment):</span>
                                             </td>
-                                            <td class="text-right box-small item-normal">${formatNumberGtgt(invoiceDataGtgt.totalPayment)}</td>
+                                            <td class="text-right box-small item-bold">${formatNumberGtgt(invoiceDataGtgt.totalPayment)}</td>
                                         </tr>
 
                                         <!-- Số tiền viết bằng chữ -->
@@ -5050,12 +3594,12 @@
             window.print();
         });
 
-        // Tải PDF từ modal cho tab GTGT
+        // Tải PDF từ modal cho tab GTGT - CẬP NHẬT THEO YÊU CẦU 2
         document.getElementById('downloadModalPdfBtnGtgt').addEventListener('click', function() {
             generatePDFWithScreenshotGtgt();
         });
 
-        // Tải PDF từ preview cho tab GTGT
+        // Tải PDF từ preview cho tab GTGT - CẬP NHẬT THEO YÊU CẦU 2
         document.getElementById('downloadPdfGtgt').addEventListener('click', function() {
             generatePDFWithScreenshotGtgt();
         });
@@ -5079,7 +3623,7 @@
             alert('Đã đồng bộ MSTTCGP từ hóa đơn GTGT. Vui lòng chọn nhà cung cấp trong modal tra cứu.');
         });
 
-        // Hàm tải PDF sử dụng phương pháp chụp ảnh từng trang cho tab GTGT - CẢI THIỆN
+        // Hàm tải PDF sử dụng phương pháp chụp ảnh từng trang cho tab GTGT - CẢI THIỆN VỚI YÊU CẦU 2
         async function generatePDFWithScreenshotGtgt() {
             // Hiển thị trạng thái xử lý
             const processingStatus = document.getElementById('pdfProcessingStatus');
@@ -5130,9 +3674,9 @@
                     // Chờ một chút để đảm bảo DOM đã render
                     await new Promise(resolve => setTimeout(resolve, 500));
 
-                    // Chụp ảnh container với scale phù hợp
+                    // Chụp ảnh container với scale cao để tăng DPI/PPI - YÊU CẦU 2
                     const canvas = await html2canvas(captureContainer, {
-                        scale: 1.5, // Scale phù hợp để đảm bảo chất lượng
+                        scale: 4, // Tăng scale lên 4 để đạt DPI/PPI ~1200
                         useCORS: true,
                         allowTaint: true,
                         backgroundColor: '#ffffff',
@@ -5157,7 +3701,7 @@
                     }
 
                     // Thêm ảnh vào PDF
-                    const imgData = canvas.toDataURL('image/jpeg', 0.9); // Chất lượng 90%
+                    const imgData = canvas.toDataURL('image/jpeg', 0.95); // Chất lượng cao
                     pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
                 }
 
@@ -5181,6 +3725,473 @@
                 processingStatus.style.display = 'none';
                 alert('❌ Có lỗi xảy ra khi tạo PDF. Vui lòng thử lại.');
             }
+        }
+
+        // ==============================================
+        // PHẦN XỬ LÝ CHO TAB 2: TRA CỨU HÓA ĐƠN - FIX LỖI
+        // ==============================================
+
+        // Mở modal tra cứu - ĐÃ ĐƯỢC SỬA
+        document.getElementById('openLookupModalBtn').addEventListener('click', function() {
+            // Kiểm tra xem có dữ liệu hóa đơn từ XML không
+            const jsonData = loadJsonFromStorage();
+            if (!jsonData || !jsonData.processedData) {
+                alert('Vui lòng tải lên file XML hóa đơn trước khi sử dụng chức năng tra cứu!');
+                return;
+            }
+            
+            // Cập nhật dữ liệu từ JSON - YÊU CẦU 1 & 2
+            invoiceData = jsonData.processedData;
+            matchedProviders = findMatchingProviders(invoiceData.serviceProviderTaxCode);
+            
+            // Khởi tạo danh sách nhà cung cấp dựa trên MSTTCGP - YÊU CẦU 2
+            initializeProviders();
+            
+            // HIỂN THỊ THÔNG TIN HÓA ĐƠN TỪ XML - ĐÃ ĐƯỢC THÊM - YÊU CẦU 6
+            displayInvoiceInfoInModal();
+            
+            // Hiển thị mã tra cứu nếu có
+            if (invoiceData.verificationCode) {
+                document.getElementById('lookupCode').value = invoiceData.verificationCode;
+            }
+            
+            // Hiển thị danh sách nhà cung cấp
+            displayProviderList();
+            
+            // Reset trạng thái
+            document.getElementById('directPdfInfo').style.display = 'none';
+            document.getElementById('lookupCodeGroup').style.display = 'block';
+            document.getElementById('lookupResult').style.display = 'none';
+            document.getElementById('directLookupSection').style.display = 'none';
+            
+            document.getElementById('lookupModal').style.display = 'block';
+        });
+
+        // HÀM HIỂN THỊ THÔNG TIN HÓA ĐƠN TRONG MODAL - ĐÃ ĐƯỢC THÊM - YÊU CẦU 6
+        function displayInvoiceInfoInModal() {
+            const invoiceInfoContainer = document.getElementById('invoiceInfoFromXml');
+            const invoiceInfoDetails = document.getElementById('invoiceInfoDetails');
+            
+            if (!invoiceData.sellerTaxCode) {
+                invoiceInfoContainer.style.display = 'none';
+                return;
+            }
+            
+            const infoHtml = `
+                <div class="info-item">
+                    <span class="info-label">Đơn vị bán hàng:</span>
+                    <span class="info-value">${invoiceData.sellerName || 'N/A'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">MST người bán:</span>
+                    <span class="info-value">${invoiceData.sellerTaxCode || 'N/A'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Mã tra cứu:</span>
+                    <span class="info-value">${invoiceData.verificationCode || 'N/A'}</span>
+                </div>
+                ${invoiceData.portalCodes && invoiceData.portalCodes.length > 0 ? `
+                <div class="info-item">
+                    <span class="info-label">Các mã tìm thấy:</span>
+                    <span class="info-value">
+                        ${invoiceData.portalCodes.map(code => `${code.code} (${code.type})`).join(', ')}
+                    </span>
+                </div>
+                ` : ''}
+            `;
+            
+            invoiceInfoDetails.innerHTML = infoHtml;
+            invoiceInfoContainer.style.display = 'block';
+        }
+
+        // Xử lý sự kiện cho tab trong modal tra cứu
+        document.querySelectorAll('#lookupModal .tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Xóa active class từ tất cả các tab và nội dung
+                document.querySelectorAll('#lookupModal .tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('#lookupModal .tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Thêm active class cho tab được chọn
+                this.classList.add('active');
+                
+                // Hiển thị nội dung tương ứng
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Tìm kiếm nhà cung cấp
+        document.getElementById('providerSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.provider-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Xử lý khi chọn nhà cung cấp trong dropdown - ĐÃ ĐƯỢC SỬA
+        document.getElementById('providerSelect').addEventListener('change', function() {
+            const selectedValue = this.value;
+            const selectedOption = this.options[this.selectedIndex];
+            const providerMST = selectedValue;
+            const lookupCode = document.getElementById('lookupCode').value.trim() || invoiceData.verificationCode;
+            const transactionID = invoiceData.transactionID;
+            const sellerTaxCode = invoiceData.sellerTaxCode;
+            
+            // YÊU CẦU 3: Nếu MSTTCGP trùng với function thì lấy link từ function
+            let pdfDownloadInfo = null;
+            
+            if (providerMST === MISA_FUNCTION.mst) {
+                // Function MISA
+                const misaResult = MISA_FUNCTION.processXml(invoiceData.xmlContent);
+                if (misaResult.success) {
+                    pdfDownloadInfo = {
+                        provider: MISA_FUNCTION,
+                        pdfUrl: misaResult.data.pdfUrl,
+                        requiresCode: false,
+                        autoFillSupported: true
+                    };
+                }
+            } else if (providerMST === BKAV_FUNCTION.id) {
+                // Function BKAV
+                const bkavResult = BKAV_FUNCTION.generateFromXML(invoiceData.xmlContent);
+                if (bkavResult.success) {
+                    pdfDownloadInfo = {
+                        provider: BKAV_FUNCTION,
+                        pdfUrl: bkavResult.data.downloadLink,
+                        requiresCode: false,
+                        autoFillSupported: true
+                    };
+                }
+            } else if (providerMST === VIENH_HY_FUNCTION.mst) {
+                // Function Vĩnh Hy
+                const vinhHyResult = VIENH_HY_FUNCTION.processXml(invoiceData.xmlContent);
+                if (vinhHyResult.success) {
+                    pdfDownloadInfo = {
+                        provider: VIENH_HY_FUNCTION,
+                        pdfUrl: vinhHyResult.data.pdfUrl,
+                        requiresCode: false,
+                        autoFillSupported: true
+                    };
+                }
+            } else if (providerMST === EASYINVOICE_MODULE.mst) {
+                // Module EasyInvoice
+                const jsonData = loadJsonFromStorage();
+                if (jsonData) {
+                    const easyInvoiceResult = createEasyInvoiceLookupURL(jsonData);
+                    if (easyInvoiceResult.success) {
+                        pdfDownloadInfo = {
+                            provider: EASYINVOICE_MODULE,
+                            pdfUrl: easyInvoiceResult.lookupUrl,
+                            requiresCode: false,
+                            autoFillSupported: true
+                        };
+                    }
+                }
+            } else {
+                // Các nhà cung cấp khác - YÊU CẦU 4
+                pdfDownloadInfo = checkDirectPdfDownloadSupport(providerMST, lookupCode);
+            }
+            
+            // Kiểm tra URL tra cứu đặc biệt
+            const specialLookupUrl = createSpecialLookupUrl(providerMST, transactionID, sellerTaxCode, lookupCode);
+            
+            // Tạo URL tự động điền
+            const autoFillUrl = createAutoFillUrl(providerMST, sellerTaxCode, lookupCode, transactionID);
+            
+            const directPdfInfo = document.getElementById('directPdfInfo');
+            
+            if (pdfDownloadInfo || specialLookupUrl || autoFillUrl) {
+                let infoContent = '';
+                
+                if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
+                    // Có thể tải trực tiếp
+                    infoContent += `
+                        <h4>🎉 Có thể tải PDF trực tiếp!</h4>
+                        <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải hóa đơn PDF trực tiếp.</p>
+                        <p>${pdfDownloadInfo.provider.description || 'Hỗ trợ tải PDF từ nhà cung cấp'}</p>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-pdf-link">
+                                📥 Tải hóa đơn PDF từ ${pdfDownloadInfo.provider.name}
+                            </a>
+                        </div>
+                    `;
+                }
+                
+                if (specialLookupUrl) {
+                    infoContent += `
+                        <h4>🔗 Liên kết tra cứu đặc biệt</h4>
+                        <p>Nhà cung cấp <strong>${selectedOption.getAttribute('data-provider-name')}</strong> có liên kết tra cứu đặc biệt.</p>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="${specialLookupUrl}" target="_blank" class="direct-pdf-link">
+                                🔍 Truy cập trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
+                            </a>
+                        </div>
+                    `;
+                }
+                
+                if (autoFillUrl && pdfDownloadInfo && pdfDownloadInfo.autoFillSupported) {
+                    infoContent += `
+                        <h4>🤖 Liên kết tự động điền</h4>
+                        <p>Đã tự động điền thông tin MST người bán và mã tra cứu (nếu có).</p>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
+                                🚀 Mở trang với thông tin đã điền
+                            </a>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 12px; color: #666;">
+                            <em>MST người bán: ${sellerTaxCode || 'Không có'} | Mã tra cứu: ${lookupCode || 'Không có'}</em>
+                        </p>
+                    `;
+                } else if (autoFillUrl) {
+                    infoContent += `
+                        <h4>🔗 Liên kết tra cứu</h4>
+                        <p>Truy cập trang tra cứu của nhà cung cấp.</p>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
+                                🔍 Mở trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
+                            </a>
+                        </div>
+                    `;
+                }
+                
+                if (pdfDownloadInfo && pdfDownloadInfo.requiresCode && !lookupCode) {
+                    infoContent += `
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                            <h4>ℹ️ Cần mã tra cứu</h4>
+                            <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải PDF trực tiếp nhưng yêu cầu mã tra cứu.</p>
+                        </div>
+                    `;
+                }
+                
+                infoContent += `<p style="margin-top: 10px; font-size: 12px; color: #666;">
+                    <em>Liên kết này sẽ mở trong tab mới</em>
+                </p>`;
+                
+                directPdfInfo.innerHTML = infoContent;
+                directPdfInfo.style.display = 'block';
+                
+                // Ẩn ô nhập mã tra cứu nếu đã có đủ thông tin
+                if ((pdfDownloadInfo && pdfDownloadInfo.pdfUrl) || specialLookupUrl || autoFillUrl) {
+                    document.getElementById('lookupCodeGroup').style.display = 'none';
+                } else {
+                    document.getElementById('lookupCodeGroup').style.display = 'block';
+                }
+            } else {
+                // Không hỗ trợ tải trực tiếp
+                directPdfInfo.style.display = 'none';
+                document.getElementById('lookupCodeGroup').style.display = 'block';
+            }
+            
+            // Lưu thông tin nhà cung cấp hiện tại
+            if (selectedOption) {
+                currentSelectedProvider = {
+                    mst: providerMST,
+                    name: selectedOption.getAttribute('data-provider-name'),
+                    url: selectedOption.getAttribute('data-url')
+                };
+            }
+        });
+
+        // Thực hiện tra cứu - ĐÃ ĐƯỢC SỬA
+        document.getElementById('performLookupBtn').addEventListener('click', function() {
+            const providerSelect = document.getElementById('providerSelect');
+            const selectedOption = providerSelect.options[providerSelect.selectedIndex];
+            const providerMST = providerSelect.value;
+            const providerName = selectedOption.getAttribute('data-provider-name');
+            const providerUrl = selectedOption.getAttribute('data-url');
+            const lookupCode = document.getElementById('lookupCode').value.trim();
+            const transactionID = invoiceData.transactionID;
+            const sellerTaxCode = invoiceData.sellerTaxCode;
+            const lookupResult = document.getElementById('lookupResult');
+            const providerDetails = document.getElementById('providerDetails');
+            const directLookupSection = document.getElementById('directLookupSection');
+            
+            if (!providerMST) {
+                lookupResult.textContent = "Vui lòng chọn nhà cung cấp!";
+                lookupResult.className = 'lookup-result lookup-error';
+                lookupResult.style.display = 'block';
+                return;
+            }
+            
+            // YÊU CẦU 3: Nếu MSTTCGP trùng với function thì lấy link từ function
+            let pdfDownloadInfo = null;
+            
+            if (providerMST === MISA_FUNCTION.mst) {
+                // Function MISA
+                const misaResult = MISA_FUNCTION.processXml(invoiceData.xmlContent);
+                if (misaResult.success) {
+                    pdfDownloadInfo = {
+                        provider: MISA_FUNCTION,
+                        pdfUrl: misaResult.data.pdfUrl,
+                        requiresCode: false,
+                        autoFillSupported: true
+                    };
+                }
+            } else if (providerMST === BKAV_FUNCTION.id) {
+                // Function BKAV
+                const bkavResult = BKAV_FUNCTION.generateFromXML(invoiceData.xmlContent);
+                if (bkavResult.success) {
+                    pdfDownloadInfo = {
+                        provider: BKAV_FUNCTION,
+                        pdfUrl: bkavResult.data.downloadLink,
+                        requiresCode: false,
+                        autoFillSupported: true
+                    };
+                }
+            } else if (providerMST === VIENH_HY_FUNCTION.mst) {
+                // Function Vĩnh Hy
+                const vinhHyResult = VIENH_HY_FUNCTION.processXml(invoiceData.xmlContent);
+                if (vinhHyResult.success) {
+                    pdfDownloadInfo = {
+                        provider: VIENH_HY_FUNCTION,
+                        pdfUrl: vinhHyResult.data.pdfUrl,
+                        requiresCode: false,
+                        autoFillSupported: true
+                    };
+                }
+            } else if (providerMST === EASYINVOICE_MODULE.mst) {
+                // Module EasyInvoice
+                const jsonData = loadJsonFromStorage();
+                if (jsonData) {
+                    const easyInvoiceResult = createEasyInvoiceLookupURL(jsonData);
+                    if (easyInvoiceResult.success) {
+                        pdfDownloadInfo = {
+                            provider: EASYINVOICE_MODULE,
+                            pdfUrl: easyInvoiceResult.lookupUrl,
+                            requiresCode: false,
+                            autoFillSupported: true
+                        };
+                    }
+                }
+            } else {
+                // Các nhà cung cấp khác - YÊU CẦU 4
+                pdfDownloadInfo = checkDirectPdfDownloadSupport(providerMST, lookupCode);
+            }
+            
+            // Kiểm tra URL tra cứu đặc biệt
+            const specialLookupUrl = createSpecialLookupUrl(providerMST, transactionID, sellerTaxCode, lookupCode);
+            
+            // Tạo URL tự động điền
+            const autoFillUrl = createAutoFillUrl(providerMST, sellerTaxCode, lookupCode, transactionID);
+            
+            // Hiển thị thông tin nhà cung cấp
+            providerDetails.innerHTML = `
+                <h4>Thông tin nhà cung cấp giải pháp:</h4>
+                <p><strong>Tên đơn vị:</strong> ${providerName}</p>
+                <p><strong>Mã số thuế:</strong> ${providerMST}</p>
+                <p><strong>URL tra cứu:</strong> <a href="${providerUrl}" target="_blank">${providerUrl}</a></p>
+            `;
+            providerDetails.style.display = 'block';
+            
+            // Tạo các liên kết tra cứu trực tiếp
+            let directLookupLinks = '';
+            
+            if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
+                directLookupLinks += `<a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-lookup-btn">📥 Tải PDF trực tiếp</a>`;
+            }
+            
+            if (specialLookupUrl) {
+                directLookupLinks += `<a href="${specialLookupUrl}" target="_blank" class="direct-lookup-btn">🔗 Tra cứu đặc biệt</a>`;
+            }
+            
+            if (autoFillUrl) {
+                if (pdfDownloadInfo && pdfDownloadInfo.autoFillSupported) {
+                    directLookupLinks += `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🚀 Tự động điền thông tin</a>`;
+                } else {
+                    directLookupLinks += `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
+                }
+            }
+            
+            // Thêm liên kết đến trang tra cứu của nhà cung cấp
+            if (!autoFillUrl) {
+                directLookupLinks += `<a href="${providerUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
+            }
+            
+            // Hiển thị phần tra cứu trực tiếp
+            directLookupSection.innerHTML = `
+                <h4>Tra cứu trực tiếp:</h4>
+                <p>Nhấn vào liên kết dưới đây để mở trang tra cứu hoặc tải PDF trực tiếp:</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">${directLookupLinks}</div>
+            `;
+            directLookupSection.style.display = 'block';
+            
+            // Hiển thị kết quả tra cứu
+            let resultMessage = '';
+            
+            if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
+                resultMessage = `
+                    <h4>✅ Có thể tải PDF trực tiếp!</h4>
+                    <p>Mã tra cứu của bạn: <strong>${lookupCode || 'Không cần mã'}</strong></p>
+                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                    <p>Bạn có thể tải PDF trực tiếp bằng liên kết bên trên.</p>
+                `;
+                
+                // Cập nhật link tra cứu ở footer
+                updateFooterLookupLink(pdfDownloadInfo.pdfUrl, providerName);
+            } else if (specialLookupUrl) {
+                resultMessage = `
+                    <h4>🔗 Liên kết tra cứu đặc biệt</h4>
+                    <p>Transaction ID: <strong>${transactionID || 'Không có'}</strong></p>
+                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                    <p>Đã tạo liên kết tra cứu đặc biệt cho nhà cung cấp này.</p>
+                `;
+                
+                // Cập nhật link tra cứu ở footer
+                updateFooterLookupLink(specialLookupUrl, providerName);
+            } else if (autoFillUrl) {
+                resultMessage = `
+                    <h4>🤖 Đã tạo liên kết tự động điền</h4>
+                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                    <p>Mã tra cứu: <strong>${lookupCode || 'Không có'}</strong></p>
+                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                    <p>Liên kết đã tự động điền thông tin vào trang tra cứu.</p>
+                `;
+                
+                // Cập nhật link tra cứu ở footer
+                updateFooterLookupLink(autoFillUrl, providerName);
+            } else if (lookupCode) {
+                resultMessage = `
+                    <h4>Thông tin tra cứu:</h4>
+                    <p>Mã tra cứu của bạn: <strong>${lookupCode}</strong></p>
+                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                    <p>Vui lòng nhập mã này vào trang tra cứu của nhà cung cấp để tải hóa đơn PDF.</p>
+                `;
+            } else {
+                resultMessage = `
+                    <h4>Thông tin nhà cung cấp:</h4>
+                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                    <p>Một số nhà cung cấp không yêu cầu mã tra cứu. Vui lòng thử truy cập trang tra cứu trực tiếp.</p>
+                `;
+            }
+            
+            lookupResult.innerHTML = resultMessage;
+            lookupResult.className = 'lookup-result lookup-success';
+            lookupResult.style.display = 'block';
+        });
+
+        // Đóng modal tra cứu
+        document.getElementById('closeLookupModalBtn').addEventListener('click', closeLookupModal);
+        document.getElementById('closeLookupModalBtn2').addEventListener('click', closeLookupModal);
+        
+        function closeLookupModal() {
+            document.getElementById('lookupModal').style.display = 'none';
+            document.getElementById('lookupResult').style.display = 'none';
+            document.getElementById('lookupResult').className = 'lookup-result';
+            document.getElementById('providerDetails').style.display = 'none';
+            document.getElementById('directLookupSection').style.display = 'none';
+            document.getElementById('directPdfInfo').style.display = 'none';
+            document.getElementById('lookupCodeGroup').style.display = 'block';
         }
 
         // ==============================================
@@ -5235,27 +4246,27 @@
         function displayMSTTCGPList() {
             const msttcgpList = document.getElementById('msttcgpList');
             
-            // Tạo danh sách các module chính
-            const mainModules = [
-                { mst: VIENH_HY_MODULE.mst, name: VIENH_HY_MODULE.name },
-                { mst: MISA_MODULE.mst, name: MISA_MODULE.name },
-                { mst: BKAV_MODULE.id, name: BKAV_MODULE.name },
+            // Tạo danh sách các function chính
+            const mainFunctions = [
+                { mst: VIENH_HY_FUNCTION.mst, name: VIENH_HY_FUNCTION.name },
+                { mst: MISA_FUNCTION.mst, name: MISA_FUNCTION.name },
+                { mst: BKAV_FUNCTION.id, name: BKAV_FUNCTION.name },
                 { mst: EASYINVOICE_MODULE.mst, name: EASYINVOICE_MODULE.name }
             ];
             
-            // Thêm các module chính
-            mainModules.forEach(module => {
+            // Thêm các function chính
+            mainFunctions.forEach(func => {
                 const item = document.createElement('div');
                 item.className = 'msttcgp-item msttcgp-module';
-                item.textContent = `${module.mst} - ${module.name}`;
+                item.textContent = `${func.mst} - ${func.name}`;
                 msttcgpList.appendChild(item);
             });
             
             // Thêm một số nhà cung cấp khác
             const otherProviders = serviceProviders.slice(0, 10); // Lấy 10 nhà cung cấp đầu tiên
             otherProviders.forEach(provider => {
-                // Bỏ qua các module đã thêm
-                if (!mainModules.some(module => module.mst === provider.mst)) {
+                // Bỏ qua các function đã thêm
+                if (!mainFunctions.some(func => func.mst === provider.mst)) {
                     const item = document.createElement('div');
                     item.className = 'msttcgp-item';
                     item.textContent = `${provider.mst} - ${provider.name}`;
@@ -5287,9 +4298,9 @@
             }
             
             console.log('Công cụ chuyển đổi hóa đơn điện tử đã được khởi tạo');
-            console.log('Module Vĩnh Hy:', VIENH_HY_MODULE);
-            console.log('Module MISA:', MISA_MODULE);
-            console.log('Module BKAV:', BKAV_MODULE);
+            console.log('Function Vĩnh Hy:', VIENH_HY_FUNCTION);
+            console.log('Function MISA:', MISA_FUNCTION);
+            console.log('Function BKAV:', BKAV_FUNCTION);
             console.log('Module EasyInvoice:', EASYINVOICE_MODULE);
         });
     </script>
