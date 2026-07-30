@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Công cụ chuyển đổi hóa đơn điện tử</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
     <style>
         /* CSS đã được tối ưu hóa - giữ nguyên như trong mã gốc */
         * {
@@ -13,23 +15,23 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
-        
+
         .header {
             background: linear-gradient(135deg, #4a6ee0 0%, #6a4ca6 100%);
             color: white;
@@ -38,7 +40,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .header::before {
             content: '';
             position: absolute;
@@ -49,14 +51,14 @@
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23ffffff" opacity="0.1"><polygon points="0,0 1000,50 1000,100 0,100"/></svg>');
             background-size: cover;
         }
-        
+
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 15px;
             font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
-        
+
         .header p {
             font-size: 1.2em;
             opacity: 0.95;
@@ -64,11 +66,11 @@
             margin: 0 auto;
             line-height: 1.6;
         }
-        
+
         .main-content {
             padding: 30px;
         }
-        
+
         .tabs {
             display: flex;
             border-bottom: 3px solid #4a6ee0;
@@ -78,7 +80,7 @@
             border-radius: 12px 12px 0 0;
             padding: 5px;
         }
-        
+
         .tab {
             padding: 15px 25px;
             cursor: pointer;
@@ -93,7 +95,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .tab::before {
             content: '';
             position: absolute;
@@ -105,31 +107,37 @@
             transition: left 0.3s;
             z-index: -1;
         }
-        
+
         .tab.active {
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(74, 110, 224, 0.3);
         }
-        
+
         .tab.active::before {
             left: 0;
         }
-        
+
         .tab-content {
             display: none;
             animation: fadeIn 0.5s ease;
         }
-        
+
         .tab-content.active {
             display: block;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .upload-section {
             background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
             border: 3px dashed #4a6ee0;
@@ -141,7 +149,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .upload-section::before {
             content: '';
             position: absolute;
@@ -153,21 +161,21 @@
             transform: rotate(45deg);
             transition: all 0.6s;
         }
-        
+
         .upload-section:hover::before {
             transform: rotate(45deg) translate(50%, 50%);
         }
-        
+
         .upload-section:hover {
             border-color: #6a4ca6;
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(74, 110, 224, 0.15);
         }
-        
+
         .file-input-wrapper {
             margin: 25px 0;
         }
-        
+
         .file-input-label {
             display: inline-flex;
             align-items: center;
@@ -181,12 +189,12 @@
             font-weight: 600;
             box-shadow: 0 5px 15px rgba(74, 110, 224, 0.3);
         }
-        
+
         .file-input-label:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(74, 110, 224, 0.4);
         }
-        
+
         .btn {
             padding: 15px 30px;
             border: none;
@@ -199,7 +207,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .btn::before {
             content: '';
             position: absolute;
@@ -207,58 +215,58 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: left 0.5s;
         }
-        
+
         .btn:hover::before {
             left: 100%;
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #4a6ee0 0%, #6a4ca6 100%);
             color: white;
             box-shadow: 0 5px 15px rgba(74, 110, 224, 0.3);
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(74, 110, 224, 0.4);
         }
-        
+
         .btn-success {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
-        
+
         .btn-success:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
         }
-        
+
         .btn-warning {
             background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
             color: white;
             box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
         }
-        
+
         .btn-warning:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
         }
-        
+
         .btn-info {
             background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
             color: white;
             box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
         }
-        
+
         .btn-info:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(23, 162, 184, 0.4);
         }
-        
+
         .loading {
             display: none;
             text-align: center;
@@ -267,7 +275,7 @@
             border-radius: 15px;
             margin: 20px 0;
         }
-        
+
         .spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #4a6ee0;
@@ -277,12 +285,16 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 15px;
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        
+
         .link-area {
             display: none;
             margin-top: 25px;
@@ -292,12 +304,18 @@
             border: 2px solid #c3e6cb;
             animation: slideUp 0.5s ease;
         }
-        
+
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .link-area h3 {
             color: #155724;
             margin-bottom: 20px;
@@ -306,7 +324,7 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .link-box {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
@@ -320,23 +338,24 @@
             user-select: all;
             transition: all 0.3s ease;
             position: relative;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
-        
+
         .link-box:hover {
             border-color: #4a6ee0;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(74, 110, 224, 0.15);
         }
-        
+
         .action-buttons {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
             margin: 25px 0;
         }
-        
-        .copy-btn, .open-btn {
+
+        .copy-btn,
+        .open-btn {
             flex: 1;
             min-width: 140px;
             padding: 15px 25px;
@@ -350,34 +369,34 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .copy-btn {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
         }
-        
+
         .copy-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
         }
-        
+
         .copy-btn.copied {
             background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
         }
-        
+
         .open-btn {
             background: linear-gradient(135deg, #4a6ee0 0%, #6a4ca6 100%);
             color: white;
             text-decoration: none;
         }
-        
+
         .open-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(74, 110, 224, 0.3);
         }
-        
+
         .info-box {
             background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
             border: 2px solid #ffeaa7;
@@ -385,7 +404,7 @@
             padding: 25px;
             margin: 25px 0;
         }
-        
+
         .info-box h4 {
             color: #856404;
             margin-bottom: 20px;
@@ -394,35 +413,35 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
-        
+
         .info-item {
             display: flex;
             flex-direction: column;
             padding: 15px;
-            background: rgba(255,255,255,0.7);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 10px;
             border-left: 4px solid #4a6ee0;
         }
-        
+
         .info-label {
             font-weight: 600;
             color: #4a6ee0;
             font-size: 0.95rem;
             margin-bottom: 8px;
         }
-        
+
         .info-value {
             color: #2c3e50;
             font-size: 1.05rem;
             font-weight: 600;
         }
-        
+
         .status-message {
             padding: 20px;
             border-radius: 12px;
@@ -431,19 +450,19 @@
             animation: slideIn 0.3s ease;
             font-weight: 600;
         }
-        
+
         .status-success {
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             color: #155724;
             border: 2px solid #c3e6cb;
         }
-        
+
         .status-error {
             background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             color: #721c24;
             border: 2px solid #f5c6cb;
         }
-        
+
         .instructions {
             background: linear-gradient(135deg, #e7f3ff 0%, #d6e4ff 100%);
             border-left: 5px solid #4a6ee0;
@@ -451,7 +470,7 @@
             border-radius: 0 12px 12px 0;
             margin-top: 25px;
         }
-        
+
         .instructions h4 {
             color: #4a6ee0;
             margin-bottom: 15px;
@@ -460,17 +479,17 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .instructions ol {
             padding-left: 25px;
         }
-        
+
         .instructions li {
             margin-bottom: 12px;
             color: #555;
             line-height: 1.6;
         }
-        
+
         .file-info {
             text-align: center;
             margin-top: 20px;
@@ -480,7 +499,7 @@
             font-size: 0.95rem;
             color: #666;
         }
-        
+
         .debug-info {
             background: #f8f9fa;
             border: 2px solid #dee2e6;
@@ -491,17 +510,23 @@
             font-size: 0.85rem;
             display: none;
         }
-        
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
-        
+
         .pulse {
             animation: pulse 0.5s ease-in-out;
         }
-        
+
         .module-misa {
             background: linear-gradient(135deg, #4a6ee0 0%, #6a4ca6 100%);
             color: white;
@@ -513,7 +538,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .module-misa::before {
             content: '';
             position: absolute;
@@ -521,16 +546,16 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: rotate(45deg);
         }
-        
+
         .module-misa h3 {
             margin-bottom: 15px;
             font-size: 1.6rem;
             font-weight: 700;
         }
-        
+
         .module-misa .module-info {
             background: rgba(255, 255, 255, 0.2);
             padding: 15px;
@@ -539,7 +564,7 @@
             margin-top: 15px;
             backdrop-filter: blur(10px);
         }
-        
+
         .file-upload-area {
             border: 3px dashed #4a6ee0;
             border-radius: 20px;
@@ -552,7 +577,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .file-upload-area::before {
             content: '';
             position: absolute;
@@ -564,31 +589,31 @@
             transform: rotate(45deg);
             transition: all 0.6s;
         }
-        
+
         .file-upload-area:hover::before {
             transform: rotate(45deg) translate(50%, 50%);
         }
-        
+
         .file-upload-area:hover {
             border-color: #6a4ca6;
             background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(74, 110, 224, 0.15);
         }
-        
+
         .file-upload-area.dragover {
             border-color: #4a6ee0;
             background: #f0f4ff;
             transform: scale(1.02);
         }
-        
+
         .upload-icon {
             font-size: 64px;
             margin-bottom: 20px;
             color: #4a6ee0;
             filter: drop-shadow(0 5px 10px rgba(74, 110, 224, 0.3));
         }
-        
+
         .invoice-details-misa {
             background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
             padding: 20px;
@@ -598,7 +623,7 @@
             display: none;
             animation: slideUp 0.5s ease;
         }
-        
+
         .invoice-details-misa h5 {
             color: #856404;
             margin-bottom: 15px;
@@ -608,7 +633,7 @@
             font-size: 1.2rem;
             font-weight: 600;
         }
-        
+
         .detail-item {
             display: flex;
             justify-content: space-between;
@@ -617,21 +642,21 @@
             padding: 8px 0;
             border-bottom: 1px solid rgba(133, 100, 4, 0.2);
         }
-        
+
         .detail-item:last-child {
             border-bottom: none;
         }
-        
+
         .detail-label {
             font-weight: 600;
             color: #856404;
         }
-        
+
         .detail-value {
             color: #2c3e50;
             font-weight: 700;
         }
-        
+
         .processing-misa {
             display: none;
             text-align: center;
@@ -641,7 +666,7 @@
             margin: 20px 0;
             animation: pulse 2s infinite;
         }
-        
+
         .spinner-misa {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #4a6ee0;
@@ -651,7 +676,7 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 15px;
         }
-        
+
         .smart-download-section {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border-radius: 15px;
@@ -659,16 +684,16 @@
             margin: 20px 0;
             border: 2px solid #90caf9;
         }
-        
+
         .download-option {
             background: white;
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
             border-left: 5px solid #4a6ee0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
-        
+
         .download-option h5 {
             color: #2c3e50;
             margin-bottom: 15px;
@@ -677,7 +702,7 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .option-badge {
             background: linear-gradient(135deg, #4a6ee0 0%, #6a4ca6 100%);
             color: white;
@@ -686,12 +711,14 @@
             font-size: 0.8rem;
             font-weight: 600;
         }
-        
+
         .option-warning {
             background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
         }
-        
-        .pdf-download-btn, .direct-pdf-link, .direct-lookup-btn {
+
+        .pdf-download-btn,
+        .direct-pdf-link,
+        .direct-lookup-btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
@@ -706,12 +733,14 @@
             border: none;
             cursor: pointer;
         }
-        
-        .pdf-download-btn:hover, .direct-pdf-link:hover, .direct-lookup-btn:hover {
+
+        .pdf-download-btn:hover,
+        .direct-pdf-link:hover,
+        .direct-lookup-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(74, 110, 224, 0.4);
         }
-        
+
         .provider-badge {
             background: #28a745;
             color: white;
@@ -720,15 +749,15 @@
             font-size: 0.7rem;
             margin-left: 8px;
         }
-        
+
         .lookup-form {
             padding: 20px;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         .form-control {
             width: 100%;
             padding: 12px 15px;
@@ -737,38 +766,39 @@
             font-size: 1rem;
             transition: all 0.3s;
         }
-        
+
         .form-control:focus {
             border-color: #4a6ee0;
             box-shadow: 0 0 0 3px rgba(74, 110, 224, 0.1);
             outline: none;
         }
-        
-        .provider-info, .lookup-result {
+
+        .provider-info,
+        .lookup-result {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 12px;
             margin: 15px 0;
             border-left: 4px solid #4a6ee0;
         }
-        
+
         .lookup-success {
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             border-left-color: #28a745;
         }
-        
+
         .lookup-error {
             background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             border-left-color: #dc3545;
         }
-        
+
         .direct-lookup-section {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             padding: 20px;
             border-radius: 12px;
             margin: 15px 0;
         }
-        
+
         .direct-pdf-info {
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             padding: 20px;
@@ -776,43 +806,43 @@
             margin: 15px 0;
             border-left: 4px solid #28a745;
         }
-        
+
         .provider-table {
             width: 100%;
             border-collapse: collapse;
             margin: 15px 0;
         }
-        
+
         .provider-table th {
             background: #4a6ee0;
             color: white;
             padding: 12px;
             text-align: left;
         }
-        
+
         .provider-table td {
             padding: 12px;
             border-bottom: 1px solid #dee2e6;
         }
-        
+
         .provider-table tr:hover {
             background: #f8f9ff;
         }
-        
+
         .provider-link {
             color: #4a6ee0;
             text-decoration: none;
             font-weight: 600;
         }
-        
+
         .provider-link:hover {
             text-decoration: underline;
         }
-        
+
         .search-box {
             margin-bottom: 20px;
         }
-        
+
         .search-box input {
             width: 100%;
             padding: 12px 15px;
@@ -820,7 +850,7 @@
             border-radius: 10px;
             font-size: 1rem;
         }
-        
+
         .api-loading {
             display: inline-block;
             width: 12px;
@@ -831,7 +861,7 @@
             animation: spin 1s linear infinite;
             margin-left: 8px;
         }
-        
+
         .module-bkav {
             background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
             color: white;
@@ -843,7 +873,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .module-bkav::before {
             content: '';
             position: absolute;
@@ -851,16 +881,16 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: rotate(45deg);
         }
-        
+
         .module-bkav h3 {
             margin-bottom: 15px;
             font-size: 1.6rem;
             font-weight: 700;
         }
-        
+
         .module-bkav .module-info {
             background: rgba(255, 255, 255, 0.2);
             padding: 15px;
@@ -869,11 +899,11 @@
             margin-top: 15px;
             backdrop-filter: blur(10px);
         }
-        
+
         .xml-input-container {
             margin-bottom: 25px;
         }
-        
+
         .xml-input {
             width: 100%;
             height: 200px;
@@ -885,13 +915,13 @@
             resize: vertical;
             transition: border-color 0.3s ease;
         }
-        
+
         .xml-input:focus {
             outline: none;
             border-color: #3498db;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
-        
+
         .validation-message {
             padding: 12px;
             border-radius: 8px;
@@ -899,24 +929,24 @@
             text-align: center;
             font-weight: 600;
         }
-        
+
         .validation-success {
             background: #d5f4e6;
             color: #27ae60;
             border: 2px solid #27ae60;
         }
-        
+
         .validation-error {
             background: #fadbd8;
             color: #e74c3c;
             border: 2px solid #e74c3c;
         }
-        
+
         .file-upload-bkav {
             position: relative;
             margin-bottom: 15px;
         }
-        
+
         .file-upload-bkav-input {
             width: 100%;
             padding: 10px;
@@ -926,15 +956,15 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .file-upload-bkav-input:hover {
             background: #e3f2fd;
         }
-        
+
         .file-upload-bkav-input input {
             display: none;
         }
-        
+
         .status-indicator {
             display: inline-block;
             width: 10px;
@@ -942,19 +972,19 @@
             border-radius: 50%;
             margin-right: 8px;
         }
-        
+
         .status-ready {
             background: #27ae60;
         }
-        
+
         .status-warning {
             background: #f39c12;
         }
-        
+
         .status-error {
             background: #e74c3c;
         }
-        
+
         .bkav-result-container {
             background: #f8f9fa;
             border-radius: 10px;
@@ -962,7 +992,7 @@
             border-left: 5px solid #3498db;
             display: none;
         }
-        
+
         .bkav-download-link {
             display: block;
             background: white;
@@ -975,12 +1005,12 @@
             margin-bottom: 15px;
             transition: all 0.3s ease;
         }
-        
+
         .bkav-download-link:hover {
             background: #e3f2fd;
             border-color: #2980b9;
         }
-        
+
         .bkav-link-info {
             background: #e8f5e8;
             padding: 15px;
@@ -988,7 +1018,7 @@
             border-left: 4px solid #27ae60;
             margin-top: 15px;
         }
-        
+
         .bkav-info-item {
             display: flex;
             justify-content: space-between;
@@ -996,22 +1026,22 @@
             padding-bottom: 8px;
             border-bottom: 1px solid #d5dbdb;
         }
-        
+
         .bkav-info-item:last-child {
             margin-bottom: 0;
             border-bottom: none;
         }
-        
+
         .bkav-info-label {
             font-weight: 600;
             color: #2c3e50;
         }
-        
+
         .bkav-info-value {
             color: #27ae60;
             font-family: 'Courier New', monospace;
         }
-        
+
         .msttcgp-footer {
             background: #2c3e50;
             color: white;
@@ -1020,12 +1050,12 @@
             margin-top: 30px;
             border-radius: 0 0 15px 15px;
         }
-        
+
         .msttcgp-footer h4 {
             margin-bottom: 15px;
             font-size: 1.2rem;
         }
-        
+
         .msttcgp-list {
             display: flex;
             flex-wrap: wrap;
@@ -1033,19 +1063,19 @@
             gap: 15px;
             margin-top: 15px;
         }
-        
+
         .msttcgp-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 10px 15px;
             border-radius: 8px;
             font-size: 0.9rem;
         }
-        
+
         .msttcgp-module {
             background: rgba(52, 152, 219, 0.3);
             border-left: 4px solid #3498db;
         }
-        
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -1059,23 +1089,29 @@
             padding: 20px;
             backdrop-filter: blur(5px);
         }
-        
+
         .modal-content {
             position: relative;
             background: white;
             margin: 0 auto;
             max-width: 800px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
             border-radius: 15px;
             overflow: hidden;
             animation: modalSlideIn 0.4s ease;
         }
-        
+
         @keyframes modalSlideIn {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .modal-header {
             padding: 20px 25px;
             background: linear-gradient(135deg, #4a6ee0 0%, #6a4ca6 100%);
@@ -1084,13 +1120,13 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .modal-header h2 {
             font-size: 1.6em;
             margin: 0;
             font-weight: 700;
         }
-        
+
         .close-btn {
             background: none;
             border: none;
@@ -1106,15 +1142,15 @@
             border-radius: 50%;
             transition: background 0.3s;
         }
-        
+
         .close-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
-        
+
         .modal-body {
             padding: 0;
         }
-        
+
         .modal-footer {
             padding: 20px 25px;
             background: #f8f9ff;
@@ -1123,7 +1159,7 @@
             align-items: center;
             border-top: 1px solid #dee2e6;
         }
-        
+
         /* Hóa đơn GTGT Styles với lề 1.5cm và font 10pt - CẬP NHẬT TEMPLATE MỚI */
         .invoice-gtgt-container {
             width: 210mm;
@@ -1137,15 +1173,14 @@
             padding: 15mm 15mm 15mm 15mm;
             page-break-after: always;
             box-sizing: border-box;
-            /* Hình nền chìm cho hóa đơn - ĐÃ ĐIỀU CHỈNH ĐỘ TƯƠNG PHẢN */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f5f5f5" opacity="0.1"/><text x="100" y="100" font-family="Arial" font-size="20" text-anchor="middle" fill="%23000000" opacity="0.05">HÓA ĐƠN ĐIỆN TỬ</text></svg>');
             background-repeat: repeat;
             background-position: center;
             background-size: 200px 200px;
             border: 1px solid #cccccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .invoice-gtgt-box-large {
             margin-left: auto;
             margin-right: auto;
@@ -1155,67 +1190,67 @@
             width: 100%;
             color: #000000;
         }
-        
+
         .invoice-gtgt-box-small {
             border-collapse: collapse;
             padding: 5px;
             border: 1px solid #000000;
             color: #000000;
         }
-        
+
         .invoice-gtgt-label-normal {
             padding: 2px;
             color: #000000;
         }
-        
+
         .invoice-gtgt-label-italic {
             padding: 2px;
             font-style: italic;
             color: #000000;
         }
-        
+
         .invoice-gtgt-label-bold {
             font-weight: bold;
             padding: 2px;
             color: #000000;
         }
-        
+
         .invoice-gtgt-item-normal {
             font-weight: normal;
             padding: 2px;
             color: #000000;
         }
-        
+
         .invoice-gtgt-item-bold {
             font-weight: bold;
             padding: 2px;
             color: #000000;
         }
-        
+
         .invoice-gtgt-border-bottom {
             border-bottom: 2px solid #000000;
         }
-        
+
         .invoice-gtgt-text-center {
             text-align: center;
         }
-        
+
         .invoice-gtgt-text-right {
             text-align: right;
         }
-        
+
         .invoice-gtgt-width-100 {
             width: 100%;
         }
-        
+
         .invoice-gtgt-vertical-top {
             vertical-align: top;
         }
-        
+
         .invoice-gtgt-no-border {
             border: none !important;
         }
-        
+
         .page-number {
             position: absolute;
             bottom: 15mm;
@@ -1251,7 +1286,7 @@
             margin: 20px 0;
             gap: 10px;
         }
-        
+
         .pagination-btn {
             padding: 8px 16px;
             background: #4a6ee0;
@@ -1261,12 +1296,12 @@
             cursor: pointer;
             font-weight: 600;
         }
-        
+
         .pagination-btn:disabled {
             background: #cccccc;
             cursor: not-allowed;
         }
-        
+
         .page-info {
             font-weight: 600;
             color: #4a6ee0;
@@ -1281,7 +1316,7 @@
                 width: 100%;
                 height: 297mm;
             }
-            
+
             .invoice-gtgt-container:last-child {
                 page-break-after: auto;
             }
@@ -1313,7 +1348,7 @@
             margin: 20px 0;
             overflow: hidden;
         }
-        
+
         .progress-bar {
             width: 0%;
             height: 20px;
@@ -1335,14 +1370,14 @@
             font-size: 9pt;
             text-align: center;
         }
-        
+
         .cqt-info {
             margin: 10px 0;
             padding: 8px;
             border: 1px solid #000;
             background: #f9f9f9;
         }
-        
+
         .cqt-code {
             font-weight: bold;
             font-size: 10pt;
@@ -1353,31 +1388,31 @@
             .header h1 {
                 font-size: 2rem;
             }
-            
+
             .header p {
                 font-size: 1rem;
             }
-            
+
             .upload-section {
                 padding: 25px 15px;
             }
-            
+
             .action-buttons {
                 flex-direction: column;
             }
-            
+
             .info-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .modal-content {
                 margin: 10px;
             }
-            
+
             .tabs {
                 flex-direction: column;
             }
-            
+
             .tab {
                 margin-bottom: 5px;
                 border-radius: 8px;
@@ -1388,16 +1423,18 @@
                 padding: 10mm;
             }
         }
-        
-        .btn:disabled, .btn:disabled:hover {
+
+        .btn:disabled,
+        .btn:disabled:hover {
             background: #6c757d !important;
             cursor: not-allowed !important;
             transform: none !important;
             box-shadow: none !important;
             opacity: 0.6;
         }
-        
-        .direct-pdf-link.disabled, .direct-lookup-btn.disabled {
+
+        .direct-pdf-link.disabled,
+        .direct-lookup-btn.disabled {
             background: #6c757d !important;
             cursor: not-allowed !important;
             transform: none !important;
@@ -1413,13 +1450,13 @@
             <h1>Công cụ chuyển đổi hóa đơn điện tử</h1>
             <p>Chuyển đổi file XML hóa đơn điện tử sang PDF và tạo link tải PDF</p>
         </div>
-        
+
         <div class="main-content">
             <div class="tabs">
                 <div class="tab active" data-tab="invoice-gtgt">Hóa đơn GTGT</div>
                 <div class="tab" data-tab="invoice-lookup" id="lookup-tab">🔍 Tra cứu hóa đơn</div>
             </div>
-            
+
             <!-- Tab 1: Hóa đơn GTGT -->
             <div class="tab-content active" id="invoice-gtgt">
                 <div class="upload-section">
@@ -1435,27 +1472,27 @@
                     <button id="uploadBtnGtgt" class="btn btn-primary">Tải lên và Xem trước</button>
                     <button id="requestOriginalBtn" class="btn btn-warning" style="display: none;">📋 Yêu cầu hóa đơn gốc</button>
                 </div>
-                
+
                 <div class="loading" id="loadingGtgt">
                     <div class="spinner"></div>
                     <p>Đang xử lý file XML...</p>
                 </div>
-                
+
                 <div id="invoicePreviewGtgt" class="invoice-preview">
                     <div class="pagination-controls">
                         <button id="prevPageBtn" class="pagination-btn" disabled>Trang trước</button>
                         <span class="page-info" id="pageInfo">Trang 1 / 1</span>
                         <button id="nextPageBtn" class="pagination-btn" disabled>Trang tiếp</button>
                     </div>
-                    
+
                     <div class="preview-content" id="previewContentGtgt"></div>
-                    
+
                     <div style="text-align: center; margin-top: 30px;">
                         <button id="showModalBtnGtgt" class="btn btn-warning">👁️ Xem Hóa Đơn Đầy Đủ</button>
                         <button id="downloadPdfGtgt" class="btn btn-success">📥 Tải về PDF</button>
                     </div>
                 </div>
-                
+
                 <!-- Processing Status for PDF Generation -->
                 <div id="pdfProcessingStatus" class="processing-status" style="display: none;">
                     <h4>Đang tạo PDF...</h4>
@@ -1465,13 +1502,13 @@
                     <p id="pdfStatusMessage">Đang xử lý...</p>
                 </div>
             </div>
-            
+
             <!-- Tab 2: Tra cứu hóa đơn -->
             <div class="tab-content" id="invoice-lookup">
                 <div class="upload-section">
                     <h3>🔍 Tra Cứu Hóa Đơn</h3>
                     <p>Tìm kiếm và tải hóa đơn PDF từ các nhà cung cấp dịch vụ</p>
-                    
+
                     <div class="instructions">
                         <h4>📝 Hướng Dẫn Tra Cứu Hóa Đơn</h4>
                         <ol>
@@ -1482,7 +1519,7 @@
                             <li>Chọn phương án tải PDF phù hợp với nhà cung cấp</li>
                         </ol>
                     </div>
-                    
+
                     <div style="text-align: center; margin-top: 30px;">
                         <button class="btn btn-primary" id="openLookupModalBtn">🔍 Mở Công Cụ Tra Cứu</button>
                     </div>
@@ -1536,7 +1573,7 @@
                     <div class="tab active" data-tab="quick-lookup">Tra Cứu Nhanh</div>
                     <div class="tab" data-tab="provider-list">Danh Sách Nhà Cung Cấp</div>
                 </div>
-                
+
                 <div class="tab-content active" id="quick-lookup">
                     <div class="lookup-form">
                         <div class="form-group">
@@ -1549,7 +1586,7 @@
                                 <small>Đang tải thông tin nhà cung cấp... <span class="api-loading"></span></small>
                             </div>
                         </div>
-                        
+
                         <!-- THÔNG TIN HÓA ĐƠN TỪ XML - ĐÃ ĐƯỢC THÊM -->
                         <div id="invoiceInfoFromXml" class="provider-info" style="display: none;">
                             <h4>📋 Thông tin hóa đơn từ XML</h4>
@@ -1567,23 +1604,23 @@
                             <input type="text" id="lookupCode" class="form-control" placeholder="Nhập mã tra cứu hóa đơn (không bắt buộc)">
                             <small style="color: #666;">Một số nhà cung cấp không yêu cầu mã tra cứu</small>
                         </div>
-                        
+
                         <button id="performLookupBtn" class="btn btn-primary">🔍 Tra cứu</button>
-                        
+
                         <div id="providerDetails" class="provider-info" style="display: none;">
                             <!-- Thông tin nhà cung cấp sẽ được hiển thị ở đây -->
                         </div>
-                        
+
                         <div id="lookupResult" class="lookup-result">
                             <!-- Kết quả tra cứu sẽ được hiển thị ở đây -->
                         </div>
-                        
+
                         <div id="directLookupSection" class="direct-lookup-section" style="display: none;">
                             <!-- Phần tra cứu trực tiếp sẽ được hiển thị ở đây -->
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="tab-content" id="provider-list">
                     <div class="lookup-form">
                         <div class="search-box">
@@ -1609,10 +1646,10 @@
         let invoiceData = {};
         let matchedProviders = [];
         let currentSelectedProvider = null;
-        
+
         // Biến lưu trữ link tra cứu hiện tại
         let currentLookupLink = '';
-        
+
         // Function Vĩnh Hy - MSTTCGP 0314743623
         const VIENH_HY_FUNCTION = {
             mst: "0314743623",
@@ -1622,13 +1659,13 @@
             pdfGeneratorUrl: "https://ehoadondientu.com/Account/GenerateFile.aspx",
             lookupUrl: "https://ehoadondientu.com/Tra-cuu",
             functionName: "Vĩnh Hy PDF Function",
-            
+
             // Hàm xử lý XML cho Vĩnh Hy
             processXml: function(xmlContent) {
                 try {
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
-                    
+
                     // Check for XML parsing errors
                     if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
                         return {
@@ -1636,22 +1673,22 @@
                             error: "XML không hợp lệ"
                         };
                     }
-                    
+
                     // Extract required data
                     const sellerTaxCode = xmlDoc.querySelector('NBan > MST')?.textContent;
                     const transactionId = xmlDoc.querySelector('DLHDon')?.getAttribute('Id');
-                    
+
                     if (!sellerTaxCode || !transactionId) {
                         return {
                             success: false,
                             error: "Không tìm thấy thông tin cần thiết trong XML"
                         };
                     }
-                    
+
                     // Định dạng ID theo chuẩn Vĩnh Hy
                     const formattedId = this.formatInvoiceIdForLink(transactionId, sellerTaxCode);
                     const pdfUrl = `${this.pdfGeneratorUrl}?r=${formattedId}&type=pdf`;
-                    
+
                     return {
                         success: true,
                         data: {
@@ -1668,19 +1705,19 @@
                     };
                 }
             },
-            
+
             // Hàm định dạng ID hóa đơn
             formatInvoiceIdForLink: function(rawId, sellerMST) {
                 if (!rawId) return '';
-                
+
                 console.log('Raw ID:', rawId);
                 console.log('ID Length:', rawId.length);
                 console.log('Seller MST:', sellerMST);
-                
+
                 // Phân tích ID theo cấu trúc thực tế
                 // MST (10 ký tự) + Năm (4 ký tự) + Số hóa đơn (12 ký tự)
                 let mst, year, invoiceNumber;
-                
+
                 if (rawId.length === 24) {
                     // Định dạng chuẩn: 031623981320200300000018
                     mst = rawId.substring(0, 10); // 0316239813
@@ -1697,20 +1734,20 @@
                     year = '2020';
                     invoiceNumber = rawId;
                 }
-                
+
                 // Đảm bảo MST có 10 ký tự
                 if (mst.length < 10) {
                     mst = mst.padStart(10, '0');
                 }
-                
+
                 // Đảm bảo invoiceNumber có 10 ký tự
                 if (invoiceNumber.length < 10) {
                     invoiceNumber = invoiceNumber.padStart(10, '0');
                 }
-                
+
                 const formatted = `ct_${mst}${year}_${invoiceNumber}`;
                 console.log('Formatted ID:', formatted);
-                
+
                 return formatted;
             }
         };
@@ -1724,18 +1761,18 @@
             pdfGeneratorUrl: "https://meinvoice.vn/tra-cuu/DownloadHandler.ashx",
             lookupUrl: "https://meinvoice.vn/tra-cuu/",
             functionName: "MISA PDF Function",
-            
+
             // Hàm tạo URL cho MISA
             generateUrl: function(sellerTaxCode, transactionId) {
                 return `${this.pdfGeneratorUrl}?Type=pdf&MST=${sellerTaxCode}&Code=${transactionId}&Module=${this.mst}`;
             },
-            
+
             // Hàm xử lý XML cho MISA
             processXml: function(xmlContent) {
                 try {
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
-                    
+
                     // Check for XML parsing errors
                     if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
                         return {
@@ -1743,18 +1780,18 @@
                             error: "XML không hợp lệ"
                         };
                     }
-                    
+
                     // Extract required data
                     const sellerTaxCode = xmlDoc.querySelector('NBan > MST')?.textContent;
                     const transactionId = xmlDoc.querySelector('DLHDon')?.getAttribute('Id');
-                    
+
                     if (!sellerTaxCode || !transactionId) {
                         return {
                             success: false,
                             error: "Không tìm thấy thông tin cần thiết trong XML"
                         };
                     }
-                    
+
                     return {
                         success: true,
                         data: {
@@ -1779,13 +1816,13 @@
             shortName: "BKAV",
             baseURL: "https://van.ehoadon.vn/DownloadFile?FilePath=",
             functionName: "BKAV PDF Function",
-            
+
             // Xác thực MSTTCGP trong XML
             authenticate: function(xmlContent) {
                 try {
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
-                    
+
                     // Kiểm tra lỗi XML
                     const parseError = xmlDoc.getElementsByTagName("parsererror");
                     if (parseError.length > 0) {
@@ -1794,11 +1831,11 @@
                             error: "XML không hợp lệ: " + parseError[0].textContent
                         };
                     }
-                    
+
                     // Tìm MSTTCGP trong XML
                     const msttcgpElements = xmlDoc.getElementsByTagName("MSTTCGP");
                     let foundMSTTCGP = null;
-                    
+
                     for (let i = 0; i < msttcgpElements.length; i++) {
                         const mstValue = msttcgpElements[i].textContent.trim();
                         if (mstValue) {
@@ -1806,14 +1843,14 @@
                             break;
                         }
                     }
-                    
+
                     if (!foundMSTTCGP) {
                         return {
                             success: false,
                             error: "Không tìm thấy MSTTCGP trong file XML"
                         };
                     }
-                    
+
                     // Kiểm tra trùng khớp với function
                     if (foundMSTTCGP === this.id) {
                         return {
@@ -1827,7 +1864,7 @@
                             error: `❌ MSTTCGP không trùng khớp! Function: ${this.id}, XML: ${foundMSTTCGP}`
                         };
                     }
-                    
+
                 } catch (error) {
                     return {
                         success: false,
@@ -1835,23 +1872,22 @@
                     };
                 }
             },
-            
+
             // Phân tích XML và trích xuất thông tin
             parseXML: function(xmlContent) {
                 try {
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
-                    
+
                     // Trích xuất thông tin từ XML
                     const khhDon = xmlDoc.getElementsByTagName("KHHDon")[0]?.textContent || "";
                     const shDon = xmlDoc.getElementsByTagName("SHDon")[0]?.textContent || "";
-                    // SỬA ĐỔI: Lấy textContent thay vì thuộc tính Id của MCCQT
                     const mcCQT = xmlDoc.getElementsByTagName("MCCQT")[0]?.textContent || "";
                     const msttcgp = xmlDoc.getElementsByTagName("MSTTCGP")[0]?.textContent || "";
                     const nBan = xmlDoc.getElementsByTagName("NBan")[0];
                     const sellerName = nBan?.getElementsByTagName("Ten")[0]?.textContent || "";
                     const sellerMST = nBan?.getElementsByTagName("MST")[0]?.textContent || "";
-                    
+
                     return {
                         success: true,
                         data: {
@@ -1870,29 +1906,29 @@
                     };
                 }
             },
-            
+
             // Tạo đường dẫn file PDF
             generateFilePath: function(data) {
                 if (!data.kyyHieu || !data.soHoaDon || !data.maTraCuu) {
                     return null;
                 }
-                
+
                 // Tạo thư mục con từ ký hiệu (ví dụ: C25TAA -> C2/5T/)
-                const folderPath = data.kyyHieu.substring(0, 2) + "/" + 
-                                 data.kyyHieu.substring(2, 4) + "/";
-                
+                const folderPath = data.kyyHieu.substring(0, 2) + "/" +
+                    data.kyyHieu.substring(2, 4) + "/";
+
                 // Tạo tên file
                 const fileName = `${data.kyyHieu}-${data.soHoaDon}-${data.maTraCuu}-DPH.pdf`;
-                
+
                 return folderPath + fileName;
             },
-            
+
             // Tạo link download hoàn chỉnh
             createDownloadLink: function(filePath) {
                 if (!filePath) return null;
                 return this.baseURL + encodeURIComponent(filePath) + "&BFType=1";
             },
-            
+
             // Tạo link từ XML content
             generateFromXML: function(xmlContent) {
                 // Xác thực trước
@@ -1900,12 +1936,12 @@
                 if (!authResult.success) {
                     return authResult;
                 }
-                
+
                 const parseResult = this.parseXML(xmlContent);
                 if (!parseResult.success) {
                     return parseResult;
                 }
-                
+
                 const filePath = this.generateFilePath(parseResult.data);
                 if (!filePath) {
                     return {
@@ -1913,9 +1949,9 @@
                         error: "Không thể tạo đường dẫn file từ dữ liệu XML"
                     };
                 }
-                
+
                 const downloadLink = this.createDownloadLink(filePath);
-                
+
                 return {
                     success: true,
                     data: {
@@ -1942,50 +1978,50 @@
                 const xmlContent = jsonData.xmlContent;
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
-                
+
                 // Check for XML parsing errors
                 if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
                     throw new Error('XML không hợp lệ');
                 }
-                
+
                 // Extract seller tax code
                 const sellerTaxCode = xmlDoc.querySelector('NBan MST')?.textContent || '';
-                
+
                 // Extract lookup info from TTKhac
                 let portalLink = '';
                 let fkey = '';
-                
+
                 const infoNodes = xmlDoc.querySelectorAll('TTKhac TTin');
                 infoNodes.forEach(node => {
                     const field = node.querySelector('TTruong')?.textContent;
                     const value = node.querySelector('DLieu')?.textContent;
-                    
+
                     if (field === 'PortalLink') portalLink = value || '';
                     if (field === 'Fkey') fkey = value || '';
                 });
-                
+
                 // If no portal link found, generate from tax code
                 if (!portalLink && sellerTaxCode) {
                     portalLink = `https://${sellerTaxCode}hd.easyinvoice.com.vn`;
                 }
-                
+
                 // Validate required data
                 if (!portalLink || !fkey) {
                     throw new Error('Thiếu thông tin tra cứu');
                 }
-                
+
                 // Extract optional invoice info for better UX
                 const invoicePattern = xmlDoc.querySelector('TTChung KHHDon')?.textContent || '';
                 const invoiceNo = xmlDoc.querySelector('TTChung SHDon')?.textContent || '';
-                
+
                 // Construct URL
                 const baseUrl = portalLink.replace(/\/+$/, '');
                 let lookupUrl = `${baseUrl}/Search/Index?fkey=${encodeURIComponent(fkey)}`;
-                
+
                 // Add optional parameters
                 if (invoicePattern) lookupUrl += `&symbol=${encodeURIComponent(invoicePattern)}`;
                 if (invoiceNo) lookupUrl += `&invoiceNo=${encodeURIComponent(invoiceNo)}`;
-                
+
                 return {
                     success: true,
                     lookupUrl: lookupUrl,
@@ -1995,7 +2031,7 @@
                     invoicePattern: invoicePattern,
                     invoiceNo: invoiceNo
                 };
-                
+
             } catch (error) {
                 console.error('Lỗi tạo link tra cứu:', error.message);
                 return {
@@ -2110,69 +2146,32 @@
 
         // Danh sách nhà cung cấp hỗ trợ tải PDF trực tiếp
         const directPdfDownloadProviders = [
-            {
-                mst: "0101243150",
-                name: "Công ty Cổ phần MISA (meInvoice)",
-                pdfUrlPattern: "https://meinvoice.vn/tra-cuu/DownloadHandler.ashx?Type=pdf&MST={sellerTaxCode}&Code={transactionId}&Module={moduleCode}",
-                description: "Hỗ trợ tải PDF trực tiếp từ MISA",
-                requiresVerificationCode: false,
-                autoFillSupported: true
-            },
-            {
-                mst: "0100684378", 
-                name: "Tập Đoàn Bưu chính viễn thông Việt Nam (VNPT-Invoice)",
+            { mst: "0101243150", name: "Công ty Cổ phần MISA (meInvoice)", pdfUrlPattern: "https://meinvoice.vn/tra-cuu/DownloadHandler.ashx?Type=pdf&MST={sellerTaxCode}&Code={transactionId}&Module={moduleCode}",
+                description: "Hỗ trợ tải PDF trực tiếp từ MISA", requiresVerificationCode: false, autoFillSupported: true },
+            { mst: "0100684378", name: "Tập Đoàn Bưu chính viễn thông Việt Nam (VNPT-Invoice)",
                 pdfUrlPattern: "https://portaltool-miennam.vnpt-invoice.com.vn/api/invoice/download?code={code}",
-                description: "Hỗ trợ tải PDF trực tiếp từ VNPT",
-                requiresVerificationCode: true,
-                autoFillSupported: false
-            },
-            {
-                mst: "0100109106",
-                name: "Tập đoàn Công nghiệp – Viễn thông quân đội (Viettel/S-Invoice)",
+                description: "Hỗ trợ tải PDF trực tiếp từ VNPT", requiresVerificationCode: true, autoFillSupported: false },
+            { mst: "0100109106", name: "Tập đoàn Công nghiệp – Viễn thông quân đội (Viettel/S-Invoice)",
                 pdfUrlPattern: "https://vinvoice.viettel.vn/api/invoice/download/{code}",
-                description: "Hỗ trợ tải PDF trực tiếp từ Viettel",
-                requiresVerificationCode: true,
-                autoFillSupported: false
-            },
-            {
-                mst: "0101360697",
-                name: "Công ty Cổ phần BKAV (Bkav eHoadon)",
+                description: "Hỗ trợ tải PDF trực tiếp từ Viettel", requiresVerificationCode: true, autoFillSupported: false },
+            { mst: "0101360697", name: "Công ty Cổ phần BKAV (Bkav eHoadon)",
                 pdfUrlPattern: "https://van.ehoadon.vn/DownloadFile?FilePath={filePath}&BFType=1",
-                description: "Hỗ trợ tải PDF trực tiếp từ BKAV",
-                requiresVerificationCode: false,
-                autoFillSupported: true
-            },
-            {
-                mst: "0314743623",
-                name: "Công ty TNHH Công nghệ Vĩnh Hy",
-                pdfUrlPattern: "https://ehoadondientu.com/api/download/{code}",
-                description: "Hỗ trợ tải PDF trực tiếp từ Vĩnh Hy",
-                requiresVerificationCode: false,
-                autoFillSupported: true
-            },
-            {
-                mst: "0104128565",
-                name: "Công ty TNHH Hệ thống thông tin FPT (FPT eInvoice)",
+                description: "Hỗ trợ tải PDF trực tiếp từ BKAV", requiresVerificationCode: false, autoFillSupported: true },
+            { mst: "0314743623", name: "Công ty TNHH Công nghệ Vĩnh Hy", pdfUrlPattern: "https://ehoadondientu.com/api/download/{code}",
+                description: "Hỗ trợ tải PDF trực tiếp từ Vĩnh Hy", requiresVerificationCode: false, autoFillSupported: true },
+            { mst: "0104128565", name: "Công ty TNHH Hệ thống thông tin FPT (FPT eInvoice)",
                 pdfUrlPattern: "https://tracuuhoadon.fpt.com.vn/api/download/{code}",
-                description: "Hỗ trợ tải PDF trực tiếp từ FPT",
-                requiresVerificationCode: false,
-                autoFillSupported: true
-            },
-            {
-                mst: "0105987432",
-                name: "Công ty Cổ phần Đầu tư công nghệ và thương mại Softdreams (EasyInvoice)",
-                pdfUrlPattern: "{portalLink}/Search/Index?fkey={fkey}",
-                description: "Hỗ trợ tra cứu trực tiếp từ EasyInvoice",
-                requiresVerificationCode: false,
-                autoFillSupported: true
-            }
+                description: "Hỗ trợ tải PDF trực tiếp từ FPT", requiresVerificationCode: false, autoFillSupported: true },
+            { mst: "0105987432", name: "Công ty Cổ phần Đầu tư công nghệ và thương mại Softdreams (EasyInvoice)",
+                pdfUrlPattern: "{portalLink}/Search/Index?fkey={fkey}", description: "Hỗ trợ tra cứu trực tiếp từ EasyInvoice",
+                requiresVerificationCode: false, autoFillSupported: true }
         ];
 
         // Hàm tạo URL tra cứu đặc biệt cho các nhà cung cấp cụ thể
         function createSpecialLookupUrl(providerMST, transactionID, sellerTaxCode, verificationCode) {
             if (!transactionID) return null;
-            
-            switch(providerMST) {
+
+            switch (providerMST) {
                 case "0101360697": // BKAV
                     return `https://van.ehoadon.vn/Lookup?InvoiceGUID=${transactionID}`;
                 case "0101243150": // MISA
@@ -2215,34 +2214,34 @@
         // Hàm tạo URL tự động điền thông tin
         function createAutoFillUrl(providerMST, sellerTaxCode, verificationCode, transactionID) {
             if (!providerMST || !sellerTaxCode) return null;
-            
+
             const provider = serviceProviders.find(p => p.mst === providerMST);
             if (!provider) return null;
-            
+
             let baseUrl = provider.url;
-            
+
             // Thêm tham số tự động điền cho các nhà cung cấp hỗ trợ
             const params = new URLSearchParams();
-            
+
             if (sellerTaxCode) {
                 params.append('sellerTaxCode', sellerTaxCode);
                 params.append('taxCode', sellerTaxCode);
                 params.append('mst', sellerTaxCode);
             }
-            
+
             if (verificationCode) {
                 params.append('verificationCode', verificationCode);
                 params.append('code', verificationCode);
                 params.append('fkey', verificationCode);
                 params.append('searchCode', verificationCode);
             }
-            
+
             if (transactionID) {
                 params.append('transactionId', transactionID);
                 params.append('invoiceId', transactionID);
                 params.append('guid', transactionID);
             }
-            
+
             const queryString = params.toString();
             return queryString ? `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}${queryString}` : baseUrl;
         }
@@ -2250,7 +2249,7 @@
         // Lấy thông tin nhà cung cấp dịch vụ từ API
         async function getServiceProviderInfo(taxCode) {
             if (!taxCode) return null;
-            
+
             try {
                 const response = await fetch(`https://api.vietqr.io/v2/business/${taxCode}`);
                 if (!response.ok) {
@@ -2268,7 +2267,7 @@
         function initializeProviders() {
             const providerSelect = document.getElementById('providerSelect');
             providerSelect.innerHTML = '<option value="">-- Chọn nhà cung cấp --</option>';
-            
+
             // Nếu có nhà cung cấp phù hợp, chỉ hiển thị những nhà cung cấp đó
             if (matchedProviders.length > 0) {
                 matchedProviders.forEach(provider => {
@@ -2297,16 +2296,16 @@
         // Tìm nhà cung cấp phù hợp dựa trên MSTTCGP
         function findMatchingProviders(taxCode) {
             if (!taxCode) return [];
-            
+
             const matched = [];
-            
+
             // Tìm kiếm chính xác
             serviceProviders.forEach(provider => {
                 if (provider.mst === taxCode) {
                     matched.push(provider);
                 }
             });
-            
+
             // Nếu không tìm thấy kết quả chính xác, tìm kiếm gần đúng
             if (matched.length === 0) {
                 serviceProviders.forEach(provider => {
@@ -2315,26 +2314,26 @@
                     }
                 });
             }
-            
+
             return matched;
         }
 
         // Kiểm tra nhà cung cấp có hỗ trợ tải PDF trực tiếp không
         function checkDirectPdfDownloadSupport(taxCode, verificationCode) {
             if (!taxCode) return null;
-            
+
             // Tìm nhà cung cấp trong danh sách hỗ trợ tải PDF
             const provider = directPdfDownloadProviders.find(p => p.mst === taxCode);
-            
+
             if (provider) {
                 // Tạo URL tải PDF
                 let pdfUrl = provider.pdfUrlPattern;
-                
+
                 // Thay thế các tham số
                 pdfUrl = pdfUrl.replace('{sellerTaxCode}', encodeURIComponent(invoiceData.sellerTaxCode || ''));
                 pdfUrl = pdfUrl.replace('{transactionId}', encodeURIComponent(invoiceData.transactionID || ''));
                 pdfUrl = pdfUrl.replace('{moduleCode}', encodeURIComponent(provider.mst));
-                
+
                 // Nếu cần mã tra cứu và có mã, thay thế vào URL
                 if (provider.requiresVerificationCode && verificationCode) {
                     pdfUrl = pdfUrl.replace('{code}', encodeURIComponent(verificationCode));
@@ -2349,7 +2348,7 @@
                         requiresCode: true
                     };
                 }
-                
+
                 return {
                     provider: provider,
                     pdfUrl: pdfUrl,
@@ -2357,26 +2356,26 @@
                     autoFillSupported: provider.autoFillSupported
                 };
             }
-            
+
             return null;
         }
 
         // Cập nhật danh sách nhà cung cấp với thông tin từ API
         async function updateProvidersWithApiInfo(serviceTaxCode) {
             if (!serviceTaxCode) return;
-            
+
             const providerSelect = document.getElementById('providerSelect');
             const providerLoading = document.getElementById('providerLoading');
-            
+
             // Hiển thị loading
             providerLoading.style.display = 'block';
-            
+
             try {
                 const providerInfo = await getServiceProviderInfo(serviceTaxCode);
-                
+
                 if (providerInfo && providerInfo.data) {
                     serviceProviderInfo = providerInfo.data;
-                    
+
                     // Tìm và cập nhật option tương ứng trong dropdown
                     const options = providerSelect.getElementsByTagName('option');
                     for (let option of options) {
@@ -2389,7 +2388,7 @@
                             break;
                         }
                     }
-                    
+
                     // Cập nhật thông tin chi tiết nhà cung cấp
                     updateProviderDetails(providerInfo.data);
                 }
@@ -2403,16 +2402,16 @@
         // Cập nhật thông tin chi tiết nhà cung cấp
         function updateProviderDetails(providerData) {
             const providerDetails = document.getElementById('providerDetails');
-            
+
             if (providerData) {
                 providerDetails.innerHTML = `
-                    <h4>Thông tin nhà cung cấp dịch vụ hóa đơn điện tử:</h4>
-                    <p><strong>Tên đơn vị:</strong> ${providerData.name || 'Không có thông tin'}</p>
-                    <p><strong>Mã số thuế:</strong> ${providerData.taxCode || 'Không có thông tin'}</p>
-                    <p><strong>Địa chỉ:</strong> ${providerData.address || 'Không có thông tin'}</p>
-                    <p><strong>Người đại diện:</strong> ${providerData.representative || 'Không có thông tin'}</p>
-                    <p><strong>Trạng thái:</strong> ${providerData.status || 'Không có thông tin'}</p>
-                `;
+                        <h4>Thông tin nhà cung cấp dịch vụ hóa đơn điện tử:</h4>
+                        <p><strong>Tên đơn vị:</strong> ${providerData.name || 'Không có thông tin'}</p>
+                        <p><strong>Mã số thuế:</strong> ${providerData.taxCode || 'Không có thông tin'}</p>
+                        <p><strong>Địa chỉ:</strong> ${providerData.address || 'Không có thông tin'}</p>
+                        <p><strong>Người đại diện:</strong> ${providerData.representative || 'Không có thông tin'}</p>
+                        <p><strong>Trạng thái:</strong> ${providerData.status || 'Không có thông tin'}</p>
+                    `;
                 providerDetails.style.display = 'block';
             }
         }
@@ -2420,45 +2419,46 @@
         // Hiển thị danh sách nhà cung cấp trong bảng
         function displayProviderList() {
             const container = document.getElementById('providerTableContainer');
-            
+
             let tableHTML = `
-                <table class="provider-table">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>MSTTCGP</th>
-                            <th>Tên Nhà Cung Cấp</th>
-                            <th>Link Tra Cứu</th>
-                            <th>Hỗ trợ PDF</th>
-                            <th>Tự động điền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
+                    <table class="provider-table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>MSTTCGP</th>
+                                <th>Tên Nhà Cung Cấp</th>
+                                <th>Link Tra Cứu</th>
+                                <th>Hỗ trợ PDF</th>
+                                <th>Tự động điền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    `;
+
             serviceProviders.forEach((provider, index) => {
                 const supportsPdf = directPdfDownloadProviders.some(p => p.mst === provider.mst);
-                const supportsAutoFill = directPdfDownloadProviders.some(p => p.mst === provider.mst && p.autoFillSupported);
+                const supportsAutoFill = directPdfDownloadProviders.some(p => p.mst === provider.mst && p
+                .autoFillSupported);
                 const pdfBadge = supportsPdf ? '<span class="provider-badge">PDF</span>' : '';
                 const autoFillBadge = supportsAutoFill ? '<span class="provider-badge">Auto</span>' : '';
-                
+
                 tableHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${provider.mst}</td>
-                        <td>${provider.name} ${pdfBadge} ${autoFillBadge}</td>
-                        <td><a href="${provider.url}" target="_blank" class="provider-link">${provider.url}</a></td>
-                        <td>${supportsPdf ? '✅ Có' : '❌ Không'}</td>
-                        <td>${supportsAutoFill ? '✅ Có' : '❌ Không'}</td>
-                    </tr>
-                `;
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${provider.mst}</td>
+                            <td>${provider.name} ${pdfBadge} ${autoFillBadge}</td>
+                            <td><a href="${provider.url}" target="_blank" class="provider-link">${provider.url}</a></td>
+                            <td>${supportsPdf ? '✅ Có' : '❌ Không'}</td>
+                            <td>${supportsAutoFill ? '✅ Có' : '❌ Không'}</td>
+                        </tr>
+                    `;
             });
-            
+
             tableHTML += `
-                    </tbody>
-                </table>
-            `;
-            
+                        </tbody>
+                    </table>
+                `;
+
             container.innerHTML = tableHTML;
         }
 
@@ -2472,10 +2472,10 @@
                     timestamp: new Date().toISOString(),
                     processedData: invoiceData
                 };
-                
+
                 // Lưu vào localStorage thay vì tải về file
                 localStorage.setItem('invoiceJsonData', JSON.stringify(jsonData));
-                
+
                 console.log('Đã lưu XML vào JSON trong localStorage:', fileName);
                 return true;
             } catch (error) {
@@ -2507,7 +2507,7 @@
             try {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
-                
+
                 const foundCodes = [];
                 const processedCodes = new Set();
 
@@ -2548,13 +2548,13 @@
                         const children = element.children;
                         let fieldName = '';
                         let dataValue = '';
-                        
+
                         for (let child of children) {
                             if (child.tagName === 'TTruong') fieldName = child.textContent || '';
                             if (child.tagName === 'DLieu') dataValue = child.textContent || '';
                         }
-                        
-                        if (fieldName && fieldName.toLowerCase().includes('mã số bí mật') && 
+
+                        if (fieldName && fieldName.toLowerCase().includes('mã số bí mật') &&
                             dataValue && !processedCodes.has(dataValue)) {
                             foundCodes.push({
                                 code: dataValue,
@@ -2592,13 +2592,13 @@
                         const children = element.children;
                         let fieldName = '';
                         let dataValue = '';
-                        
+
                         for (let child of children) {
                             if (child.tagName === 'TTruong') fieldName = child.textContent || '';
                             if (child.tagName === 'DLieu') dataValue = child.textContent || '';
                         }
-                        
-                        if (fieldName && fieldName.toLowerCase().includes('fkey') && 
+
+                        if (fieldName && fieldName.toLowerCase().includes('fkey') &&
                             dataValue && !processedCodes.has(dataValue)) {
                             foundCodes.push({
                                 code: dataValue,
@@ -2612,7 +2612,7 @@
                     }
                 } else {
                     // Các MSTTCGP còn lại: Ưu tiên thuộc tính ID của DLHDon và khóa Fkey
-                    
+
                     // Ưu tiên 1: Thuộc tính ID của DLHDon
                     const dlhdonElements = xmlDoc.getElementsByTagName("DLHDon");
                     if (dlhdonElements.length > 0) {
@@ -2628,20 +2628,20 @@
                             processedCodes.add(dlhdonId);
                         }
                     }
-                    
+
                     // Ưu tiên 2: Khóa Fkey
                     const ttinElements = xmlDoc.getElementsByTagName("TTin");
                     for (let element of ttinElements) {
                         const children = element.children;
                         let fieldName = '';
                         let dataValue = '';
-                        
+
                         for (let child of children) {
                             if (child.tagName === 'TTruong') fieldName = child.textContent || '';
                             if (child.tagName === 'DLieu') dataValue = child.textContent || '';
                         }
-                        
-                        if (fieldName && fieldName.toLowerCase().includes('fkey') && 
+
+                        if (fieldName && fieldName.toLowerCase().includes('fkey') &&
                             dataValue && !processedCodes.has(dataValue)) {
                             foundCodes.push({
                                 code: dataValue,
@@ -2661,12 +2661,12 @@
                     const children = element.children;
                     let fieldName = '';
                     let dataValue = '';
-                    
+
                     for (let child of children) {
                         if (child.tagName === 'TTruong') fieldName = child.textContent || '';
                         if (child.tagName === 'DLieu') dataValue = child.textContent || '';
                     }
-                    
+
                     if (dataValue && !processedCodes.has(dataValue) && isPortalCode(dataValue)) {
                         foundCodes.push({
                             code: dataValue,
@@ -2682,7 +2682,7 @@
                 // 5. Tìm trong toàn bộ XML (dự phòng)
                 const allText = xmlDoc.documentElement.textContent || '';
                 const words = allText.split(/[\s<>]+/).filter(word => word.trim().length > 0);
-                
+
                 for (let word of words) {
                     const cleanWord = word.replace(/[^\w*\-_]/g, '');
                     if (isPortalCode(cleanWord) && !processedCodes.has(cleanWord)) {
@@ -2712,37 +2712,37 @@
         function isPortalCode(text) {
             if (!text || typeof text !== 'string') return false;
             if (text.length < 6 || text.length > 25) return false;
-            
+
             // Loại bỏ các mã hex dài (MCCQT)
             if (/^[0-9A-F]{32,}$/i.test(text)) return false;
-            
+
             // Pattern cho mã tra cứu portal - CẬP NHẬT THEO YÊU CẦU 1
             const patterns = [
-                /^[A-Z0-9*]+$/,           // Chỉ chữ hoa, số và ký tự "*"
-                /^[A-Z0-9]{6,25}$/,       // Chỉ chữ hoa và số
-                /^[A-Z0-9*]{6,25}$/       // Chữ hoa, số và có thể có "*"
+                /^[A-Z0-9*]+$/, // Chỉ chữ hoa, số và ký tự "*"
+                /^[A-Z0-9]{6,25}$/, // Chỉ chữ hoa và số
+                /^[A-Z0-9*]{6,25}$/ // Chữ hoa, số và có thể có "*"
             ];
-            
+
             return patterns.some(pattern => pattern.test(text));
         }
 
         // Hàm hỗ trợ phân loại mã
         function getCodeType(fieldName) {
             if (!fieldName) return 'unknown';
-            
+
             const field = fieldName.toLowerCase();
             if (field.includes('fkey')) return 'fkey';
             if (field.includes('portal')) return 'portal';
             if (field.includes('secret') || field.includes('bí mật')) return 'secret';
             if (field.includes('tra cứu') || field.includes('tracuu')) return 'tra_cuu';
-            
+
             return 'other';
         }
 
         // Thuật toán tìm kiếm Transaction ID được cải tiến
         function findTransactionID(xmlDoc) {
             console.log("🔍 Bắt đầu tìm kiếm Transaction ID...");
-            
+
             // ƯU TIÊN CAO NHẤT: Tìm trong thuộc tính Id của thẻ DLHDon
             const dlhdonElements = xmlDoc.getElementsByTagName('DLHDon');
             if (dlhdonElements.length > 0) {
@@ -2752,18 +2752,18 @@
                     return dlhdonId.trim();
                 }
             }
-            
+
             // Pattern cho Transaction ID: chuỗi chữ và số, có thể có dấu gạch ngang
             const transactionIdPattern = /^[A-Za-z0-9\-_]+$/;
-            
+
             // Tìm kiếm trong toàn bộ cấu trúc XML
             const allElements = xmlDoc.getElementsByTagName('*');
             const candidates = [];
-            
+
             for (let i = 0; i < allElements.length; i++) {
                 const element = allElements[i];
                 const textContent = element.textContent.trim();
-                
+
                 // Kiểm tra nếu nội dung phù hợp với pattern transaction ID
                 if (textContent && transactionIdPattern.test(textContent)) {
                     // Kiểm tra độ dài hợp lý (thường từ 10-50 ký tự)
@@ -2777,17 +2777,17 @@
                     }
                 }
             }
-            
+
             // Ưu tiên các tag có tên liên quan đến transaction ID
             const priorityTags = ['TransactionID', 'InvoiceGUID', 'GUID', 'UUID', 'MaGiaoDich', 'Reference', 'Id', 'ID'];
-            
+
             for (const candidate of candidates) {
                 if (priorityTags.includes(candidate.tagName)) {
                     console.log(`🎯 Tìm thấy Transaction ID trong tag ưu tiên '${candidate.tagName}': ${candidate.value}`);
                     return candidate.value;
                 }
             }
-            
+
             // Tìm trong TTKhac với thuật toán cải tiến
             const ttKhac = xmlDoc.getElementsByTagName('TTKhac');
             if (ttKhac.length > 0) {
@@ -2796,42 +2796,42 @@
                 for (let i = 0; i < ttinList.length; i++) {
                     const ttruong = ttinList[i].getElementsByTagName('TTruong')[0];
                     const dlieu = ttinList[i].getElementsByTagName('DLieu')[0];
-                    
+
                     if (ttruong && dlieu) {
                         const fieldName = ttruong.textContent.toLowerCase();
                         const fieldValue = dlieu.textContent.trim();
-                        
+
                         // Kiểm tra các từ khóa liên quan đến transaction ID
-                        if (fieldValue && transactionIdPattern.test(fieldValue) && 
+                        if (fieldValue && transactionIdPattern.test(fieldValue) &&
                             (fieldName.includes('transaction') ||
-                             fieldName.includes('guid') ||
-                             fieldName.includes('invoiceid') ||
-                             fieldName.includes('invoiceguid') ||
-                             fieldName.includes('uuid') ||
-                             fieldName.includes('mã giao dịch') ||
-                             fieldName.includes('mã hóa đơn') ||
-                             fieldName.includes('số biên nhận') ||
-                             fieldName.includes('reference') ||
-                             fieldName.includes('id'))) {
+                                fieldName.includes('guid') ||
+                                fieldName.includes('invoiceid') ||
+                                fieldName.includes('invoiceguid') ||
+                                fieldName.includes('uuid') ||
+                                fieldName.includes('mã giao dịch') ||
+                                fieldName.includes('mã hóa đơn') ||
+                                fieldName.includes('số biên nhận') ||
+                                fieldName.includes('reference') ||
+                                fieldName.includes('id'))) {
                             console.log(`✅ Tìm thấy Transaction ID trong TTKhac: ${fieldValue}`);
                             return fieldValue;
                         }
                     }
                 }
             }
-            
+
             // Nếu vẫn không tìm thấy, trả về candidate đầu tiên (nếu có)
             if (candidates.length > 0) {
                 console.log(`🔄 Sử dụng candidate đầu tiên: ${candidates[0].value}`);
                 return candidates[0].value;
             }
-            
+
             // Fallback: sử dụng số hóa đơn nếu không tìm thấy transaction ID
             if (invoiceData.invoiceNo) {
                 console.log(`🔄 Sử dụng số hóa đơn làm Transaction ID: ${invoiceData.invoiceNo}`);
                 return invoiceData.invoiceNo;
             }
-            
+
             console.log("❌ Không tìm thấy Transaction ID");
             return '';
         }
@@ -2841,27 +2841,27 @@
             try {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlContent, 'text/xml');
-                
+
                 // Kiểm tra lỗi XML
                 const parseError = xmlDoc.getElementsByTagName('parsererror');
                 if (parseError.length > 0) {
                     throw new Error('File XML không hợp lệ');
                 }
-                
+
                 // Trích xuất thông tin cơ bản
                 const sellerName = xmlDoc.querySelector('NBan > Ten')?.textContent || '';
                 const sellerTaxCode = xmlDoc.querySelector('NBan > MST')?.textContent || '';
                 const serviceProviderTaxCode = xmlDoc.querySelector('MSTTCGP')?.textContent || '';
-                
+
                 // Sử dụng thuật toán mới để tìm mã tra cứu
                 const portalCodes = extractPortalCodes(xmlContent);
                 const verificationCode = portalCodes.length > 0 ? portalCodes[0].code : '';
-                
+
                 // Sử dụng thuật toán cải tiến để tìm transaction ID
                 const transactionID = findTransactionID(xmlDoc);
-                
+
                 const invoiceNumber = xmlDoc.querySelector('SHDon')?.textContent || '';
-                
+
                 // Cập nhật dữ liệu toàn cục
                 invoiceData = {
                     sellerName,
@@ -2873,16 +2873,16 @@
                     xmlContent: xmlContent,
                     portalCodes: portalCodes // Lưu tất cả các mã tìm thấy
                 };
-                
+
                 console.log("📊 Dữ liệu hóa đơn đã được xử lý:", invoiceData);
                 console.log("🔍 Các mã tra cứu tìm thấy:", portalCodes);
-                
+
                 // Tìm nhà cung cấp phù hợp - YÊU CẦU 2
                 matchedProviders = findMatchingProviders(serviceProviderTaxCode);
-                
+
                 // Lưu vào JSON - YÊU CẦU 1
                 saveXmlToJson(xmlContent, 'invoice_data');
-                
+
                 return invoiceData;
             } catch (error) {
                 console.error('Lỗi khi xử lý XML:', error);
@@ -2911,34 +2911,34 @@
         document.getElementById('uploadBtnGtgt').addEventListener('click', function() {
             const fileInput = document.getElementById('xmlFileGtgt');
             const file = fileInput.files[0];
-            
+
             if (!file) {
                 alert('Vui lòng chọn file XML trước khi tải lên!');
                 return;
             }
-            
+
             document.getElementById('loadingGtgt').style.display = 'block';
             document.getElementById('invoicePreviewGtgt').style.display = 'none';
             document.getElementById('requestOriginalBtn').style.display = 'none';
-            
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 setTimeout(() => {
                     const xmlText = e.target.result;
-                    
+
                     // Xử lý XML và lưu vào JSON - YÊU CẦU 1 & 8
                     const processedData = processXmlData(xmlText);
-                    
+
                     if (processedData) {
                         // Xử lý dữ liệu XML cho hóa đơn GTGT
                         const success = processXmlDataGtgtForDisplay(xmlText);
-                        
+
                         if (success) {
                             // Phân trang dữ liệu
                             paginateInvoiceDataGtgt();
                             // Hiển thị trang đầu tiên
                             showPageGtgt(1);
-                            
+
                             document.getElementById('loadingGtgt').style.display = 'none';
                             document.getElementById('invoicePreviewGtgt').style.display = 'block';
                             document.getElementById('requestOriginalBtn').style.display = 'inline-block';
@@ -2951,12 +2951,12 @@
                     }
                 }, 500);
             };
-            
+
             reader.onerror = function() {
                 alert('Lỗi khi đọc file. Vui lòng thử lại.');
                 document.getElementById('loadingGtgt').style.display = 'none';
             };
-            
+
             reader.readAsText(file);
         });
 
@@ -2965,14 +2965,14 @@
             try {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-                
+
                 // Kiểm tra lỗi XML
                 const parseError = xmlDoc.getElementsByTagName('parsererror');
                 if (parseError.length > 0) {
                     alert('File XML không hợp lệ. Vui lòng kiểm tra lại file.');
                     return false;
                 }
-                
+
                 return processXmlDataGtgt(xmlDoc);
             } catch (error) {
                 console.error('Lỗi khi xử lý XML:', error);
@@ -2981,25 +2981,25 @@
             }
         }
 
-        // Hàm xử lý dữ liệu XML cho tab GTGT
+        // Hàm xử lý dữ liệu XML cho tab GTGT - CẬP NHẬT ĐỂ LẤY VAT RATE CHÍNH XÁC
         function processXmlDataGtgt(xmlDoc) {
             try {
                 // Reset dữ liệu
                 invoiceDataGtgt = {};
-                
+
                 // Lấy thông tin chung
                 const ttChung = xmlDoc.getElementsByTagName('TTChung')[0];
                 if (!ttChung) {
                     alert('Không tìm thấy thông tin chung của hóa đơn');
                     return false;
                 }
-                
+
                 invoiceDataGtgt.invoiceDate = formatDateGtgt(getElementTextGtgt(ttChung, 'NLap'));
                 invoiceDataGtgt.serialNo = getElementTextGtgt(ttChung, 'KHHDon');
                 invoiceDataGtgt.invoiceNo = getElementTextGtgt(ttChung, 'SHDon');
                 invoiceDataGtgt.exchangeRate = getElementTextGtgt(ttChung, 'TGia', '1');
                 invoiceDataGtgt.paymentMethod = getElementTextGtgt(ttChung, 'HTTToan', 'Tiền mặt');
-                
+
                 // Lấy thông tin người bán
                 const nBan = xmlDoc.getElementsByTagName('NBan')[0];
                 if (nBan) {
@@ -3007,7 +3007,7 @@
                     invoiceDataGtgt.sellerTaxCode = getElementTextGtgt(nBan, 'MST');
                     invoiceDataGtgt.sellerAddress = getElementTextGtgt(nBan, 'DChi');
                 }
-                
+
                 // Lấy thông tin người mua
                 const nMua = xmlDoc.getElementsByTagName('NMua')[0];
                 if (nMua) {
@@ -3015,18 +3015,30 @@
                     invoiceDataGtgt.buyerTaxCode = getElementTextGtgt(nMua, 'MST');
                     invoiceDataGtgt.buyerAddress = getElementTextGtgt(nMua, 'DChi');
                 }
-                
-                // Lấy thông tin hàng hóa/dịch vụ
+
+                // Lấy thông tin hàng hóa/dịch vụ - CẬP NHẬT ĐỂ LẤY VAT RATE
                 const dshhdvu = xmlDoc.getElementsByTagName('DSHHDVu')[0];
                 invoiceDataGtgt.products = [];
-                
+                // Biến để lưu thuế suất của từng sản phẩm, nếu tất cả đều giống nhau thì hiển thị chung
+                let uniqueTaxRates = new Set();
+
                 if (dshhdvu) {
                     const products = dshhdvu.getElementsByTagName('HHDVu');
                     for (let i = 0; i < products.length; i++) {
                         const product = products[i];
-                        const thueSuat = getElementTextGtgt(product, 'TSuat', '0');
+                        // Lấy thuế suất từ thẻ TSuat
+                        let taxRate = getElementTextGtgt(product, 'TSuat', '0');
+                        // Làm sạch thuế suất (loại bỏ % nếu có)
+                        taxRate = taxRate.replace('%', '').trim();
+                        // Chuyển đổi sang số để so sánh
+                        const taxRateNum = parseFloat(taxRate);
+                        // Lưu vào Set để kiểm tra uniqueness
+                        if (!isNaN(taxRateNum) && taxRateNum > 0) {
+                            uniqueTaxRates.add(taxRateNum);
+                        }
+
                         const tienThue = getElementTextGtgt(product, 'TThue', '0');
-                        
+
                         invoiceDataGtgt.products.push({
                             stt: getElementTextGtgt(product, 'STT', (i + 1).toString()),
                             description: getElementTextGtgt(product, 'THHDVu'),
@@ -3034,12 +3046,24 @@
                             quantity: getElementTextGtgt(product, 'SLuong', '1'),
                             unitPrice: getElementTextGtgt(product, 'DGia', '0'),
                             amount: getElementTextGtgt(product, 'ThTien', '0'),
-                            taxRate: thueSuat,
+                            taxRate: taxRate,
+                            taxRateNum: taxRateNum,
                             taxAmount: tienThue
                         });
                     }
                 }
-                
+
+                // Lưu thuế suất tổng hợp
+                const uniqueTaxRatesArray = Array.from(uniqueTaxRates).sort((a, b) => a - b);
+                if (uniqueTaxRatesArray.length === 1) {
+                    invoiceDataGtgt.vatRate = uniqueTaxRatesArray[0];
+                } else if (uniqueTaxRatesArray.length > 1) {
+                    // Nếu có nhiều thuế suất khác nhau, hiển thị dạng "10%, 5%, 0%"
+                    invoiceDataGtgt.vatRate = uniqueTaxRatesArray.map(r => r + '%').join(', ');
+                } else {
+                    invoiceDataGtgt.vatRate = 10; // Mặc định 10% nếu không có thông tin
+                }
+
                 // Lấy thông tin tổng thanh toán
                 const tToan = xmlDoc.getElementsByTagName('TToan')[0];
                 if (tToan) {
@@ -3048,22 +3072,26 @@
                     invoiceDataGtgt.totalPayment = getElementTextGtgt(tToan, 'TgTTTBSo', '0');
                     invoiceDataGtgt.amountInWords = getElementTextGtgt(tToan, 'TgTTTBChu', '');
                 }
-                
+
                 // Lấy thông tin mã tra cứu và mã cơ quan thuế
-                // SỬA ĐỔI: Lấy textContent thay vì thuộc tính Id của MCCQT
                 const mccqt = xmlDoc.getElementsByTagName('MCCQT')[0];
                 if (mccqt) {
                     invoiceDataGtgt.verificationCode = mccqt.textContent || '';
-                    // SỬA ĐỔI: Lấy textContent thay vì thuộc tính Id
                     invoiceDataGtgt.taxAuthorityCode = mccqt.textContent || '';
                 }
-                
+
                 // Lấy thông tin transaction ID từ DLHDon
                 const dlhdon = xmlDoc.getElementsByTagName('DLHDon')[0];
                 if (dlhdon) {
                     invoiceDataGtgt.transactionId = dlhdon.getAttribute('Id') || '';
                 }
-                
+
+                // Lấy MSTTCGP và lưu vào invoiceDataGtgt
+                const msttcgp = xmlDoc.getElementsByTagName('MSTTCGP')[0];
+                if (msttcgp) {
+                    invoiceDataGtgt.serviceProviderTaxCode = msttcgp.textContent || '';
+                }
+
                 return true;
             } catch (error) {
                 console.error('Lỗi khi xử lý XML:', error);
@@ -3076,10 +3104,10 @@
         function paginateInvoiceDataGtgt() {
             paginatedInvoiceDataGtgt = [];
             const allProducts = [...invoiceDataGtgt.products];
-            
+
             // Tính toán số dòng tối đa mỗi trang dựa trên chiều cao tên sản phẩm
             maxLinesPerPageGtgt = calculateMaxLinesPerPageGtgt(allProducts);
-            
+
             // Nếu số sản phẩm ít hơn hoặc bằng maxLinesPerPage, tất cả sẽ ở trang cuối
             if (allProducts.length <= maxLinesPerPageGtgt) {
                 paginatedInvoiceDataGtgt.push({
@@ -3091,27 +3119,28 @@
                 totalPagesGtgt = 1;
                 return;
             }
-            
+
             // Phân trang
             let pageNumber = 1;
             let remainingProducts = [...allProducts];
-            
+
             while (remainingProducts.length > 0) {
                 const isLastPage = remainingProducts.length <= maxLinesPerPageGtgt;
-                const productsForPage = remainingProducts.splice(0, isLastPage ? remainingProducts.length : maxLinesPerPageGtgt);
-                
+                const productsForPage = remainingProducts.splice(0, isLastPage ? remainingProducts.length :
+                maxLinesPerPageGtgt);
+
                 paginatedInvoiceDataGtgt.push({
                     products: productsForPage,
                     isLastPage: isLastPage,
                     pageNumber: pageNumber,
                     totalPages: Math.ceil(allProducts.length / maxLinesPerPageGtgt)
                 });
-                
+
                 pageNumber++;
             }
-            
+
             totalPagesGtgt = paginatedInvoiceDataGtgt.length;
-            
+
             // Cập nhật totalPages cho tất cả các trang
             paginatedInvoiceDataGtgt.forEach(page => {
                 page.totalPages = totalPagesGtgt;
@@ -3125,11 +3154,11 @@
             const footerHeight = 150; // Chiều cao ước tính của footer (px)
             const signatureHeight = 120; // Chiều cao phần chữ ký (chỉ ở trang cuối)
             const pageHeight = 297 * 3.78; // Chiều cao A4 tính bằng px (297mm * 3.78px/mm)
-            
+
             // Tính chiều cao trung bình của mỗi dòng sản phẩm
             let totalProductHeight = 0;
             let productCount = 0;
-            
+
             products.forEach(product => {
                 // Ước tính chiều cao dựa trên độ dài tên sản phẩm
                 const descriptionLength = product.description ? product.description.length : 0;
@@ -3139,13 +3168,13 @@
                 totalProductHeight += productHeight;
                 productCount++;
             });
-            
+
             const avgProductHeight = productCount > 0 ? totalProductHeight / productCount : 30;
-            
+
             // Tính số dòng tối đa có thể chứa trong một trang
             const availableHeight = pageHeight - headerHeight - footerHeight;
             const maxLines = Math.floor(availableHeight / avgProductHeight);
-            
+
             // Đảm bảo ít nhất 5 dòng và tối đa 15 dòng mỗi trang
             return Math.max(5, Math.min(15, maxLines));
         }
@@ -3153,17 +3182,17 @@
         // Hàm hiển thị trang cụ thể cho tab GTGT
         function showPageGtgt(pageNumber) {
             if (pageNumber < 1 || pageNumber > totalPagesGtgt) return;
-            
+
             currentPageGtgt = pageNumber;
             const pageData = paginatedInvoiceDataGtgt[pageNumber - 1];
-            
+
             // Cập nhật thông tin trang
             document.getElementById('pageInfo').textContent = `Trang ${pageNumber} / ${totalPagesGtgt}`;
-            
+
             // Cập nhật trạng thái nút điều hướng
             document.getElementById('prevPageBtn').disabled = pageNumber === 1;
             document.getElementById('nextPageBtn').disabled = pageNumber === totalPagesGtgt;
-            
+
             // Tạo nội dung cho trang hiện tại
             const previewContent = document.getElementById('previewContentGtgt');
             const invoiceHtml = generateGtgtInvoicePage(pageData);
@@ -3216,322 +3245,331 @@
             return taxRate + '%';
         }
 
-        // Tạo nội dung hóa đơn GTGT cho một trang cụ thể - CẢI THIỆN VỚI YÊU CẦU 3
+        // Tạo nội dung hóa đơn GTGT cho một trang cụ thể - CẬP NHẬT VAT RATE CHÍNH XÁC
         function generateGtgtInvoicePage(pageData) {
             const isLastPage = pageData.isLastPage;
             const pageNumber = pageData.pageNumber;
             const totalPages = pageData.totalPages;
-            
+
             // Tạo danh sách sản phẩm cho trang này
             let productsHtml = '';
             const productsForPage = pageData.products;
-            
+
             // Thêm các dòng sản phẩm thực tế
             productsForPage.forEach((product, index) => {
                 productsHtml += `
-                    <tr>
-                        <td align="center" class="invoice-gtgt-item-normal">${product.stt}</td>
-                        <td align="left" class="invoice-gtgt-item-normal">${product.description}</td>
-                        <td align="center" class="invoice-gtgt-item-normal">${product.unit}</td>
-                        <td align="right" class="invoice-gtgt-item-normal">${formatNumberGtgtZero(product.quantity)}</td>
-                        <td align="right" class="invoice-gtgt-item-normal">${formatNumberGtgtZero(product.unitPrice)}</td>
-                        <td align="right" class="invoice-gtgt-item-normal">${formatNumberGtgtZero(product.amount)}</td>
-                    </tr>
-                `;
+                        <tr>
+                            <td align="center" class="invoice-gtgt-item-normal">${product.stt}</td>
+                            <td align="left" class="invoice-gtgt-item-normal">${product.description}</td>
+                            <td align="center" class="invoice-gtgt-item-normal">${product.unit}</td>
+                            <td align="right" class="invoice-gtgt-item-normal">${formatNumberGtgtZero(product.quantity)}</td>
+                            <td align="right" class="invoice-gtgt-item-normal">${formatNumberGtgtZero(product.unitPrice)}</td>
+                            <td align="right" class="invoice-gtgt-item-normal">${formatNumberGtgtZero(product.amount)}</td>
+                        </tr>
+                    `;
             });
-            
+
             // Nếu là trang đầu tiên và số dòng ít hơn maxLinesPerPage, thêm các dòng trống
             if (pageNumber === 1 && productsForPage.length < maxLinesPerPageGtgt) {
                 const emptyRows = maxLinesPerPageGtgt - productsForPage.length;
                 for (let i = 0; i < emptyRows; i++) {
                     productsHtml += `
-                        <tr>
-                            <td align="center" class="invoice-gtgt-item-normal">&nbsp;</td>
-                            <td align="left" class="invoice-gtgt-item-normal">&nbsp;</td>
-                            <td align="center" class="invoice-gtgt-item-normal">&nbsp;</td>
-                            <td align="right" class="invoice-gtgt-item-normal">&nbsp;</td>
-                            <td align="right" class="invoice-gtgt-item-normal">&nbsp;</td>
-                            <td align="right" class="invoice-gtgt-item-normal">&nbsp;</td>
-                        </tr>
-                    `;
+                            <tr>
+                                <td align="center" class="invoice-gtgt-item-normal">&nbsp;</td>
+                                <td align="left" class="invoice-gtgt-item-normal">&nbsp;</td>
+                                <td align="center" class="invoice-gtgt-item-normal">&nbsp;</td>
+                                <td align="right" class="invoice-gtgt-item-normal">&nbsp;</td>
+                                <td align="right" class="invoice-gtgt-item-normal">&nbsp;</td>
+                                <td align="right" class="invoice-gtgt-item-normal">&nbsp;</td>
+                            </tr>
+                        `;
                 }
             }
-            
+
             // Lấy thông tin nhà cung cấp dịch vụ từ XML
             const serviceProviderTaxCode = invoiceDataGtgt.serviceProviderTaxCode || invoiceData.serviceProviderTaxCode || '';
             const serviceProviderName = getServiceProviderName(serviceProviderTaxCode);
-            
+
             // Lấy mã tra cứu từ kết quả hàm extractPortalCodes
             const portalCodes = invoiceData.portalCodes || [];
             const verificationCode = portalCodes.length > 0 ? portalCodes[0].code : invoiceDataGtgt.verificationCode || '';
-            
+
+            // Lấy VAT rate từ dữ liệu đã xử lý
+            let vatRateDisplay = '10%';
+            if (invoiceDataGtgt.vatRate) {
+                if (typeof invoiceDataGtgt.vatRate === 'number') {
+                    vatRateDisplay = invoiceDataGtgt.vatRate + '%';
+                } else {
+                    vatRateDisplay = invoiceDataGtgt.vatRate;
+                }
+            }
+
+            // Kiểm tra nếu tất cả sản phẩm có thuế suất 0%
+            let allZeroTax = true;
+            if (invoiceDataGtgt.products && invoiceDataGtgt.products.length > 0) {
+                allZeroTax = invoiceDataGtgt.products.every(p => p.taxRateNum === 0 || p.taxRateNum === 0);
+            }
+
             return `
-                <div class="invoice-gtgt-container force-times-new-roman">
-                    <table ALIGN="center" class="invoice-gtgt-box-large">
-                        <!-- Header - Hiển thị trên tất cả các trang -->
-                        <tr class="invoice-gtgt-border-bottom">
-                            <td width="24%" align="center">
-                                <div class="image-box">
-                                    <!-- Logo sẽ được thêm ở đây -->
-                                </div>
-                            </td>
-                            <td width="48%" align="center">
-                                <font class="invoice-gtgt-label-bold" style="font-size: 18px;">
-                                    HÓA ĐƠN GIÁ TRỊ GIA TĂNG
-                                </font>
-                                <br>
-                                <font class="invoice-gtgt-label-bold" style="font-size: 16px;">
-                                    (VAT INVOICE)
-                                </font>
-                                <br>
-                                <font class="invoice-gtgt-label-bold">Bản thể hiện của hóa đơn điện tử</font>
-                                <br>
-                                <font class="invoice-gtgt-label-italic">
-                                    (Electronic invoice display)
-                                </font>
-                                <br>
-                                <font class="invoice-gtgt-label-normal">Ngày </font>
-                                <font class="invoice-gtgt-label-italic">(date) </font>
-                                <span>${invoiceDataGtgt.invoiceDate}</span>
-                            </td>
-                            <td width="28%" class="invoice-gtgt-vertical-top">
-                                <table align="right" class="invoice-gtgt-box-small invoice-gtgt-no-border">
-                                    <tr>
-                                        <td align="left">
-                                            <font class="invoice-gtgt-label-bold">Ký hiệu</font>
-                                            <font class="invoice-gtgt-label-italic">(Serial): </font>
-                                        </td>
-                                        <td align="left" class="invoice-gtgt-item-bold">
-                                            ${invoiceDataGtgt.serialNo || '.........'}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="left">
-                                            <font class="invoice-gtgt-label-bold">Số</font>
-                                            <font class="invoice-gtgt-label-italic">(No.): </font>
-                                        </td>
-                                        <td align="left" class="invoice-gtgt-item-bold">
-                                            ${invoiceDataGtgt.invoiceNo || '.........'}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-
-                        <tr class="invoice-gtgt-border-bottom">
-                            <td colspan="3">
-                                <table class="invoice-gtgt-width-100">
-                                    <tr>
-                                        <td>
-                                            <font class="invoice-gtgt-label-bold">Đơn vị bán hàng</font>
-                                            <font class="invoice-gtgt-label-italic">(Issued): </font>
-                                            <font class="invoice-gtgt-label-bold">${invoiceDataGtgt.sellerName || '.........................................'}</font>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <font class="invoice-gtgt-label-bold">Mã số thuế</font>
-                                            <font class="invoice-gtgt-label-italic">(Tax code): </font>
-                                            <font class="invoice-gtgt-label-bold">${invoiceDataGtgt.sellerTaxCode || '.........................................'}</font>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <font class="invoice-gtgt-label-bold">Địa chỉ</font>
-                                            <font class="invoice-gtgt-label-italic">(Address): </font>
-                                            <font class="invoice-gtgt-label-bold">${invoiceDataGtgt.sellerAddress || '.........................................'}</font>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="3">
-                                <table class="invoice-gtgt-width-100">
-                                    <tr>
-                                        <td>
-                                            <font class="invoice-gtgt-label-bold">Họ tên người mua hàng</font>
-                                            <font class="invoice-gtgt-label-italic">(Buyer name): </font>
-                                            <font class="invoice-gtgt-item-normal">${invoiceDataGtgt.buyerName || '.........................................'}</font>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <font class="invoice-gtgt-label-bold">Tên đơn vị</font>
-                                            <font class="invoice-gtgt-label-italic">(Company name): </font>
-                                            <font class="invoice-gtgt-item-normal">${invoiceDataGtgt.buyerName || '.........................................'}</font>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <font class="invoice-gtgt-label-bold">Mã số thuế</font>
-                                            <font class="invoice-gtgt-label-italic">(Tax code): </font>
-                                            <font class="invoice-gtgt-item-bold">${invoiceDataGtgt.buyerTaxCode || '.........................................'}</font>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <font class="invoice-gtgt-label-bold">Địa chỉ</font>
-                                            <font class="invoice-gtgt-label-italic">(Address): </font>
-                                            <font class="invoice-gtgt-item-normal">${invoiceDataGtgt.buyerAddress || '.........................................'}</font>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="3">
-                                <table class="invoice-gtgt-width-100 invoice-gtgt-box-small">
-                                    <tr>
-                                        <td width="5%" align="center">
-                                            <font class="invoice-gtgt-label-bold">STT</font>
-                                            <br>
-                                            <font class="invoice-gtgt-label-italic">(No.)</font>
-                                        </td>
-                                        <td width="35%" align="center">
-                                            <font class="invoice-gtgt-label-bold">Tên hàng hóa, dịch vụ</font>
-                                            <br>
-                                            <font class="invoice-gtgt-label-italic">(Description)</font>
-                                        </td>
-                                        <td width="7%" align="center">
-                                            <font class="invoice-gtgt-label-bold">ĐVT</font>
-                                            <br>
-                                            <font class="invoice-gtgt-label-italic">(Unit)</font>
-                                        </td>
-                                        <td width="7%" align="center">
-                                            <font class="invoice-gtgt-label-bold">Số lượng</font>
-                                            <br>
-                                            <font class="invoice-gtgt-label-italic">(Quantity)</font>
-                                        </td>
-                                        <td width="10%" align="center">
-                                            <font class="invoice-gtgt-label-bold">Đơn giá</font>
-                                            <br>
-                                            <font class="invoice-gtgt-label-italic">(Unit price)</font>
-                                        </td>
-                                        <td width="12%" align="center">
-                                            <font class="invoice-gtgt-label-bold">Thành tiền</font>
-                                            <br>
-                                            <font class="invoice-gtgt-label-italic">(Amount)</font>
-                                        </td>
-                                    </tr>
-                                    ${productsHtml}
-                                    ${isLastPage ? `
-                                        <!-- Tổng tiền hàng - CẬP NHẬT THEO YÊU CẦU 3 -->
+                    <div class="invoice-gtgt-container force-times-new-roman">
+                        <table ALIGN="center" class="invoice-gtgt-box-large">
+                            <!-- Header - Hiển thị trên tất cả các trang -->
+                            <tr class="invoice-gtgt-border-bottom">
+                                <td width="24%" align="center">
+                                    <div class="image-box">
+                                        <!-- Logo sẽ được thêm ở đây -->
+                                    </div>
+                                </td>
+                                <td width="48%" align="center">
+                                    <font class="invoice-gtgt-label-bold" style="font-size: 18px;">
+                                        HÓA ĐƠN GIÁ TRỊ GIA TĂNG
+                                    </font>
+                                    <br>
+                                    <font class="invoice-gtgt-label-bold" style="font-size: 16px;">
+                                        (VAT INVOICE)
+                                    </font>
+                                    <br>
+                                    <font class="invoice-gtgt-label-bold">Bản thể hiện của hóa đơn điện tử</font>
+                                    <br>
+                                    <font class="invoice-gtgt-label-italic">
+                                        (Electronic invoice display)
+                                    </font>
+                                    <br>
+                                    <font class="invoice-gtgt-label-normal">Ngày </font>
+                                    <font class="invoice-gtgt-label-italic">(date) </font>
+                                    <span>${invoiceDataGtgt.invoiceDate}</span>
+                                </td>
+                                <td width="28%" class="invoice-gtgt-vertical-top">
+                                    <table align="right" class="invoice-gtgt-box-small invoice-gtgt-no-border">
                                         <tr>
-                                            <td class="text-right box-small" colspan="5">
-                                                <span class="label-bold">Cộng tiền hàng</span>
-                                                <span class="label-italic">(Total amount):</span>
+                                            <td align="left">
+                                                <font class="invoice-gtgt-label-bold">Ký hiệu</font>
+                                                <font class="invoice-gtgt-label-italic">(Serial): </font>
                                             </td>
-                                            <td class="text-right box-small item-bold">${formatNumberGtgt(invoiceDataGtgt.totalAmount)}</td>
-                                        </tr>
-
-                                        <!-- Thuế GTGT - CẬP NHẬT THEO YÊU CẦU 3 -->
-                                        <tr>
-                                            <td class="text-left box-small label-normal" colspan="2">
-                                                <span class="label-bold">Thuế suất GTGT</span>
-                                                <span class="label-italic">(VAT rate):</span>
-                                                <span class="label-normal">10%</span>
-                                            </td>
-                                            <td class="text-right box-small label-normal" colspan="3">
-                                                <span class="label-bold">Tiền thuế GTGT </span>
-                                                <span class="label-italic">(VAT amount):</span>
-                                            </td>
-                                            <td class="text-right box-small item-normal">${formatNumberGtgt(invoiceDataGtgt.vatAmount)}</td>
-                                        </tr>
-
-                                        <!-- Tổng thanh toán - CẬP NHẬT THEO YÊU CẦU 3 -->
-                                        <tr>
-                                            <td class="text-right box-small" colspan="5">
-                                                <span class="label-bold">Tổng cộng tiền thanh toán</span>
-                                                <span class="label-italic">(Total payment):</span>
-                                            </td>
-                                            <td class="text-right box-small item-bold">${formatNumberGtgt(invoiceDataGtgt.totalPayment)}</td>
-                                        </tr>
-
-                                        <!-- Số tiền viết bằng chữ -->
-                                        <tr>
-                                            <td class="text-left box-small" colspan="6">
-                                                <span class="label-bold">Số tiền viết bằng chữ</span>
-                                                <span class="label-italic">(Amount in words):</span>
-                                                <span class="item-normal">${invoiceDataGtgt.amountInWords || '.........................................'}</span>
+                                            <td align="left" class="invoice-gtgt-item-bold">
+                                                ${invoiceDataGtgt.serialNo || '.........'}
                                             </td>
                                         </tr>
-                                    ` : ''}
-                                </table>
-                            </td>
-                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                <font class="invoice-gtgt-label-bold">Số</font>
+                                                <font class="invoice-gtgt-label-italic">(No.): </font>
+                                            </td>
+                                            <td align="left" class="invoice-gtgt-item-bold">
+                                                ${invoiceDataGtgt.invoiceNo || '.........'}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
 
-                        <!-- CHỈ HIỂN THỊ CHỮ KÝ Ở TRANG CUỐI -->
-                        ${isLastPage ? `
-                        <tr>
-                            <td colspan="3">
-                                <table class="invoice-gtgt-width-100">
-                                    <tr>
-                                        <td align="center" class="invoice-gtgt-width-100">
-                                            <font class="invoice-gtgt-label-bold">Người mua hàng</font>
-                                            <font class="invoice-gtgt-label-italic">(Buyer)</font>
-                                        </td>
-                                        <td align="center" class="invoice-gtgt-width-100">
-                                            <font class="invoice-gtgt-label-bold">Người bán hàng</font>
-                                            <font class="invoice-gtgt-label-italic">(Seller)</font>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
-                                            <div style="height: 80px; border-bottom: 1px solid #000; width: 200px; margin: 0 auto;">
-                                                <!-- Để trống phần chữ ký của bên mua -->
-                                            </div>
-                                        </td>
-                                        <td align="center">
-                                            <div style="height: 80px; border-bottom: 1px solid #ff0000; width: 200px; margin: 0 auto;">
-                                                <font class="invoice-gtgt-label-bold" style="color: #ff0000;">
-                                                    ✅ Ký bởi ${invoiceDataGtgt.sellerName || '.........................................'}
-                                                </font>
+                            <tr class="invoice-gtgt-border-bottom">
+                                <td colspan="3">
+                                    <table class="invoice-gtgt-width-100">
+                                        <tr>
+                                            <td>
+                                                <font class="invoice-gtgt-label-bold">Đơn vị bán hàng</font>
+                                                <font class="invoice-gtgt-label-italic">(Issued): </font>
+                                                <font class="invoice-gtgt-label-bold">${invoiceDataGtgt.sellerName || '.........................................'}</font>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <font class="invoice-gtgt-label-bold">Mã số thuế</font>
+                                                <font class="invoice-gtgt-label-italic">(Tax code): </font>
+                                                <font class="invoice-gtgt-label-bold">${invoiceDataGtgt.sellerTaxCode || '.........................................'}</font>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <font class="invoice-gtgt-label-bold">Địa chỉ</font>
+                                                <font class="invoice-gtgt-label-italic">(Address): </font>
+                                                <font class="invoice-gtgt-label-bold">${invoiceDataGtgt.sellerAddress || '.........................................'}</font>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <table class="invoice-gtgt-width-100">
+                                        <tr>
+                                            <td>
+                                                <font class="invoice-gtgt-label-bold">Họ tên người mua hàng</font>
+                                                <font class="invoice-gtgt-label-italic">(Buyer name): </font>
+                                                <font class="invoice-gtgt-item-normal">${invoiceDataGtgt.buyerName || '.........................................'}</font>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <font class="invoice-gtgt-label-bold">Tên đơn vị</font>
+                                                <font class="invoice-gtgt-label-italic">(Company name): </font>
+                                                <font class="invoice-gtgt-item-normal">${invoiceDataGtgt.buyerName || '.........................................'}</font>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <font class="invoice-gtgt-label-bold">Mã số thuế</font>
+                                                <font class="invoice-gtgt-label-italic">(Tax code): </font>
+                                                <font class="invoice-gtgt-item-bold">${invoiceDataGtgt.buyerTaxCode || '.........................................'}</font>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <font class="invoice-gtgt-label-bold">Địa chỉ</font>
+                                                <font class="invoice-gtgt-label-italic">(Address): </font>
+                                                <font class="invoice-gtgt-item-normal">${invoiceDataGtgt.buyerAddress || '.........................................'}</font>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <table class="invoice-gtgt-width-100 invoice-gtgt-box-small">
+                                        <tr>
+                                            <td width="5%" align="center">
+                                                <font class="invoice-gtgt-label-bold">STT</font>
                                                 <br>
-                                                <font class="invoice-gtgt-label-italic" style="color: #ff0000;">
-                                                    (Chữ ký số)
-                                                </font>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        ` : ''}
-                        
-                        <!-- Thông tin mã tra cứu và mã cơ quan thuế - HIỆN TRÊN TẤT CẢ CÁC TRANG -->
-                        <tr>
-                            <td colspan="3">
-                                
-                            </td>
-                        </tr>
-                    </table>
-                    
-                    <!-- Footer với mã CQT và mã tra cứu - HIỆN TRÊN TẤT CẢ CÁC TRANG -->
-                    <div class="footer">
-                        <div class="label-italic">(Cần kiểm tra đối chiếu khi lập, giao, nhận hóa đơn)</div>
-                        
-                        <!-- Mã CQT và mã tra cứu -->
-                        <div class="cqt-info">
-                            <div class="label-italic">Mã cơ quan thuế: <span class="cqt-code">${invoiceDataGtgt.taxAuthorityCode || '.........................................'}</span></div>
-                            <div class="label-italic">Mã tra cứu: <span class="cqt-code">${verificationCode || '.........................................'}</span></div>
+                                                <font class="invoice-gtgt-label-italic">(No.)</font>
+                                            </td>
+                                            <td width="35%" align="center">
+                                                <font class="invoice-gtgt-label-bold">Tên hàng hóa, dịch vụ</font>
+                                                <br>
+                                                <font class="invoice-gtgt-label-italic">(Description)</font>
+                                            </td>
+                                            <td width="7%" align="center">
+                                                <font class="invoice-gtgt-label-bold">ĐVT</font>
+                                                <br>
+                                                <font class="invoice-gtgt-label-italic">(Unit)</font>
+                                            </td>
+                                            <td width="7%" align="center">
+                                                <font class="invoice-gtgt-label-bold">Số lượng</font>
+                                                <br>
+                                                <font class="invoice-gtgt-label-italic">(Quantity)</font>
+                                            </td>
+                                            <td width="10%" align="center">
+                                                <font class="invoice-gtgt-label-bold">Đơn giá</font>
+                                                <br>
+                                                <font class="invoice-gtgt-label-italic">(Unit price)</font>
+                                            </td>
+                                            <td width="12%" align="center">
+                                                <font class="invoice-gtgt-label-bold">Thành tiền</font>
+                                                <br>
+                                                <font class="invoice-gtgt-label-italic">(Amount)</font>
+                                            </td>
+                                        </tr>
+                                        ${productsHtml}
+                                        ${isLastPage ? `
+                                            <!-- Tổng tiền hàng -->
+                                            <tr>
+                                                <td class="text-right box-small" colspan="5">
+                                                    <span class="label-bold">Cộng tiền hàng</span>
+                                                    <span class="label-italic">(Total amount):</span>
+                                                </td>
+                                                <td class="text-right box-small item-bold">${formatNumberGtgt(invoiceDataGtgt.totalAmount)}</td>
+                                            </tr>
+
+                                            <!-- Thuế GTGT - HIỂN THỊ VAT RATE CHÍNH XÁC TỪ XML -->
+                                            <tr>
+                                                <td class="text-left box-small label-normal" colspan="2">
+                                                    <span class="label-bold">Thuế suất GTGT</span>
+                                                    <span class="label-italic">(VAT rate):</span>
+                                                    <span class="label-normal">${vatRateDisplay}</span>
+                                                </td>
+                                                <td class="text-right box-small label-normal" colspan="3">
+                                                    <span class="label-bold">Tiền thuế GTGT </span>
+                                                    <span class="label-italic">(VAT amount):</span>
+                                                </td>
+                                                <td class="text-right box-small item-normal">${allZeroTax ? '0' : formatNumberGtgt(invoiceDataGtgt.vatAmount)}</td>
+                                            </tr>
+
+                                            <!-- Tổng thanh toán -->
+                                            <tr>
+                                                <td class="text-right box-small" colspan="5">
+                                                    <span class="label-bold">Tổng cộng tiền thanh toán</span>
+                                                    <span class="label-italic">(Total payment):</span>
+                                                </td>
+                                                <td class="text-right box-small item-bold">${formatNumberGtgt(invoiceDataGtgt.totalPayment)}</td>
+                                            </tr>
+
+                                            <!-- Số tiền viết bằng chữ -->
+                                            <tr>
+                                                <td class="text-left box-small" colspan="6">
+                                                    <span class="label-bold">Số tiền viết bằng chữ</span>
+                                                    <span class="label-italic">(Amount in words):</span>
+                                                    <span class="item-normal">${invoiceDataGtgt.amountInWords || '.........................................'}</span>
+                                                </td>
+                                            </tr>
+                                        ` : ''}
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- CHỈ HIỂN THỊ CHỮ KÝ Ở TRANG CUỐI -->
+                            ${isLastPage ? `
+                            <tr>
+                                <td colspan="3">
+                                    <table class="invoice-gtgt-width-100">
+                                        <tr>
+                                            <td align="center" class="invoice-gtgt-width-100">
+                                                <font class="invoice-gtgt-label-bold">Người mua hàng</font>
+                                                <font class="invoice-gtgt-label-italic">(Buyer)</font>
+                                            </td>
+                                            <td align="center" class="invoice-gtgt-width-100">
+                                                <font class="invoice-gtgt-label-bold">Người bán hàng</font>
+                                                <font class="invoice-gtgt-label-italic">(Seller)</font>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center">
+                                                <div style="height: 80px; border-bottom: 1px solid #000; width: 200px; margin: 0 auto;">
+                                                    <!-- Để trống phần chữ ký của bên mua -->
+                                                </div>
+                                            </td>
+                                            <td align="center">
+                                                <div style="height: 80px; border-bottom: 1px solid #ff0000; width: 200px; margin: 0 auto;">
+                                                    <font class="invoice-gtgt-label-bold" style="color: #ff0000;">
+                                                        ✅ Ký bởi ${invoiceDataGtgt.sellerName || '.........................................'}
+                                                    </font>
+                                                    <br>
+                                                    <font class="invoice-gtgt-label-italic" style="color: #ff0000;">
+                                                        (Chữ ký số)
+                                                    </font>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            ` : ''}
+                        </table>
+
+                        <!-- Footer với mã CQT và mã tra cứu - HIỆN TRÊN TẤT CẢ CÁC TRANG -->
+                        <div class="footer">
+                            <div class="label-italic">(Cần kiểm tra đối chiếu khi lập, giao, nhận hóa đơn)</div>
+
+                            <!-- Mã CQT và mã tra cứu -->
+                            <div class="cqt-info">
+                                <div class="label-italic">Mã cơ quan thuế: <span class="cqt-code">${invoiceDataGtgt.taxAuthorityCode || '.........................................'}</span></div>
+                                <div class="label-italic">Mã tra cứu: <span class="cqt-code">${verificationCode || '.........................................'}</span></div>
+                            </div>
+
+                            <div class="label-italic">Đơn vị cung cấp dịch vụ Hóa đơn điện tử: ${serviceProviderName}, MST: ${serviceProviderTaxCode}</div>
+                            <div class="label-italic">
+                                Tra cứu hóa đơn điện tử tại Website: ${getServiceProviderUrl(serviceProviderTaxCode)}
+                            </div>
+                            <div class="label-italic" style="margin-top: 5px;">
+                                Hoặc tra cứu tại Cổng thông tin điện tử của Tổng cục Thuế: https://tracuuhoadon.gdt.gov.vn
+                            </div>
                         </div>
-                        
-                        <div class="label-italic">Đơn vị cung cấp dịch vụ Hóa đơn điện tử: ${serviceProviderName}, MST: ${serviceProviderTaxCode}</div>
-                        <div class="label-italic">
-                            Tra cứu hóa đơn điện tử tại Website: ${getServiceProviderUrl(serviceProviderTaxCode)}
-                        </div>
-                        <div class="label-italic" style="margin-top: 5px;">
-                            Hoặc tra cứu tại Cổng thông tin điện tử của Tổng cục Thuế: https://tracuuhoadon.gdt.gov.vn
-                        </div>
+
+                        <!-- Số trang - HIỆN TRÊN TẤT CẢ CÁC TRANG -->
+                        <div class="page-number">Trang ${pageNumber}/${totalPages}</div>
                     </div>
-                    
-                    <!-- Số trang - HIỆN TRÊN TẤT CẢ CÁC TRANG -->
-                    <div class="page-number">Trang ${pageNumber}/${totalPages}</div>
-                </div>
-            `;
+                `;
         }
 
         // Hàm lấy tên nhà cung cấp dịch vụ từ MSTTCGP
@@ -3551,12 +3589,12 @@
         // Tạo preview hóa đơn đầy đủ cho modal
         function generateFullGtgtInvoice() {
             let fullInvoiceHtml = '';
-            
+
             for (let i = 0; i < paginatedInvoiceDataGtgt.length; i++) {
                 const pageData = paginatedInvoiceDataGtgt[i];
                 fullInvoiceHtml += generateGtgtInvoicePage(pageData);
             }
-            
+
             return fullInvoiceHtml;
         }
 
@@ -3584,7 +3622,7 @@
         // Đóng modal hóa đơn cho tab GTGT
         document.getElementById('closeModalBtnGtgt').addEventListener('click', closeInvoiceModalGtgt);
         document.getElementById('closeModalBtn2Gtgt').addEventListener('click', closeInvoiceModalGtgt);
-        
+
         function closeInvoiceModalGtgt() {
             document.getElementById('invoiceModalGtgt').style.display = 'none';
         }
@@ -3594,12 +3632,12 @@
             window.print();
         });
 
-        // Tải PDF từ modal cho tab GTGT - CẬP NHẬT THEO YÊU CẦU 2
+        // Tải PDF từ modal cho tab GTGT
         document.getElementById('downloadModalPdfBtnGtgt').addEventListener('click', function() {
             generatePDFWithScreenshotGtgt();
         });
 
-        // Tải PDF từ preview cho tab GTGT - CẬP NHẬT THEO YÊU CẦU 2
+        // Tải PDF từ preview cho tab GTGT
         document.getElementById('downloadPdfGtgt').addEventListener('click', function() {
             generatePDFWithScreenshotGtgt();
         });
@@ -3612,24 +3650,24 @@
                 alert('Không có dữ liệu hóa đơn. Vui lòng tải lên file XML trước.');
                 return;
             }
-            
-            // Cập nhật dữ liệu toàn cục từ JSON - YÊU CẦU 7 & 8
+
+            // Cập nhật dữ liệu toàn cục từ JSON
             invoiceData = jsonData.processedData;
             matchedProviders = findMatchingProviders(invoiceData.serviceProviderTaxCode);
-            
+
             // Mở modal tra cứu với thông tin đã được đồng bộ
             document.getElementById('openLookupModalBtn').click();
-            
+
             alert('Đã đồng bộ MSTTCGP từ hóa đơn GTGT. Vui lòng chọn nhà cung cấp trong modal tra cứu.');
         });
 
-        // Hàm tải PDF sử dụng phương pháp chụp ảnh từng trang cho tab GTGT - CẢI THIỆN VỚI YÊU CẦU 2
+        // Hàm tải PDF sử dụng phương pháp chụp ảnh từng trang cho tab GTGT
         async function generatePDFWithScreenshotGtgt() {
             // Hiển thị trạng thái xử lý
             const processingStatus = document.getElementById('pdfProcessingStatus');
             const progressBar = document.getElementById('pdfProgressBar');
             const statusMessage = document.getElementById('pdfStatusMessage');
-            
+
             processingStatus.style.display = 'block';
             progressBar.style.width = '0%';
             progressBar.textContent = '0%';
@@ -3653,7 +3691,7 @@
                 // Tạo từng trang và chụp ảnh riêng biệt
                 for (let i = 0; i < paginatedInvoiceDataGtgt.length; i++) {
                     const pageData = paginatedInvoiceDataGtgt[i];
-                    
+
                     // Cập nhật tiến trình
                     const progress = Math.round(((i + 1) / paginatedInvoiceDataGtgt.length) * 100);
                     progressBar.style.width = `${progress}%`;
@@ -3674,9 +3712,9 @@
                     // Chờ một chút để đảm bảo DOM đã render
                     await new Promise(resolve => setTimeout(resolve, 500));
 
-                    // Chụp ảnh container với scale cao để tăng DPI/PPI - YÊU CẦU 2
+                    // Chụp ảnh container với scale cao để tăng DPI/PPI
                     const canvas = await html2canvas(captureContainer, {
-                        scale: 4, // Tăng scale lên 4 để đạt DPI/PPI ~1200
+                        scale: 4,
                         useCORS: true,
                         allowTaint: true,
                         backgroundColor: '#ffffff',
@@ -3684,7 +3722,6 @@
                         width: captureContainer.scrollWidth,
                         height: captureContainer.scrollHeight,
                         onclone: function(clonedDoc) {
-                            // Đảm bảo font được áp dụng trong clone
                             clonedDoc.querySelectorAll('*').forEach(el => {
                                 el.style.fontFamily = 'Times New Roman, Times, serif !important';
                             });
@@ -3692,7 +3729,7 @@
                     });
 
                     // Tính toán kích thước để fit vào trang A4
-                    const imgWidth = 210; // A4 width in mm
+                    const imgWidth = 210;
                     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
                     // Thêm ảnh vào PDF (thêm trang mới nếu không phải trang đầu)
@@ -3701,7 +3738,7 @@
                     }
 
                     // Thêm ảnh vào PDF
-                    const imgData = canvas.toDataURL('image/jpeg', 0.95); // Chất lượng cao
+                    const imgData = canvas.toDataURL('image/jpeg', 0.95);
                     pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
                 }
 
@@ -3728,10 +3765,10 @@
         }
 
         // ==============================================
-        // PHẦN XỬ LÝ CHO TAB 2: TRA CỨU HÓA ĐƠN - FIX LỖI
+        // PHẦN XỬ LÝ CHO TAB 2: TRA CỨU HÓA ĐƠN
         // ==============================================
 
-        // Mở modal tra cứu - ĐÃ ĐƯỢC SỬA
+        // Mở modal tra cứu
         document.getElementById('openLookupModalBtn').addEventListener('click', function() {
             // Kiểm tra xem có dữ liệu hóa đơn từ XML không
             const jsonData = loadJsonFromStorage();
@@ -3739,67 +3776,67 @@
                 alert('Vui lòng tải lên file XML hóa đơn trước khi sử dụng chức năng tra cứu!');
                 return;
             }
-            
-            // Cập nhật dữ liệu từ JSON - YÊU CẦU 1 & 2
+
+            // Cập nhật dữ liệu từ JSON
             invoiceData = jsonData.processedData;
             matchedProviders = findMatchingProviders(invoiceData.serviceProviderTaxCode);
-            
-            // Khởi tạo danh sách nhà cung cấp dựa trên MSTTCGP - YÊU CẦU 2
+
+            // Khởi tạo danh sách nhà cung cấp dựa trên MSTTCGP
             initializeProviders();
-            
-            // HIỂN THỊ THÔNG TIN HÓA ĐƠN TỪ XML - ĐÃ ĐƯỢC THÊM - YÊU CẦU 6
+
+            // HIỂN THỊ THÔNG TIN HÓA ĐƠN TỪ XML
             displayInvoiceInfoInModal();
-            
+
             // Hiển thị mã tra cứu nếu có
             if (invoiceData.verificationCode) {
                 document.getElementById('lookupCode').value = invoiceData.verificationCode;
             }
-            
+
             // Hiển thị danh sách nhà cung cấp
             displayProviderList();
-            
+
             // Reset trạng thái
             document.getElementById('directPdfInfo').style.display = 'none';
             document.getElementById('lookupCodeGroup').style.display = 'block';
             document.getElementById('lookupResult').style.display = 'none';
             document.getElementById('directLookupSection').style.display = 'none';
-            
+
             document.getElementById('lookupModal').style.display = 'block';
         });
 
-        // HÀM HIỂN THỊ THÔNG TIN HÓA ĐƠN TRONG MODAL - ĐÃ ĐƯỢC THÊM - YÊU CẦU 6
+        // HÀM HIỂN THỊ THÔNG TIN HÓA ĐƠN TRONG MODAL
         function displayInvoiceInfoInModal() {
             const invoiceInfoContainer = document.getElementById('invoiceInfoFromXml');
             const invoiceInfoDetails = document.getElementById('invoiceInfoDetails');
-            
+
             if (!invoiceData.sellerTaxCode) {
                 invoiceInfoContainer.style.display = 'none';
                 return;
             }
-            
+
             const infoHtml = `
-                <div class="info-item">
-                    <span class="info-label">Đơn vị bán hàng:</span>
-                    <span class="info-value">${invoiceData.sellerName || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">MST người bán:</span>
-                    <span class="info-value">${invoiceData.sellerTaxCode || 'N/A'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Mã tra cứu:</span>
-                    <span class="info-value">${invoiceData.verificationCode || 'N/A'}</span>
-                </div>
-                ${invoiceData.portalCodes && invoiceData.portalCodes.length > 0 ? `
-                <div class="info-item">
-                    <span class="info-label">Các mã tìm thấy:</span>
-                    <span class="info-value">
-                        ${invoiceData.portalCodes.map(code => `${code.code} (${code.type})`).join(', ')}
-                    </span>
-                </div>
-                ` : ''}
-            `;
-            
+                    <div class="info-item">
+                        <span class="info-label">Đơn vị bán hàng:</span>
+                        <span class="info-value">${invoiceData.sellerName || 'N/A'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">MST người bán:</span>
+                        <span class="info-value">${invoiceData.sellerTaxCode || 'N/A'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Mã tra cứu:</span>
+                        <span class="info-value">${invoiceData.verificationCode || 'N/A'}</span>
+                    </div>
+                    ${invoiceData.portalCodes && invoiceData.portalCodes.length > 0 ? `
+                    <div class="info-item">
+                        <span class="info-label">Các mã tìm thấy:</span>
+                        <span class="info-value">
+                            ${invoiceData.portalCodes.map(code => `${code.code} (${code.type})`).join(', ')}
+                        </span>
+                    </div>
+                    ` : ''}
+                `;
+
             invoiceInfoDetails.innerHTML = infoHtml;
             invoiceInfoContainer.style.display = 'block';
         }
@@ -3810,10 +3847,10 @@
                 // Xóa active class từ tất cả các tab và nội dung
                 document.querySelectorAll('#lookupModal .tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('#lookupModal .tab-content').forEach(c => c.classList.remove('active'));
-                
+
                 // Thêm active class cho tab được chọn
                 this.classList.add('active');
-                
+
                 // Hiển thị nội dung tương ứng
                 const tabId = this.getAttribute('data-tab');
                 document.getElementById(tabId).classList.add('active');
@@ -3824,7 +3861,7 @@
         document.getElementById('providerSearch').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             const rows = document.querySelectorAll('.provider-table tbody tr');
-            
+
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 if (text.includes(searchTerm)) {
@@ -3835,7 +3872,7 @@
             });
         });
 
-        // Xử lý khi chọn nhà cung cấp trong dropdown - ĐÃ ĐƯỢC SỬA
+        // Xử lý khi chọn nhà cung cấp trong dropdown
         document.getElementById('providerSelect').addEventListener('change', function() {
             const selectedValue = this.value;
             const selectedOption = this.options[this.selectedIndex];
@@ -3843,10 +3880,10 @@
             const lookupCode = document.getElementById('lookupCode').value.trim() || invoiceData.verificationCode;
             const transactionID = invoiceData.transactionID;
             const sellerTaxCode = invoiceData.sellerTaxCode;
-            
+
             // YÊU CẦU 3: Nếu MSTTCGP trùng với function thì lấy link từ function
             let pdfDownloadInfo = null;
-            
+
             if (providerMST === MISA_FUNCTION.mst) {
                 // Function MISA
                 const misaResult = MISA_FUNCTION.processXml(invoiceData.xmlContent);
@@ -3895,88 +3932,88 @@
                     }
                 }
             } else {
-                // Các nhà cung cấp khác - YÊU CẦU 4
+                // Các nhà cung cấp khác
                 pdfDownloadInfo = checkDirectPdfDownloadSupport(providerMST, lookupCode);
             }
-            
+
             // Kiểm tra URL tra cứu đặc biệt
             const specialLookupUrl = createSpecialLookupUrl(providerMST, transactionID, sellerTaxCode, lookupCode);
-            
+
             // Tạo URL tự động điền
             const autoFillUrl = createAutoFillUrl(providerMST, sellerTaxCode, lookupCode, transactionID);
-            
+
             const directPdfInfo = document.getElementById('directPdfInfo');
-            
+
             if (pdfDownloadInfo || specialLookupUrl || autoFillUrl) {
                 let infoContent = '';
-                
+
                 if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
                     // Có thể tải trực tiếp
                     infoContent += `
-                        <h4>🎉 Có thể tải PDF trực tiếp!</h4>
-                        <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải hóa đơn PDF trực tiếp.</p>
-                        <p>${pdfDownloadInfo.provider.description || 'Hỗ trợ tải PDF từ nhà cung cấp'}</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-pdf-link">
-                                📥 Tải hóa đơn PDF từ ${pdfDownloadInfo.provider.name}
-                            </a>
-                        </div>
-                    `;
+                            <h4>🎉 Có thể tải PDF trực tiếp!</h4>
+                            <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải hóa đơn PDF trực tiếp.</p>
+                            <p>${pdfDownloadInfo.provider.description || 'Hỗ trợ tải PDF từ nhà cung cấp'}</p>
+                            <div style="text-align: center; margin-top: 15px;">
+                                <a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-pdf-link">
+                                    📥 Tải hóa đơn PDF từ ${pdfDownloadInfo.provider.name}
+                                </a>
+                            </div>
+                        `;
                 }
-                
+
                 if (specialLookupUrl) {
                     infoContent += `
-                        <h4>🔗 Liên kết tra cứu đặc biệt</h4>
-                        <p>Nhà cung cấp <strong>${selectedOption.getAttribute('data-provider-name')}</strong> có liên kết tra cứu đặc biệt.</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${specialLookupUrl}" target="_blank" class="direct-pdf-link">
-                                🔍 Truy cập trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
-                            </a>
-                        </div>
-                    `;
+                            <h4>🔗 Liên kết tra cứu đặc biệt</h4>
+                            <p>Nhà cung cấp <strong>${selectedOption.getAttribute('data-provider-name')}</strong> có liên kết tra cứu đặc biệt.</p>
+                            <div style="text-align: center; margin-top: 15px;">
+                                <a href="${specialLookupUrl}" target="_blank" class="direct-pdf-link">
+                                    🔍 Truy cập trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
+                                </a>
+                            </div>
+                        `;
                 }
-                
+
                 if (autoFillUrl && pdfDownloadInfo && pdfDownloadInfo.autoFillSupported) {
                     infoContent += `
-                        <h4>🤖 Liên kết tự động điền</h4>
-                        <p>Đã tự động điền thông tin MST người bán và mã tra cứu (nếu có).</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
-                                🚀 Mở trang với thông tin đã điền
-                            </a>
-                        </div>
-                        <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                            <em>MST người bán: ${sellerTaxCode || 'Không có'} | Mã tra cứu: ${lookupCode || 'Không có'}</em>
-                        </p>
-                    `;
+                            <h4>🤖 Liên kết tự động điền</h4>
+                            <p>Đã tự động điền thông tin MST người bán và mã tra cứu (nếu có).</p>
+                            <div style="text-align: center; margin-top: 15px;">
+                                <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
+                                    🚀 Mở trang với thông tin đã điền
+                                </a>
+                            </div>
+                            <p style="margin-top: 10px; font-size: 12px; color: #666;">
+                                <em>MST người bán: ${sellerTaxCode || 'Không có'} | Mã tra cứu: ${lookupCode || 'Không có'}</em>
+                            </p>
+                        `;
                 } else if (autoFillUrl) {
                     infoContent += `
-                        <h4>🔗 Liên kết tra cứu</h4>
-                        <p>Truy cập trang tra cứu của nhà cung cấp.</p>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
-                                🔍 Mở trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
-                            </a>
-                        </div>
-                    `;
+                            <h4>🔗 Liên kết tra cứu</h4>
+                            <p>Truy cập trang tra cứu của nhà cung cấp.</p>
+                            <div style="text-align: center; margin-top: 15px;">
+                                <a href="${autoFillUrl}" target="_blank" class="direct-pdf-link">
+                                    🔍 Mở trang tra cứu ${selectedOption.getAttribute('data-provider-name')}
+                                </a>
+                            </div>
+                        `;
                 }
-                
+
                 if (pdfDownloadInfo && pdfDownloadInfo.requiresCode && !lookupCode) {
                     infoContent += `
-                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                            <h4>ℹ️ Cần mã tra cứu</h4>
-                            <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải PDF trực tiếp nhưng yêu cầu mã tra cứu.</p>
-                        </div>
-                    `;
+                            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                                <h4>ℹ️ Cần mã tra cứu</h4>
+                                <p>Nhà cung cấp <strong>${pdfDownloadInfo.provider.name}</strong> hỗ trợ tải PDF trực tiếp nhưng yêu cầu mã tra cứu.</p>
+                            </div>
+                        `;
                 }
-                
+
                 infoContent += `<p style="margin-top: 10px; font-size: 12px; color: #666;">
-                    <em>Liên kết này sẽ mở trong tab mới</em>
-                </p>`;
-                
+                        <em>Liên kết này sẽ mở trong tab mới</em>
+                    </p>`;
+
                 directPdfInfo.innerHTML = infoContent;
                 directPdfInfo.style.display = 'block';
-                
+
                 // Ẩn ô nhập mã tra cứu nếu đã có đủ thông tin
                 if ((pdfDownloadInfo && pdfDownloadInfo.pdfUrl) || specialLookupUrl || autoFillUrl) {
                     document.getElementById('lookupCodeGroup').style.display = 'none';
@@ -3988,7 +4025,7 @@
                 directPdfInfo.style.display = 'none';
                 document.getElementById('lookupCodeGroup').style.display = 'block';
             }
-            
+
             // Lưu thông tin nhà cung cấp hiện tại
             if (selectedOption) {
                 currentSelectedProvider = {
@@ -3999,7 +4036,7 @@
             }
         });
 
-        // Thực hiện tra cứu - ĐÃ ĐƯỢC SỬA
+        // Thực hiện tra cứu
         document.getElementById('performLookupBtn').addEventListener('click', function() {
             const providerSelect = document.getElementById('providerSelect');
             const selectedOption = providerSelect.options[providerSelect.selectedIndex];
@@ -4012,17 +4049,17 @@
             const lookupResult = document.getElementById('lookupResult');
             const providerDetails = document.getElementById('providerDetails');
             const directLookupSection = document.getElementById('directLookupSection');
-            
+
             if (!providerMST) {
                 lookupResult.textContent = "Vui lòng chọn nhà cung cấp!";
                 lookupResult.className = 'lookup-result lookup-error';
                 lookupResult.style.display = 'block';
                 return;
             }
-            
+
             // YÊU CẦU 3: Nếu MSTTCGP trùng với function thì lấy link từ function
             let pdfDownloadInfo = null;
-            
+
             if (providerMST === MISA_FUNCTION.mst) {
                 // Function MISA
                 const misaResult = MISA_FUNCTION.processXml(invoiceData.xmlContent);
@@ -4071,110 +4108,115 @@
                     }
                 }
             } else {
-                // Các nhà cung cấp khác - YÊU CẦU 4
+                // Các nhà cung cấp khác
                 pdfDownloadInfo = checkDirectPdfDownloadSupport(providerMST, lookupCode);
             }
-            
+
             // Kiểm tra URL tra cứu đặc biệt
             const specialLookupUrl = createSpecialLookupUrl(providerMST, transactionID, sellerTaxCode, lookupCode);
-            
+
             // Tạo URL tự động điền
             const autoFillUrl = createAutoFillUrl(providerMST, sellerTaxCode, lookupCode, transactionID);
-            
+
             // Hiển thị thông tin nhà cung cấp
             providerDetails.innerHTML = `
-                <h4>Thông tin nhà cung cấp giải pháp:</h4>
-                <p><strong>Tên đơn vị:</strong> ${providerName}</p>
-                <p><strong>Mã số thuế:</strong> ${providerMST}</p>
-                <p><strong>URL tra cứu:</strong> <a href="${providerUrl}" target="_blank">${providerUrl}</a></p>
-            `;
+                    <h4>Thông tin nhà cung cấp giải pháp:</h4>
+                    <p><strong>Tên đơn vị:</strong> ${providerName}</p>
+                    <p><strong>Mã số thuế:</strong> ${providerMST}</p>
+                    <p><strong>URL tra cứu:</strong> <a href="${providerUrl}" target="_blank">${providerUrl}</a></p>
+                `;
             providerDetails.style.display = 'block';
-            
+
             // Tạo các liên kết tra cứu trực tiếp
             let directLookupLinks = '';
-            
+
             if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
-                directLookupLinks += `<a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-lookup-btn">📥 Tải PDF trực tiếp</a>`;
+                directLookupLinks +=
+                    `<a href="${pdfDownloadInfo.pdfUrl}" target="_blank" class="direct-lookup-btn">📥 Tải PDF trực tiếp</a>`;
             }
-            
+
             if (specialLookupUrl) {
-                directLookupLinks += `<a href="${specialLookupUrl}" target="_blank" class="direct-lookup-btn">🔗 Tra cứu đặc biệt</a>`;
+                directLookupLinks +=
+                    `<a href="${specialLookupUrl}" target="_blank" class="direct-lookup-btn">🔗 Tra cứu đặc biệt</a>`;
             }
-            
+
             if (autoFillUrl) {
                 if (pdfDownloadInfo && pdfDownloadInfo.autoFillSupported) {
-                    directLookupLinks += `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🚀 Tự động điền thông tin</a>`;
+                    directLookupLinks +=
+                        `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🚀 Tự động điền thông tin</a>`;
                 } else {
-                    directLookupLinks += `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
+                    directLookupLinks +=
+                        `<a href="${autoFillUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
                 }
             }
-            
+
             // Thêm liên kết đến trang tra cứu của nhà cung cấp
             if (!autoFillUrl) {
-                directLookupLinks += `<a href="${providerUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
+                directLookupLinks +=
+                    `<a href="${providerUrl}" target="_blank" class="direct-lookup-btn">🔍 Mở trang tra cứu</a>`;
             }
-            
+
             // Hiển thị phần tra cứu trực tiếp
             directLookupSection.innerHTML = `
-                <h4>Tra cứu trực tiếp:</h4>
-                <p>Nhấn vào liên kết dưới đây để mở trang tra cứu hoặc tải PDF trực tiếp:</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">${directLookupLinks}</div>
-            `;
+                    <h4>Tra cứu trực tiếp:</h4>
+                    <p>Nhấn vào liên kết dưới đây để mở trang tra cứu hoặc tải PDF trực tiếp:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">${directLookupLinks}</div>
+                `;
             directLookupSection.style.display = 'block';
-            
+
             // Hiển thị kết quả tra cứu
             let resultMessage = '';
-            
+
             if (pdfDownloadInfo && pdfDownloadInfo.pdfUrl) {
                 resultMessage = `
-                    <h4>✅ Có thể tải PDF trực tiếp!</h4>
-                    <p>Mã tra cứu của bạn: <strong>${lookupCode || 'Không cần mã'}</strong></p>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Bạn có thể tải PDF trực tiếp bằng liên kết bên trên.</p>
-                `;
-                
+                        <h4>✅ Có thể tải PDF trực tiếp!</h4>
+                        <p>Mã tra cứu của bạn: <strong>${lookupCode || 'Không cần mã'}</strong></p>
+                        <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                        <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                        <p>Bạn có thể tải PDF trực tiếp bằng liên kết bên trên.</p>
+                    `;
+
                 // Cập nhật link tra cứu ở footer
                 updateFooterLookupLink(pdfDownloadInfo.pdfUrl, providerName);
             } else if (specialLookupUrl) {
                 resultMessage = `
-                    <h4>🔗 Liên kết tra cứu đặc biệt</h4>
-                    <p>Transaction ID: <strong>${transactionID || 'Không có'}</strong></p>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Đã tạo liên kết tra cứu đặc biệt cho nhà cung cấp này.</p>
-                `;
-                
+                        <h4>🔗 Liên kết tra cứu đặc biệt</h4>
+                        <p>Transaction ID: <strong>${transactionID || 'Không có'}</strong></p>
+                        <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                        <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                        <p>Đã tạo liên kết tra cứu đặc biệt cho nhà cung cấp này.</p>
+                    `;
+
                 // Cập nhật link tra cứu ở footer
                 updateFooterLookupLink(specialLookupUrl, providerName);
             } else if (autoFillUrl) {
                 resultMessage = `
-                    <h4>🤖 Đã tạo liên kết tự động điền</h4>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Mã tra cứu: <strong>${lookupCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Liên kết đã tự động điền thông tin vào trang tra cứu.</p>
-                `;
-                
+                        <h4>🤖 Đã tạo liên kết tự động điền</h4>
+                        <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                        <p>Mã tra cứu: <strong>${lookupCode || 'Không có'}</strong></p>
+                        <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                        <p>Liên kết đã tự động điền thông tin vào trang tra cứu.</p>
+                    `;
+
                 // Cập nhật link tra cứu ở footer
                 updateFooterLookupLink(autoFillUrl, providerName);
             } else if (lookupCode) {
                 resultMessage = `
-                    <h4>Thông tin tra cứu:</h4>
-                    <p>Mã tra cứu của bạn: <strong>${lookupCode}</strong></p>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Vui lòng nhập mã này vào trang tra cứu của nhà cung cấp để tải hóa đơn PDF.</p>
-                `;
+                        <h4>Thông tin tra cứu:</h4>
+                        <p>Mã tra cứu của bạn: <strong>${lookupCode}</strong></p>
+                        <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                        <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                        <p>Vui lòng nhập mã này vào trang tra cứu của nhà cung cấp để tải hóa đơn PDF.</p>
+                    `;
             } else {
                 resultMessage = `
-                    <h4>Thông tin nhà cung cấp:</h4>
-                    <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
-                    <p>Nhà cung cấp: <strong>${providerName}</strong></p>
-                    <p>Một số nhà cung cấp không yêu cầu mã tra cứu. Vui lòng thử truy cập trang tra cứu trực tiếp.</p>
-                `;
+                        <h4>Thông tin nhà cung cấp:</h4>
+                        <p>MST người bán: <strong>${sellerTaxCode || 'Không có'}</strong></p>
+                        <p>Nhà cung cấp: <strong>${providerName}</strong></p>
+                        <p>Một số nhà cung cấp không yêu cầu mã tra cứu. Vui lòng thử truy cập trang tra cứu trực tiếp.</p>
+                    `;
             }
-            
+
             lookupResult.innerHTML = resultMessage;
             lookupResult.className = 'lookup-result lookup-success';
             lookupResult.style.display = 'block';
@@ -4183,7 +4225,7 @@
         // Đóng modal tra cứu
         document.getElementById('closeLookupModalBtn').addEventListener('click', closeLookupModal);
         document.getElementById('closeLookupModalBtn2').addEventListener('click', closeLookupModal);
-        
+
         function closeLookupModal() {
             document.getElementById('lookupModal').style.display = 'none';
             document.getElementById('lookupResult').style.display = 'none';
@@ -4195,30 +4237,30 @@
         }
 
         // ==============================================
-        // HÀM CẬP NHẬT FOOTER - ĐÃ ĐƯỢC THÊM
+        // HÀM CẬP NHẬT FOOTER
         // ==============================================
 
         // Hàm cập nhật link tra cứu ở footer
         function updateFooterLookupLink(link, providerName) {
             const footerLookupLink = document.getElementById('footerLookupLink');
             currentLookupLink = link;
-            
+
             footerLookupLink.innerHTML = `
-                <strong>🔗 Link tra cứu từ ${providerName}:</strong><br>
-                <a href="${link}" target="_blank" style="color: #ffffff; text-decoration: underline; word-break: break-all;">
-                    ${link}
-                </a>
-                <br>
-                <small style="opacity: 0.8;">(Nhấn vào link để mở trong tab mới)</small>
-            `;
-            
+                    <strong>🔗 Link tra cứu từ ${providerName}:</strong><br>
+                    <a href="${link}" target="_blank" style="color: #ffffff; text-decoration: underline; word-break: break-all;">
+                        ${link}
+                    </a>
+                    <br>
+                    <small style="opacity: 0.8;">(Nhấn vào link để mở trong tab mới)</small>
+                `;
+
             // Thêm hiệu ứng để thu hút sự chú ý
             const footerLookupInfo = document.getElementById('footerLookupInfo');
             footerLookupInfo.style.animation = 'pulse 1s ease-in-out';
             setTimeout(() => {
                 footerLookupInfo.style.animation = '';
             }, 1000);
-            
+
             console.log(`✅ Đã cập nhật link tra cứu ở footer: ${link}`);
         }
 
@@ -4232,10 +4274,10 @@
                 // Xóa active class từ tất cả các tab và nội dung
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
+
                 // Thêm active class cho tab được chọn
                 this.classList.add('active');
-                
+
                 // Hiển thị nội dung tương ứng
                 const tabId = this.getAttribute('data-tab');
                 document.getElementById(tabId).classList.add('active');
@@ -4245,7 +4287,7 @@
         // Hiển thị danh sách MSTTCGP ở footer
         function displayMSTTCGPList() {
             const msttcgpList = document.getElementById('msttcgpList');
-            
+
             // Tạo danh sách các function chính
             const mainFunctions = [
                 { mst: VIENH_HY_FUNCTION.mst, name: VIENH_HY_FUNCTION.name },
@@ -4253,7 +4295,7 @@
                 { mst: BKAV_FUNCTION.id, name: BKAV_FUNCTION.name },
                 { mst: EASYINVOICE_MODULE.mst, name: EASYINVOICE_MODULE.name }
             ];
-            
+
             // Thêm các function chính
             mainFunctions.forEach(func => {
                 const item = document.createElement('div');
@@ -4261,11 +4303,10 @@
                 item.textContent = `${func.mst} - ${func.name}`;
                 msttcgpList.appendChild(item);
             });
-            
+
             // Thêm một số nhà cung cấp khác
-            const otherProviders = serviceProviders.slice(0, 10); // Lấy 10 nhà cung cấp đầu tiên
+            const otherProviders = serviceProviders.slice(0, 10);
             otherProviders.forEach(provider => {
-                // Bỏ qua các function đã thêm
                 if (!mainFunctions.some(func => func.mst === provider.mst)) {
                     const item = document.createElement('div');
                     item.className = 'msttcgp-item';
@@ -4279,24 +4320,24 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Khởi tạo danh sách nhà cung cấp
             initializeProviders();
-            
+
             // Hiển thị danh sách MSTTCGP
             displayMSTTCGPList();
-            
-            // Kiểm tra xem có dữ liệu JSON trong localStorage không - YÊU CẦU 1
+
+            // Kiểm tra xem có dữ liệu JSON trong localStorage không
             const jsonData = loadJsonFromStorage();
             if (jsonData) {
                 console.log('Đã tìm thấy dữ liệu JSON trong localStorage, đang khôi phục...');
-                
-                // Khôi phục dữ liệu từ JSON - YÊU CẦU 1 & 8
+
+                // Khôi phục dữ liệu từ JSON
                 invoiceData = jsonData.processedData || {};
-                
-                // Tìm nhà cung cấp phù hợp dựa trên MSTTCGP - YÊU CẦU 2
+
+                // Tìm nhà cung cấp phù hợp dựa trên MSTTCGP
                 matchedProviders = findMatchingProviders(invoiceData.serviceProviderTaxCode);
-                
+
                 console.log('Đã khôi phục dữ liệu từ JSON thành công');
             }
-            
+
             console.log('Công cụ chuyển đổi hóa đơn điện tử đã được khởi tạo');
             console.log('Function Vĩnh Hy:', VIENH_HY_FUNCTION);
             console.log('Function MISA:', MISA_FUNCTION);
