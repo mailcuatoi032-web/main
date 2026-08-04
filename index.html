@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -9,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
     </script>
     <style>
-        /* CSS đã được tối ưu hóa - giữ nguyên như trong mã gốc */
+        /* CSS đã được tối ưu hóa - giữ nguyên 	như trong mã gốc */
         * {
             margin: 0;
             padding: 0;
@@ -1461,7 +1463,7 @@
             <div class="tab-content active" id="invoice-gtgt">
                 <div class="upload-section">
                     <h3>Tải lên file XML hóa đơn</h3>
-                    <p>Sử dụng mẫu hóa đơn GTGT chuyên nghiệp với font Times New Roman và lề 1.5cm</p>
+                   
                     <div class="file-input-wrapper">
                         <input type="file" id="xmlFileGtgt" accept=".xml" style="display: none;">
                         <label for="xmlFileGtgt" class="file-input-label">
@@ -3397,8 +3399,8 @@
                                         <tr>
                                             <td>
                                                 <font class="invoice-gtgt-label-bold">Họ tên người mua hàng</font>
-                                                <font class="invoice-gtgt-label-italic">(Buyer name): </font>
-                                                <font class="invoice-gtgt-item-normal">${invoiceDataGtgt.buyerName || '.........................................'}</font>
+                                                <font class="invoice-gtgt-label-italic">(Buyer name):</font>
+                                                <font class="invoice-gtgt-item-normal"></font>
                                             </td>
                                         </tr>
                                         <tr>
@@ -3483,7 +3485,7 @@
                                                     <span class="label-bold">Tiền thuế GTGT </span>
                                                     <span class="label-italic">(VAT amount):</span>
                                                 </td>
-                                                <td class="text-right box-small item-normal">${allZeroTax ? '0' : formatNumberGtgt(invoiceDataGtgt.vatAmount)}</td>
+                                                <td class="text-right box-small item-normal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${allZeroTax ? '0':formatNumberGtgt(invoiceDataGtgt.vatAmount)}</td>
                                             </tr>
 
                                             <!-- Tổng thanh toán -->
